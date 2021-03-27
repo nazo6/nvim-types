@@ -1,10 +1,10 @@
-# nvim-types [WIP]
+# nvim-types
 
-Auto-generate typescript types from neovim document project.
+Types of neovim api generated semi-automatically.
 
 You can write your [neovim](https://github.com/neovim/neovim) settings with typescript using [TypeScriptToLua](https://typescripttolua.github.io).
 
-**This project is in early development stage. Some apis is not available.**
+**This project is in early development stage and work in progress. Some apis may be missing.**
 
 ## Install
 
