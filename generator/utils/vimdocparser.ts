@@ -14,7 +14,7 @@ export const vimdocParser = (text: string) => {
   });
   sectionStrings.push(currentSectionStrings);
 
-  const headerMatcher = /(?<lefttitle>.+?)\s+\*(?<righttitle>.+?)\*$/;
+  const headerMatcher = /(?<lefttitle>.+?)(\s|\t)+\*(?<righttitle>.+?)\*$/;
   const headerMatcherFunc: (str: string) => string[] | null = (str: string) => {
     const res = headerMatcher.exec(str);
     if (res) {
@@ -59,21 +59,27 @@ export const vimdocParser = (text: string) => {
       if (lines[crrLine] === undefined) {
         break;
       }
+      let propDescription = "";
       const match = headerMatcherFunc(lines[crrLine]);
       if (match) {
         let leftTitle = match[0];
         let rightTitle = match[1];
-        if (leftTitle === " ") {
+        if (leftTitle === " " || leftTitle === "\t") {
           //2行に分かれているとき
           crrLine++;
-          leftTitle = lines[crrLine];
+          //2行目に説明文があったとき用
+          const lineSplitted = lines[crrLine].split("\t");
+          leftTitle = lineSplitted[0];
+          if (lineSplitted.length > 0) {
+            lineSplitted.shift();
+            propDescription += lineSplitted.join("") + "\n";
+          }
         }
         const functionMatcher = /.+?\((.*?)\)/;
         const propType =
           functionMatcher.test(leftTitle) || functionMatcher.test(rightTitle)
             ? "func"
             : "value";
-        let propDescription = "";
         crrLine++;
         while (true) {
           if (!lines[crrLine]) {

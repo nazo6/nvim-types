@@ -1,7 +1,13 @@
-# nvim-types
-Write your [neovim](https://github.com/neovim/neovim) settings in typescript.
+# nvim-types [WIP]
 
-## Install 
+Auto-generate typescript types from neovim document project.
+
+You can write your [neovim](https://github.com/neovim/neovim) settings with typescript using [TypeScriptToLua](https://typescripttolua.github.io).
+
+**This project is in early development stage. Some apis is not typed.**
+
+## Install
+
 1. Install this package
 
 ```
@@ -11,7 +17,8 @@ npm install -D lua-types
 ```
 
 2. Modify your tsconfig.json
-```
+
+```json
 {
   "compilerOptions": {
     "types": ["nvim-types"]

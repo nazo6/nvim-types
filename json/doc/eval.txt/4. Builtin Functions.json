@@ -55,29 +55,29 @@
   {
    "type": "func",
    "name": "argc",
-   "description": "argc([{winid}])\n\t\tThe result is the number of files in the argument list.  See\n\t\t|arglist|.\n\t\tIf {winid} is not supplied, the argument list of the current\n\t\twindow is used.\n\t\tIf {winid} is -1, the global argument list is used.\n\t\tOtherwise {winid} specifies the window of which the argument\n\t\tlist is used: either the window number or the window ID.\n\t\tReturns -1 if the {winid} argument is invalid.",
-   "argsType": "",
+   "description": "The result is the number of files in the argument list.  See\n\t\t|arglist|.\n\t\tIf {winid} is not supplied, the argument list of the current\n\t\twindow is used.\n\t\tIf {winid} is -1, the global argument list is used.\n\t\tOtherwise {winid} specifies the window of which the argument\n\t\tlist is used: either the window number or the window ID.\n\t\tReturns -1 if the {winid} argument is invalid.",
+   "argsType": "[{winid}]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "argidx",
-   "description": "argidx()\tThe result is the current index in the argument list.  0 is\n\t\tthe first file.  argc() - 1 is the last one.  See |arglist|.",
+   "description": "The result is the current index in the argument list.  0 is\n\t\tthe first file.  argc() - 1 is the last one.  See |arglist|.",
    "argsType": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "arglistid",
-   "description": "arglistid([{winnr} [, {tabnr}]])\n\t\tReturn the argument list ID.  This is a number which\n\t\tidentifies the argument list being used.  Zero is used for the\n\t\tglobal argument list.  See |arglist|.\n\t\tReturns -1 if the arguments are invalid.",
-   "argsType": "",
+   "description": "Return the argument list ID.  This is a number which\n\t\tidentifies the argument list being used.  Zero is used for the\n\t\tglobal argument list.  See |arglist|.\n\t\tReturns -1 if the arguments are invalid.",
+   "argsType": "[{winnr} [, {tabnr}]]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "argv",
-   "description": "argv([{nr} [, {winid}])\n\t\tThe result is the {nr}th file in the argument list.  See\n\t\t|arglist|.  \"argv(0)\" is the first one.  Example: >\n\t:let i = 0\n\t:while i < argc()\n\t:  let f = escape(fnameescape(argv(i)), '.')\n\t:  exe 'amenu Arg.' . f . ' :e ' . f . '<CR>'\n\t:  let i = i + 1\n\t:endwhile\n<\t\tWithout the {nr} argument, or when {nr} is -1, a |List| with\n\t\tthe whole |arglist| is returned.",
-   "argsType": "",
+   "description": "The result is the {nr}th file in the argument list.  See\n\t\t|arglist|.  \"argv(0)\" is the first one.  Example: >\n\t:let i = 0\n\t:while i < argc()\n\t:  let f = escape(fnameescape(argv(i)), '.')\n\t:  exe 'amenu Arg.' . f . ' :e ' . f . '<CR>'\n\t:  let i = i + 1\n\t:endwhile\n<\t\tWithout the {nr} argument, or when {nr} is -1, a |List| with\n\t\tthe whole |arglist| is returned.",
+   "argsType": "[{nr} [, {winid}]",
    "returnType": "any"
   },
   {
@@ -90,15 +90,15 @@
   {
    "type": "func",
    "name": "assert_equal",
-   "description": "assert_equal({expected}, {actual}, [, {msg}])\n\t\tWhen {expected} and {actual} are not equal an error message is\n\t\tadded to |v:errors| and 1 is returned.  Otherwise zero is\n\t\treturned |assert-return|.\n\t\tThere is no automatic conversion, the String \"4\" is different\n\t\tfrom the Number 4.  And the number 4 is different from the\n\t\tFloat 4.0.  The value of 'ignorecase' is not used here, case\n\t\talways matters.\n\t\tWhen {msg} is omitted an error in the form \"Expected\n\t\t{expected} but got {actual}\" is produced.\n\t\tExample: >\n\tassert_equal('foo', 'bar')\n<\t\tWill result in a string to be added to |v:errors|:\n\ttest.vim line 12: Expected 'foo' but got 'bar' ~",
-   "argsType": "",
+   "description": "When {expected} and {actual} are not equal an error message is\n\t\tadded to |v:errors| and 1 is returned.  Otherwise zero is\n\t\treturned |assert-return|.\n\t\tThere is no automatic conversion, the String \"4\" is different\n\t\tfrom the Number 4.  And the number 4 is different from the\n\t\tFloat 4.0.  The value of 'ignorecase' is not used here, case\n\t\talways matters.\n\t\tWhen {msg} is omitted an error in the form \"Expected\n\t\t{expected} but got {actual}\" is produced.\n\t\tExample: >\n\tassert_equal('foo', 'bar')\n<\t\tWill result in a string to be added to |v:errors|:\n\ttest.vim line 12: Expected 'foo' but got 'bar' ~",
+   "argsType": "{expected}, {actual}, [, {msg}]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "assert_equalfile",
-   "description": "assert_equalfile({fname-one}, {fname-two} [, {msg}])\n\t\tWhen the files {fname-one} and {fname-two} do not contain\n\t\texactly the same text an error message is added to |v:errors|.\n\t\tAlso see |assert-return|.\n\t\tWhen {fname-one} or {fname-two} does not exist the error will\n\t\tmention that.",
-   "argsType": "",
+   "description": "When the files {fname-one} and {fname-two} do not contain\n\t\texactly the same text an error message is added to |v:errors|.\n\t\tAlso see |assert-return|.\n\t\tWhen {fname-one} or {fname-two} does not exist the error will\n\t\tmention that.",
+   "argsType": "{fname-one}, {fname-two} [, {msg}]",
    "returnType": "any"
   },
   {
@@ -132,22 +132,22 @@
   {
    "type": "func",
    "name": "assert_match",
-   "description": "assert_match({pattern}, {actual} [, {msg}])\n\t\tWhen {pattern} does not match {actual} an error message is\n\t\tadded to |v:errors|.  Also see |assert-return|.",
-   "argsType": "",
+   "description": "When {pattern} does not match {actual} an error message is\n\t\tadded to |v:errors|.  Also see |assert-return|.",
+   "argsType": "{pattern}, {actual} [, {msg}]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "assert_notequal",
-   "description": "assert_notequal({expected}, {actual} [, {msg}])\n\t\tThe opposite of `assert_equal()`: add an error message to\n\t\t|v:errors| when {expected} and {actual} are equal.\n\t\tAlso see |assert-return|.",
-   "argsType": "",
+   "description": "The opposite of `assert_equal()`: add an error message to\n\t\t|v:errors| when {expected} and {actual} are equal.\n\t\tAlso see |assert-return|.",
+   "argsType": "{expected}, {actual} [, {msg}]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "assert_notmatch",
-   "description": "assert_notmatch({pattern}, {actual} [, {msg}])\n\t\tThe opposite of `assert_match()`: add an error message to\n\t\t|v:errors| when {pattern} matches {actual}.\n\t\tAlso see |assert-return|.",
-   "argsType": "",
+   "description": "The opposite of `assert_match()`: add an error message to\n\t\t|v:errors| when {pattern} matches {actual}.\n\t\tAlso see |assert-return|.",
+   "argsType": "{pattern}, {actual} [, {msg}]",
    "returnType": "any"
   },
   {
@@ -188,15 +188,15 @@
   {
    "type": "func",
    "name": "browse",
-   "description": "browse({save}, {title}, {initdir}, {default})\n\t\tPut up a file requester.  This only works when \"has(\"browse\")\"\n\t\treturns |TRUE| (only in some GUI versions).\n\t\tThe input fields are:\n\t\t    {save}\twhen |TRUE|, select file to write\n\t\t    {title}\ttitle for the requester\n\t\t    {initdir}\tdirectory to start browsing in\n\t\t    {default}\tdefault file name\n\t\tWhen the \"Cancel\" button is hit, something went wrong, or\n\t\tbrowsing is not possible, an empty string is returned.",
-   "argsType": "",
+   "description": "Put up a file requester.  This only works when \"has(\"browse\")\"\n\t\treturns |TRUE| (only in some GUI versions).\n\t\tThe input fields are:\n\t\t    {save}\twhen |TRUE|, select file to write\n\t\t    {title}\ttitle for the requester\n\t\t    {initdir}\tdirectory to start browsing in\n\t\t    {default}\tdefault file name\n\t\tWhen the \"Cancel\" button is hit, something went wrong, or\n\t\tbrowsing is not possible, an empty string is returned.",
+   "argsType": "{save}, {title}, {initdir}, {default}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "browsedir",
-   "description": "browsedir({title}, {initdir})\n\t\tPut up a directory requester.  This only works when\n\t\t\"has(\"browse\")\" returns |TRUE| (only in some GUI versions).\n\t\tOn systems where a directory browser is not supported a file\n\t\tbrowser is used.  In that case: select a file in the directory\n\t\tto be used.\n\t\tThe input fields are:\n\t\t    {title}\ttitle for the requester\n\t\t    {initdir}\tdirectory to start browsing in\n\t\tWhen the \"Cancel\" button is hit, something went wrong, or\n\t\tbrowsing is not possible, an empty string is returned.",
-   "argsType": "",
+   "description": "Put up a directory requester.  This only works when\n\t\t\"has(\"browse\")\" returns |TRUE| (only in some GUI versions).\n\t\tOn systems where a directory browser is not supported a file\n\t\tbrowser is used.  In that case: select a file in the directory\n\t\tto be used.\n\t\tThe input fields are:\n\t\t    {title}\ttitle for the requester\n\t\t    {initdir}\tdirectory to start browsing in\n\t\tWhen the \"Cancel\" button is hit, something went wrong, or\n\t\tbrowsing is not possible, an empty string is returned.",
+   "argsType": "{title}, {initdir}",
    "returnType": "any"
   },
   {
@@ -244,8 +244,8 @@
   {
    "type": "func",
    "name": "bufnr",
-   "description": "bufnr([{expr} [, {create}]])\n\t\tThe result is the number of a buffer, as it is displayed by\n\t\tthe \":ls\" command.  For the use of {expr}, see |bufname()|\n\t\tabove.\n\t\tIf the buffer doesn't exist, -1 is returned.  Or, if the\n\t\t{create} argument is present and not zero, a new, unlisted,\n\t\tbuffer is created and its number is returned.\n\t\tbufnr(\"$\") is the last buffer: >\n\t\t\t:let last_buffer = bufnr(\"$\")\n<\t\tThe result is a Number, which is the highest buffer number\n\t\tof existing buffers.  Note that not all buffers with a smaller\n\t\tnumber necessarily exist, because \":bwipeout\" may have removed\n\t\tthem.  Use bufexists() to test for the existence of a buffer.",
-   "argsType": "",
+   "description": "The result is the number of a buffer, as it is displayed by\n\t\tthe \":ls\" command.  For the use of {expr}, see |bufname()|\n\t\tabove.\n\t\tIf the buffer doesn't exist, -1 is returned.  Or, if the\n\t\t{create} argument is present and not zero, a new, unlisted,\n\t\tbuffer is created and its number is returned.\n\t\tbufnr(\"$\") is the last buffer: >\n\t\t\t:let last_buffer = bufnr(\"$\")\n<\t\tThe result is a Number, which is the highest buffer number\n\t\tof existing buffers.  Note that not all buffers with a smaller\n\t\tnumber necessarily exist, because \":bwipeout\" may have removed\n\t\tthem.  Use bufexists() to test for the existence of a buffer.",
+   "argsType": "[{expr} [, {create}]]",
    "returnType": "any"
   },
   {
@@ -328,8 +328,8 @@
   {
    "type": "func",
    "name": "charidx",
-   "description": "charidx({string}, {idx} [, {countcc}])\n\t\tReturn the character index of the byte at {idx} in {string}.\n\t\tThe index of the first character is zero.\n\t\tIf there are no multibyte characters the returned value is\n\t\tequal to {idx}.\n\t\tWhen {countcc} is omitted or zero, then composing characters\n\t\tare not counted separately, their byte length is added to the\n\t\tpreceding base character.\n\t\tWhen {countcc} is set to 1, then composing characters are\n\t\tcounted as separate characters.\n\t\tReturns -1 if the arguments are invalid or if {idx} is greater\n\t\tthan the index of the last byte in {string}.  An error is\n\t\tgiven if the first argument is not a string, the second\n\t\targument is not a number or when the third argument is present\n\t\tand is not zero or one.\n\t\tSee |byteidx()| and |byteidxcomp()| for getting the byte index\n\t\tfrom the character index.\n\t\tExamples: >\n\t\t\techo charidx('áb́ć', 3)\t\treturns 1\n\t\t\techo charidx('áb́ć', 6, 1)\treturns 4\n\t\t\techo charidx('áb́ć', 16)\t\treturns -1",
-   "argsType": "",
+   "description": "Return the character index of the byte at {idx} in {string}.\n\t\tThe index of the first character is zero.\n\t\tIf there are no multibyte characters the returned value is\n\t\tequal to {idx}.\n\t\tWhen {countcc} is omitted or zero, then composing characters\n\t\tare not counted separately, their byte length is added to the\n\t\tpreceding base character.\n\t\tWhen {countcc} is set to 1, then composing characters are\n\t\tcounted as separate characters.\n\t\tReturns -1 if the arguments are invalid or if {idx} is greater\n\t\tthan the index of the last byte in {string}.  An error is\n\t\tgiven if the first argument is not a string, the second\n\t\targument is not a number or when the third argument is present\n\t\tand is not zero or one.\n\t\tSee |byteidx()| and |byteidxcomp()| for getting the byte index\n\t\tfrom the character index.\n\t\tExamples: >\n\t\t\techo charidx('áb́ć', 3)\t\treturns 1\n\t\t\techo charidx('áb́ć', 6, 1)\treturns 4\n\t\t\techo charidx('áb́ć', 16)\t\treturns -1",
+   "argsType": "{string}, {idx} [, {countcc}]",
    "returnType": "any"
   },
   {
@@ -349,8 +349,8 @@
   {
    "type": "func",
    "name": "col",
-   "description": "col({expr})\tThe result is a Number, which is the byte index of the column\n\t\tposition given with {expr}.  The accepted positions are:\n\t\t    .\t    the cursor position\n\t\t    $\t    the end of the cursor line (the result is the\n\t\t\t    number of bytes in the cursor line plus one)\n\t\t    'x\t    position of mark x (if the mark is not set, 0 is\n\t\t\t    returned)\n\t\t    v       In Visual mode: the start of the Visual area (the\n\t\t\t    cursor is the end).  When not in Visual mode\n\t\t\t    returns the cursor position.  Differs from |'<| in\n\t\t\t    that it's updated right away.\n\t\tAdditionally {expr} can be [lnum, col]: a |List| with the line\n\t\tand column number. Most useful when the column is \"$\", to get\n\t\tthe last column of a specific line.  When \"lnum\" or \"col\" is\n\t\tout of range then col() returns zero.\n\t\tTo get the line number use |line()|.  To get both use\n\t\t|getpos()|.\n\t\tFor the screen column position use |virtcol()|.\n\t\tNote that only marks in the current file can be used.\n\t\tExamples: >\n\t\t\tcol(\".\")\t\tcolumn of cursor\n\t\t\tcol(\"$\")\t\tlength of cursor line plus one\n\t\t\tcol(\"'t\")\t\tcolumn of mark t\n\t\t\tcol(\"'\" . markname)\tcolumn of mark markname\n<\t\tThe first column is 1.  0 is returned for an error.\n\t\tFor an uppercase mark the column may actually be in another\n\t\tbuffer.\n\t\tFor the cursor position, when 'virtualedit' is active, the\n\t\tcolumn is one higher if the cursor is after the end of the\n\t\tline.  This can be used to obtain the column in Insert mode: >\n\t\t\t:imap <F2> <C-O>:let save_ve = &ve<CR>\n\t\t\t\t\\<C-O>:set ve=all<CR>\n\t\t\t\t\\<C-O>:echo col(\".\") . \"\\n\" <Bar>\n\t\t\t\t\\let &ve = save_ve<CR>\n<",
-   "argsType": "",
+   "description": "The result is a Number, which is the byte index of the column\n\t\tposition given with {expr}.  The accepted positions are:\n\t\t    .\t    the cursor position\n\t\t    $\t    the end of the cursor line (the result is the\n\t\t\t    number of bytes in the cursor line plus one)\n\t\t    'x\t    position of mark x (if the mark is not set, 0 is\n\t\t\t    returned)\n\t\t    v       In Visual mode: the start of the Visual area (the\n\t\t\t    cursor is the end).  When not in Visual mode\n\t\t\t    returns the cursor position.  Differs from |'<| in\n\t\t\t    that it's updated right away.\n\t\tAdditionally {expr} can be [lnum, col]: a |List| with the line\n\t\tand column number. Most useful when the column is \"$\", to get\n\t\tthe last column of a specific line.  When \"lnum\" or \"col\" is\n\t\tout of range then col() returns zero.\n\t\tTo get the line number use |line()|.  To get both use\n\t\t|getpos()|.\n\t\tFor the screen column position use |virtcol()|.\n\t\tNote that only marks in the current file can be used.\n\t\tExamples: >\n\t\t\tcol(\".\")\t\tcolumn of cursor\n\t\t\tcol(\"$\")\t\tlength of cursor line plus one\n\t\t\tcol(\"'t\")\t\tcolumn of mark t\n\t\t\tcol(\"'\" . markname)\tcolumn of mark markname\n<\t\tThe first column is 1.  0 is returned for an error.\n\t\tFor an uppercase mark the column may actually be in another\n\t\tbuffer.\n\t\tFor the cursor position, when 'virtualedit' is active, the\n\t\tcolumn is one higher if the cursor is after the end of the\n\t\tline.  This can be used to obtain the column in Insert mode: >\n\t\t\t:imap <F2> <C-O>:let save_ve = &ve<CR>\n\t\t\t\t\\<C-O>:set ve=all<CR>\n\t\t\t\t\\<C-O>:echo col(\".\") . \"\\n\" <Bar>\n\t\t\t\t\\let &ve = save_ve<CR>\n<",
+   "argsType": "{expr}",
    "returnType": "any"
   },
   {
@@ -377,8 +377,8 @@
   {
    "type": "func",
    "name": "complete_info",
-   "description": "complete_info([{what}])\n\t\tReturns a Dictionary with information about Insert mode\n\t\tcompletion.  See |ins-completion|.\n\t\tThe items are:\n\t\t   mode\t\tCurrent completion mode name string.\n\t\t\t\tSee |complete_info_mode| for the values.\n\t\t   pum_visible\t|TRUE| if popup menu is visible.\n\t\t\t\tSee |pumvisible()|.\n\t\t   items\tList of completion matches.  Each item is a\n\t\t\t\tdictionary containing the entries \"word\",\n\t\t\t\t\"abbr\", \"menu\", \"kind\", \"info\" and \"user_data\".\n\t\t\t\tSee |complete-items|.\n\t\t   selected\tSelected item index.  First index is zero.\n\t\t\t\tIndex is -1 if no item is selected (showing\n\t\t\t\ttyped text only)\n\t\t   inserted\tInserted string. [NOT IMPLEMENT YET]",
-   "argsType": "",
+   "description": "Returns a Dictionary with information about Insert mode\n\t\tcompletion.  See |ins-completion|.\n\t\tThe items are:\n\t\t   mode\t\tCurrent completion mode name string.\n\t\t\t\tSee |complete_info_mode| for the values.\n\t\t   pum_visible\t|TRUE| if popup menu is visible.\n\t\t\t\tSee |pumvisible()|.\n\t\t   items\tList of completion matches.  Each item is a\n\t\t\t\tdictionary containing the entries \"word\",\n\t\t\t\t\"abbr\", \"menu\", \"kind\", \"info\" and \"user_data\".\n\t\t\t\tSee |complete-items|.\n\t\t   selected\tSelected item index.  First index is zero.\n\t\t\t\tIndex is -1 if no item is selected (showing\n\t\t\t\ttyped text only)\n\t\t   inserted\tInserted string. [NOT IMPLEMENT YET]",
+   "argsType": "[{what}]",
    "returnType": "any"
   },
   {
@@ -390,15 +390,15 @@
   {
    "type": "func",
    "name": "confirm",
-   "description": "confirm({msg} [, {choices} [, {default} [, {type}]]])\n\t\tConfirm() offers the user a dialog, from which a choice can be\n\t\tmade.  It returns the number of the choice.  For the first\n\t\tchoice this is 1.",
-   "argsType": "",
+   "description": "Confirm() offers the user a dialog, from which a choice can be\n\t\tmade.  It returns the number of the choice.  For the first\n\t\tchoice this is 1.",
+   "argsType": "{msg} [, {choices} [, {default} [, {type}]]]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "copy",
-   "description": "copy({expr})\tMake a copy of {expr}.  For Numbers and Strings this isn't\n\t\tdifferent from using {expr} directly.\n\t\tWhen {expr} is a |List| a shallow copy is created.  This means\n\t\tthat the original |List| can be changed without changing the\n\t\tcopy, and vice versa.  But the items are identical, thus\n\t\tchanging an item changes the contents of both |Lists|.\n\t\tA |Dictionary| is copied in a similar way as a |List|.\n\t\tAlso see |deepcopy()|.",
-   "argsType": "",
+   "description": "Make a copy of {expr}.  For Numbers and Strings this isn't\n\t\tdifferent from using {expr} directly.\n\t\tWhen {expr} is a |List| a shallow copy is created.  This means\n\t\tthat the original |List| can be changed without changing the\n\t\tcopy, and vice versa.  But the items are identical, thus\n\t\tchanging an item changes the contents of both |Lists|.\n\t\tA |Dictionary| is copied in a similar way as a |List|.\n\t\tAlso see |deepcopy()|.",
+   "argsType": "{expr}",
    "returnType": "any"
   },
   {
@@ -425,8 +425,8 @@
   {
    "type": "func",
    "name": "cscope_connection",
-   "description": "cscope_connection([{num} , {dbpath} [, {prepend}]])\n\t\tChecks for the existence of a |cscope| connection.  If no\n\t\tparameters are specified, then the function returns:\n\t\t\t0, if cscope was not available (not compiled in), or\n\t\t\t   if there are no cscope connections;\n\t\t\t1, if there is at least one cscope connection.",
-   "argsType": "",
+   "description": "Checks for the existence of a |cscope| connection.  If no\n\t\tparameters are specified, then the function returns:\n\t\t\t0, if cscope was not available (not compiled in), or\n\t\t\t   if there are no cscope connections;\n\t\t\t1, if there is at least one cscope connection.",
+   "argsType": "[{num} , {dbpath} [, {prepend}]]",
    "returnType": "any"
   }
  ]

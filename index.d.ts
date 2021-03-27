@@ -5,14 +5,14 @@ declare namespace vim {
    * To call autoload functions, use the syntax:
    *   vim.fn['some#function']({...})
    */
-  const fn: IFn;
+  const fn: fn;
   /**
    * Invokes Nvim |API| function {func} with arguments {...}.
    * Example: call the "nvim_get_current_line()" API function:
         print(tostring(vim.api.nvim_get_current_line()))
    */
-  const api: IApi;
-  const loop: ILoop;
+  const api: api;
+  const loop: loop;
   /**
    * Nvim includes a function for highlighting a selection on yank (see for example https://github.com/machakann/vim-highlightedyank). To enable it, add
    *   au TextYankPost * silent! lua vim.highlight.on_yank()
@@ -21,5 +21,5 @@ declare namespace vim {
    * If you want to exclude visual selections from highlighting on yank, use
    *   au TextYankPost * silent! lua vim.highlight.on_yank {on_visual=false}
    */
-  const highlight: IHighlight;
+  const highlight: highlight;
 }

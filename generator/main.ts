@@ -1,5 +1,12 @@
+import { luaTxtProcess } from "./processor/lua.txt";
 import { readSource, writeOutput } from "./utils/utils";
 import { vimdocParser } from "./utils/vimdocparser";
+import * as util from "util";
+import { exec as exec_cb } from "child_process";
+import { dirname } from "../value";
+import { apiTxtProcess } from "./processor/api.txt";
+import { evalTxtProcess } from "./processor/eval.txt";
+const exec = util.promisify(exec_cb);
 
 const generateJson = async (fileName: string, validSections: string[]) => {
   const data = vimdocParser(await readSource(fileName));
@@ -23,7 +30,7 @@ const generateJson = async (fileName: string, validSections: string[]) => {
   });
 };
 
-const main = async () => {
+const generateJsons = async () => {
   await generateJson("lua.txt", [
     "lua-regex",
     "lua-builtin",
@@ -45,6 +52,25 @@ const main = async () => {
     "api-tabpage",
     "api-ui",
   ]);
+};
+
+const processes = async () => {
+  await luaTxtProcess();
+  await apiTxtProcess();
+  await evalTxtProcess();
+};
+
+const formatFiles = async () => {
+  const stdOut = await exec(
+    dirname + "/node_modules/.bin/prettier --write types/**/*.ts"
+  );
+  return stdOut;
+};
+
+const main = async () => {
+  await generateJsons();
+  await processes();
+  await formatFiles();
 };
 
 main();

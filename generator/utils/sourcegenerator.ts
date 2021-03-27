@@ -14,7 +14,7 @@ export const createFunction = (
   argsType: string,
   returnType: string
 ) => {
-  return `function ${name}: (${argsType}) => ${returnType}` + "\n";
+  return `function ${name}(): (${argsType}) => ${returnType}` + "\n";
 };
 
 export const createInterface = (name: string, content: string) => {
@@ -22,10 +22,10 @@ export const createInterface = (name: string, content: string) => {
     ${content}
   }`;
 };
-export const createIVariable = (name: string, type: string) => {
+export const createInterfaceVariable = (name: string, type: string) => {
   return `${name}: ${type},` + "\n";
 };
-export const createIFunction = (
+export const createInterfaceFunction = (
   name: string,
   argsType: string,
   returnType: string
