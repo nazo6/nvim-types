@@ -21,7 +21,7 @@ npm install -D lua-types
 ```json
 {
   "compilerOptions": {
-    "types": ["nvim-types"]
+    "types": ["nvim-types/0.5.0-nightly.d.ts"]
   }
 }
 ```
