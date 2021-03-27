@@ -1,0 +1,8 @@
+{
+  "data": [
+    {
+      "name": "vim.api",
+      "action": "ignore"
+    }
+  ]
+}

@@ -1,3 +1,8 @@
+/// <reference path="types/fn.d.ts" />
+/// <reference path="types/api.d.ts" />
+/// <reference path="types/global.d.ts" />
+/// <reference path="types/highlight.d.ts" />
+
 declare namespace vim {
   /**
    * Invokes vim-function or user-function.

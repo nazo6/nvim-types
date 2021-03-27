@@ -1,7 +1,7 @@
 import { SectionDataType } from "../types";
 
 export const vimdocParser = (text: string) => {
-  const sectionSplitMatcher = /^(=======================.*===)|(--------------------.*---)$/;
+  const sectionSplitMatcher = /^(========================================================.*===)|(----------------------------------------.*---)$/;
   let sectionStrings: string[][] = [];
   let currentSectionStrings: string[] = [];
   text.split(/\r\n|\n/).forEach((value) => {
@@ -75,9 +75,10 @@ export const vimdocParser = (text: string) => {
             propDescription += lineSplitted.join("") + "\n";
           }
         }
-        const functionMatcher = /.+?\((.*?)\)/;
+        const isFunctionMatcher = /.+?\((.*?)\)/;
         const propType =
-          functionMatcher.test(leftTitle) || functionMatcher.test(rightTitle)
+          isFunctionMatcher.test(leftTitle) ||
+          isFunctionMatcher.test(rightTitle)
             ? "func"
             : "value";
         crrLine++;
@@ -94,16 +95,19 @@ export const vimdocParser = (text: string) => {
         }
         propDescription = propDescription.trim();
         if (propType === "func") {
+          const functionMatcher = /(?<funcName>.+?)\((?<arguments>.*?)\)/;
           const functionMatch = functionMatcher.exec(leftTitle);
-          const paramsString =
-            !functionMatch || functionMatch[1] === "" ? "" : functionMatch[1];
+          const argsStr = functionMatch?.groups?.arguments;
+          const funcName = functionMatch?.groups?.funcName;
           sectionData.data.push({
             type: "func",
-            name: rightTitle.endsWith("()")
-              ? rightTitle.slice(0, -2)
-              : rightTitle,
+            name:
+              funcName ??
+              (rightTitle.endsWith("()")
+                ? rightTitle.slice(0, -2)
+                : rightTitle),
             description: propDescription,
-            argsType: paramsString,
+            argsStr: argsStr ?? "",
             returnType: "any",
           });
         } else {

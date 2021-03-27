@@ -8,12 +8,5 @@ interface highlight {
           - {on_visual} highlight when yanking visual selection (default `true`)
           - {event} event structure (default `vim.v.event`)
       */
-  on_yank: (any) => any;
-  /** 
-      * in buffer {bufnr} with the highlight group {higroup} using the namespace
-        {ns}. Optional arguments are the type of range (characterwise, linewise,
-        or blockwise, see |setreg|; default to characterwise) and whether the
-        range is inclusive (default false).
-      */
-  range: (any) => any;
+  on_yank: (opts: any) => any;
 }

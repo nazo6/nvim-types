@@ -1,6 +1,5 @@
-import { writeType } from "../utils/utils";
+import { loadJson, writeType } from "../utils/utils";
 
-import { SectionDataType } from "../types";
 import {
   createDeclareNamespace,
   createInterface,
@@ -10,21 +9,19 @@ import {
   commonNamespaceChildProcessor,
 } from "./commonProcessor";
 
-import luaVim from "../../json/doc/lua.txt/lua-vim.json";
-import luaVimscript from "../../json/doc/lua.txt/lua-vimscript.json";
-import luaUri from "../../json/doc/lua.txt/lua-uri.json";
-import luaBuiltin from "../../json/doc/lua.txt/lua-builtin.json";
-import luaHighlight from "../../json/doc/lua.txt/lua-highlight.json";
-
 export const luaTxtProcess = async () => {
   let global_d_ts_data = "";
-  global_d_ts_data += commonNamespaceChildProcessor(luaVim as SectionDataType);
   global_d_ts_data += commonNamespaceChildProcessor(
-    luaVimscript as SectionDataType
+    await loadJson("lua.txt", "lua-vim.json")
   );
-  global_d_ts_data += commonNamespaceChildProcessor(luaUri as SectionDataType);
   global_d_ts_data += commonNamespaceChildProcessor(
-    luaBuiltin as SectionDataType
+    await loadJson("lua.txt", "lua-vimscript.json")
+  );
+  global_d_ts_data += commonNamespaceChildProcessor(
+    await loadJson("lua.txt", "lua-uri.json")
+  );
+  global_d_ts_data += commonNamespaceChildProcessor(
+    await loadJson("lua.txt", "lua-builtin.json")
   );
   await writeType(
     "global.d.ts",
@@ -32,7 +29,7 @@ export const luaTxtProcess = async () => {
   );
 
   let highlight_d_ts_data = commonInterfaceChildProcessor(
-    luaHighlight as SectionDataType
+    await loadJson("lua.txt", "lua-highlight.json")
   );
   await writeType(
     "highlight.d.ts",

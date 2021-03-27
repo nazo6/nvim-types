@@ -5,30 +5,30 @@
  "data": [
   {
    "type": "func",
-   "name": "vim.uri_from_bufnr",
+   "name": "uri_from_bufnr",
    "description": "Get a URI from a bufnr",
-   "argsType": "{bufnr}",
+   "argsStr": "{bufnr}",
    "returnType": "any"
   },
   {
    "type": "func",
-   "name": "vim.uri_from_fname",
+   "name": "uri_from_fname",
    "description": "Get a URI from a file path.",
-   "argsType": "{path}",
+   "argsStr": "{path}",
    "returnType": "any"
   },
   {
    "type": "func",
-   "name": "vim.uri_to_bufnr",
+   "name": "uri_to_bufnr",
    "description": "Return or create a buffer for a uri.",
-   "argsType": "{uri}",
+   "argsStr": "{uri}",
    "returnType": "any"
   },
   {
    "type": "func",
-   "name": "vim.uri_to_fname",
+   "name": "uri_to_fname",
    "description": "Get a filename from a URI",
-   "argsType": "{uri}",
+   "argsStr": "{uri}",
    "returnType": "any"
   }
  ]

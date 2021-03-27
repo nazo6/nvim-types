@@ -11,10 +11,10 @@ export const createVariable = (name: string, type: string) => {
 };
 export const createFunction = (
   name: string,
-  argsType: string,
+  argsStr: string,
   returnType: string
 ) => {
-  return `function ${name}(): (${argsType}) => ${returnType}` + "\n";
+  return `function ${name}(): (${argsStr}) => ${returnType}` + "\n";
 };
 
 export const createInterface = (name: string, content: string) => {
@@ -27,8 +27,8 @@ export const createInterfaceVariable = (name: string, type: string) => {
 };
 export const createInterfaceFunction = (
   name: string,
-  argsType: string,
+  argsStr: string,
   returnType: string
 ) => {
-  return `${name}: (${argsType}) => ${returnType},` + "\n";
+  return `${name}: (${argsStr}) => ${returnType},` + "\n";
 };

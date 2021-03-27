@@ -3,7 +3,7 @@ export type PropertyDataType =
       type: "func";
       name: string;
       description: string;
-      argsType: string;
+      argsStr: string;
       returnType: string;
     }
   | {
