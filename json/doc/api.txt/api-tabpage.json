@@ -6,49 +6,49 @@
   {
    "type": "func",
    "name": "nvim_tabpage_del_var",
-   "description": "Removes a tab-scoped (t:) variable",
+   "description": "Removes a tab-scoped (t:) variable\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle, or 0 for current tabpage\n                    {name}     Variable name",
    "argsStr": "{tabpage}, {name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_tabpage_get_number",
-   "description": "Gets the tabpage number",
+   "description": "Gets the tabpage number\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle, or 0 for current tabpage\n\n                Return: ~\n                    Tabpage number",
    "argsStr": "{tabpage}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_tabpage_get_var",
-   "description": "Gets a tab-scoped (t:) variable",
+   "description": "Gets a tab-scoped (t:) variable\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle, or 0 for current tabpage\n                    {name}     Variable name\n\n                Return: ~\n                    Variable value",
    "argsStr": "{tabpage}, {name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_tabpage_get_win",
-   "description": "Gets the current window in a tabpage",
+   "description": "Gets the current window in a tabpage\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle, or 0 for current tabpage\n\n                Return: ~\n                    Window handle",
    "argsStr": "{tabpage}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_tabpage_is_valid",
-   "description": "Checks if a tabpage is valid",
+   "description": "Checks if a tabpage is valid\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle, or 0 for current tabpage\n\n                Return: ~\n                    true if the tabpage is valid, false otherwise",
    "argsStr": "{tabpage}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_tabpage_list_wins",
-   "description": "Gets the windows in a tabpage",
+   "description": "Gets the windows in a tabpage\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle, or 0 for current tabpage\n\n                Return: ~\n                    List of windows in `tabpage`",
    "argsStr": "{tabpage}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_tabpage_set_var",
-   "description": "Sets a tab-scoped (t:) variable",
+   "description": "Sets a tab-scoped (t:) variable\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle, or 0 for current tabpage\n                    {name}     Variable name\n                    {value}    Variable value",
    "argsStr": "{tabpage}, {name}, {value}",
    "returnType": "any"
   }

@@ -6,7 +6,7 @@
   {
    "type": "func",
    "name": "vim.regex",
-   "description": "",
+   "description": "Parse the regex {re} and return a regex object. 'magic' and\n        'ignorecase' options are ignored, lua regexes always defaults to magic\n        and ignoring case.  The behavior can be changed with flags in\n        the beginning of the string |/magic|.\n\nRegex objects support the following methods:",
    "argsStr": "{re}",
    "returnType": "any"
   },

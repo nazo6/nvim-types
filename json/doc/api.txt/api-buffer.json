@@ -20,217 +20,217 @@
   {
    "type": "func",
    "name": "nvim_buf_add_highlight",
-   "description": "{col_end})\n                Adds a highlight to buffer.",
+   "description": "{col_end})\n                Adds a highlight to buffer.\n\n                Useful for plugins that dynamically generate highlights to a\n                buffer (like a semantic highlighter or linter). The function\n                adds a single highlight to a buffer. Unlike |matchaddpos()|\n                highlights follow changes to line numbering (as lines are\n                inserted/removed above the highlighted line), like signs and\n                marks do.\n\n                Namespaces are used for batch deletion/updating of a set of\n                highlights. To create a namespace, use\n                |nvim_create_namespace()| which returns a namespace id. Pass\n                it in to this function as `ns_id` to add highlights to the\n                namespace. All highlights in the same namespace can then be\n                cleared with single call to |nvim_buf_clear_namespace()|. If\n                the highlight never will be deleted by an API call, pass\n                `ns_id = -1` .\n\n                As a shorthand, `ns_id = 0` can be used to create a new\n                namespace for the highlight, the allocated id is then\n                returned. If `hl_group` is the empty string no highlight is\n                added, but a new `ns_id` is still returned. This is supported\n                for backwards compatibility, new code should use\n                |nvim_create_namespace()| to create a new empty namespace.\n\n                Parameters: ~\n                    {buffer}     Buffer handle, or 0 for current buffer\n                    {ns_id}      namespace to use or -1 for ungrouped\n                                 highlight\n                    {hl_group}   Name of the highlight group to use\n                    {line}       Line to highlight (zero-indexed)\n                    {col_start}  Start of (byte-indexed) column range to\n                                 highlight\n                    {col_end}    End of (byte-indexed) column range to\n                                 highlight, or -1 to highlight to end of line\n\n                Return: ~\n                    The ns_id that was used",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_attach",
-   "description": "Activates buffer-update events on a channel, or as Lua\n                callbacks.",
+   "description": "Activates buffer-update events on a channel, or as Lua\n                callbacks.\n\n                Example (Lua): capture buffer updates in a global `events` variable (use \"print(vim.inspect(events))\" to see its\n                contents): >\n                  events = {}\n                  vim.api.nvim_buf_attach(0, false, {\n                    on_lines=function(...) table.insert(events, {...}) end})\n<\n\n                Parameters: ~\n                    {buffer}       Buffer handle, or 0 for current buffer\n                    {send_buffer}  True if the initial notification should\n                                   contain the whole buffer: first\n                                   notification will be `nvim_buf_lines_event`\n                                   . Else the first notification will be\n                                   `nvim_buf_changedtick_event` . Not for Lua\n                                   callbacks.\n                    {opts}         Optional parameters.\n                                   • on_lines: Lua callback invoked on change.\n                                     Return`true`to detach. Args:\n                                     • the string \"lines\"\n                                     • buffer handle\n                                     • b:changedtick\n                                     • first line that changed (zero-indexed)\n                                     • last line that was changed\n                                     • last line in the updated range\n                                     • byte count of previous contents\n                                     • deleted_codepoints (if `utf_sizes` is\n                                       true)\n                                     • deleted_codeunits (if `utf_sizes` is\n                                       true)\n\n                                   • on_bytes: lua callback invoked on change.\n                                     This callback receives more granular\n                                     information about the change compared to\n                                     on_lines. Return`true`to detach. Args:\n                                     • the string \"bytes\"\n                                     • buffer handle\n                                     • b:changedtick\n                                     • start row of the changed text\n                                       (zero-indexed)\n                                     • start column of the changed text\n                                     • byte offset of the changed text (from\n                                       the start of the buffer)\n                                     • old end row of the changed text\n                                     • old end column of the changed text\n                                     • old end byte length of the changed text\n                                     • new end row of the changed text\n                                     • new end column of the changed text\n                                     • new end byte length of the changed text\n\n                                   • on_changedtick: Lua callback invoked on\n                                     changedtick increment without text\n                                     change. Args:\n                                     • the string \"changedtick\"\n                                     • buffer handle\n                                     • b:changedtick\n\n                                   • on_detach: Lua callback invoked on\n                                     detach. Args:\n                                     • the string \"detach\"\n                                     • buffer handle\n\n                                   • on_reload: Lua callback invoked on\n                                     reload. The entire buffer content should\n                                     be considered changed. Args:\n                                     • the string \"detach\"\n                                     • buffer handle\n\n                                   • utf_sizes: include UTF-32 and UTF-16 size\n                                     of the replaced region, as args to\n                                     `on_lines` .\n                                   • preview: also attach to command preview\n                                     (i.e. 'inccommand') events.\n\n                Return: ~\n                    False if attach failed (invalid parameter, or buffer isn't\n                    loaded); otherwise True. TODO: LUA_API_NO_EVAL\n\n                See also: ~\n                    |nvim_buf_detach()|\n                    |api-buffer-updates-lua|",
    "argsStr": "{buffer}, {send_buffer}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_call",
-   "description": "call a function with buffer as temporary current buffer",
+   "description": "call a function with buffer as temporary current buffer\n\n                This temporarily switches current buffer to \"buffer\". If the\n                current window already shows \"buffer\", the window is not\n                switched If a window inside the current tabpage (including a\n                float) already shows the buffer One of these windows will be\n                set as current window temporarily. Otherwise a temporary\n                scratch window (calleed the \"autocmd window\" for historical\n                reasons) will be used.\n\n                This is useful e.g. to call vimL functions that only work with\n                the current buffer/window currently, like |termopen()|.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {fun}     Function to call inside the buffer (currently\n                              lua callable only)\n\n                Return: ~\n                    Return value of function. NB: will deepcopy lua values\n                    currently, use upvalues to send lua references in and out.",
    "argsStr": "{buffer}, {fun}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_clear_namespace",
-   "description": "Clears namespaced objects (highlights, extmarks, virtual text)\n                from a region.",
+   "description": "Clears namespaced objects (highlights, extmarks, virtual text)\n                from a region.\n\n                Lines are 0-indexed. |api-indexing| To clear the namespace in\n                the entire buffer, specify line_start=0 and line_end=-1.\n\n                Parameters: ~\n                    {buffer}      Buffer handle, or 0 for current buffer\n                    {ns_id}       Namespace to clear, or -1 to clear all\n                                  namespaces.\n                    {line_start}  Start of range of lines to clear\n                    {line_end}    End of range of lines to clear (exclusive)\n                                  or -1 to clear to end of buffer.",
    "argsStr": "{buffer}, {ns_id}, {line_start}, {line_end}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_del_extmark",
-   "description": "Removes an extmark.",
+   "description": "Removes an extmark.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {ns_id}   Namespace id from |nvim_create_namespace()|\n                    {id}      Extmark id\n\n                Return: ~\n                    true if the extmark was found, else false",
    "argsStr": "{buffer}, {ns_id}, {id}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_del_keymap",
-   "description": "Unmaps a buffer-local |mapping| for the given mode.",
+   "description": "Unmaps a buffer-local |mapping| for the given mode.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                See also: ~\n                    |nvim_del_keymap()|",
    "argsStr": "{buffer}, {mode}, {lhs}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_del_var",
-   "description": "Removes a buffer-scoped (b:) variable",
+   "description": "Removes a buffer-scoped (b:) variable\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {name}    Variable name",
    "argsStr": "{buffer}, {name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_delete",
-   "description": "Deletes the buffer. See |:bwipeout|",
+   "description": "Deletes the buffer. See |:bwipeout|\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {opts}    Optional parameters. Keys:\n                              • force: Force deletion and ignore unsaved\n                                changes.\n                              • unload: Unloaded only, do not delete. See\n                                |:bunload|",
    "argsStr": "{buffer}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_detach",
-   "description": "Deactivates buffer-update events on the channel.",
+   "description": "Deactivates buffer-update events on the channel.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                Return: ~\n                    False if detach failed (because the buffer isn't loaded);\n                    otherwise True.\n\n                See also: ~\n                    |nvim_buf_attach()|\n                    |api-lua-detach| for detaching Lua callbacks",
    "argsStr": "{buffer}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_changedtick",
-   "description": "Gets a changed tick of a buffer",
+   "description": "Gets a changed tick of a buffer\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                Return: ~\n                    `b:changedtick` value.",
    "argsStr": "{buffer}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_commands",
-   "description": "Gets a map of buffer-local |user-commands|.",
+   "description": "Gets a map of buffer-local |user-commands|.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {opts}    Optional parameters. Currently not used.\n\n                Return: ~\n                    Map of maps describing commands.",
    "argsStr": "{buffer}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_extmark_by_id",
-   "description": "Returns position for a given extmark id",
+   "description": "Returns position for a given extmark id\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {ns_id}   Namespace id from |nvim_create_namespace()|\n                    {id}      Extmark id\n                    {opts}    Optional parameters. Keys:\n                              • details: Whether to include the details dict\n\n                Return: ~\n                    (row, col) tuple or empty list () if extmark id was absent",
    "argsStr": "{buffer}, {ns_id}, {id}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_extmarks",
-   "description": "Gets extmarks in \"traversal order\" from a |charwise| region\n                defined by buffer positions (inclusive, 0-indexed\n                |api-indexing|).",
+   "description": "Gets extmarks in \"traversal order\" from a |charwise| region\n                defined by buffer positions (inclusive, 0-indexed\n                |api-indexing|).\n\n                Region can be given as (row,col) tuples, or valid extmark ids\n                (whose positions define the bounds). 0 and -1 are understood\n                as (0,0) and (-1,-1) respectively, thus the following are\n                equivalent:\n>\n    nvim_buf_get_extmarks(0, my_ns, 0, -1, {})\n    nvim_buf_get_extmarks(0, my_ns, [0,0], [-1,-1], {})\n<\n\n                If `end` is less than `start` , traversal works backwards.\n                (Useful with `limit` , to get the first marks prior to a given\n                position.)\n\n                Example:\n>\n    local a   = vim.api\n    local pos = a.nvim_win_get_cursor(0)\n    local ns  = a.nvim_create_namespace('my-plugin')\n    -- Create new extmark at line 1, column 1.\n    local m1  = a.nvim_buf_set_extmark(0, ns, 0, 0, 0, {})\n    -- Create new extmark at line 3, column 1.\n    local m2  = a.nvim_buf_set_extmark(0, ns, 0, 2, 0, {})\n    -- Get extmarks only from line 3.\n    local ms  = a.nvim_buf_get_extmarks(0, ns, {2,0}, {2,0}, {})\n    -- Get all marks in this buffer + namespace.\n    local all = a.nvim_buf_get_extmarks(0, ns, 0, -1, {})\n    print(vim.inspect(ms))\n<\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {ns_id}   Namespace id from |nvim_create_namespace()|\n                    {start}   Start of range, given as (row, col) or valid\n                              extmark id (whose position defines the bound)\n                    {end}     End of range, given as (row, col) or valid\n                              extmark id (whose position defines the bound)\n                    {opts}    Optional parameters. Keys:\n                              • limit: Maximum number of marks to return\n                              • details Whether to include the details dict\n\n                Return: ~\n                    List of [extmark_id, row, col] tuples in \"traversal\n                    order\".",
    "argsStr": "{buffer}, {ns_id}, {start}, {end}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_keymap",
-   "description": "Gets a list of buffer-local |mapping| definitions.",
+   "description": "Gets a list of buffer-local |mapping| definitions.\n\n                Parameters: ~\n                    {mode}    Mode short-name (\"n\", \"i\", \"v\", ...)\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                Return: ~\n                    Array of maparg()-like dictionaries describing mappings.\n                    The \"buffer\" key holds the associated buffer handle.",
    "argsStr": "{buffer}, {mode}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_lines",
-   "description": "Gets a line-range from the buffer.",
+   "description": "Gets a line-range from the buffer.\n\n                Indexing is zero-based, end-exclusive. Negative indices are\n                interpreted as length+1+index: -1 refers to the index past the\n                end. So to get the last element use start=-2 and end=-1.\n\n                Out-of-bounds indices are clamped to the nearest valid value,\n                unless `strict_indexing` is set.\n\n                Parameters: ~\n                    {buffer}           Buffer handle, or 0 for current buffer\n                    {start}            First line index\n                    {end}              Last line index (exclusive)\n                    {strict_indexing}  Whether out-of-bounds should be an\n                                       error.\n\n                Return: ~\n                    Array of lines, or empty array for unloaded buffer.",
    "argsStr": "{buffer}, {start}, {end}, {strict_indexing}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_mark",
-   "description": "Return a tuple (row,col) representing the position of the\n                named mark.",
+   "description": "Return a tuple (row,col) representing the position of the\n                named mark.\n\n                Marks are (1,0)-indexed. |api-indexing|\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {name}    Mark name\n\n                Return: ~\n                    (row, col) tuple",
    "argsStr": "{buffer}, {name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_name",
-   "description": "Gets the full file name for the buffer",
+   "description": "Gets the full file name for the buffer\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                Return: ~\n                    Buffer name",
    "argsStr": "{buffer}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_offset",
-   "description": "Returns the byte offset of a line (0-indexed). |api-indexing|",
+   "description": "Returns the byte offset of a line (0-indexed). |api-indexing|\n\n                Line 1 (index=0) has offset 0. UTF-8 bytes are counted. EOL is\n                one byte. 'fileformat' and 'fileencoding' are ignored. The\n                line index just after the last line gives the total byte-count\n                of the buffer. A final EOL byte is counted if it would be\n                written, see 'eol'.\n\n                Unlike |line2byte()|, throws error for out-of-bounds indexing.\n                Returns -1 for unloaded buffer.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {index}   Line index\n\n                Return: ~\n                    Integer byte offset, or -1 for unloaded buffer.",
    "argsStr": "{buffer}, {index}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_option",
-   "description": "Gets a buffer option value",
+   "description": "Gets a buffer option value\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {name}    Option name\n\n                Return: ~\n                    Option value",
    "argsStr": "{buffer}, {name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_get_var",
-   "description": "Gets a buffer-scoped (b:) variable.",
+   "description": "Gets a buffer-scoped (b:) variable.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {name}    Variable name\n\n                Return: ~\n                    Variable value",
    "argsStr": "{buffer}, {name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_is_loaded",
-   "description": "Checks if a buffer is valid and loaded. See |api-buffer| for\n                more info about unloaded buffers.",
+   "description": "Checks if a buffer is valid and loaded. See |api-buffer| for\n                more info about unloaded buffers.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                Return: ~\n                    true if the buffer is valid and loaded, false otherwise.",
    "argsStr": "{buffer}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_is_valid",
-   "description": "Checks if a buffer is valid.",
+   "description": "Checks if a buffer is valid.\n\n                Note:\n                    Even if a buffer is valid it may have been unloaded. See\n                    |api-buffer| for more info about unloaded buffers.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                Return: ~\n                    true if the buffer is valid, false otherwise.",
    "argsStr": "{buffer}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_line_count",
-   "description": "Gets the buffer line count",
+   "description": "Gets the buffer line count\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                Return: ~\n                    Line count, or 0 for unloaded buffer. |api-buffer|",
    "argsStr": "{buffer}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_extmark",
-   "description": "Creates or updates an extmark.",
+   "description": "Creates or updates an extmark.\n\n                To create a new extmark, pass id=0. The extmark id will be\n                returned. To move an existing mark, pass its id.\n\n                It is also allowed to create a new mark by passing in a\n                previously unused id, but the caller must then keep track of\n                existing and unused ids itself. (Useful over RPC, to avoid\n                waiting for the return value.)\n\n                Using the optional arguments, it is possible to use this to\n                highlight a range of text, and also to associate virtual text\n                to the mark.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {ns_id}   Namespace id from |nvim_create_namespace()|\n                    {line}    Line number where to place the mark\n                    {col}     Column where to place the mark\n                    {opts}    Optional parameters.\n                              • id : id of the extmark to edit.\n                              • end_line : ending line of the mark, 0-based\n                                inclusive.\n                              • end_col : ending col of the mark, 0-based\n                                inclusive.\n                              • hl_group : name of the highlight group used to\n                                highlight this mark.\n                              • virt_text : virtual text to link to this mark.\n                              • virt_text_pos : positioning of virtual text.\n                                Possible values:\n                                • \"eol\": right after eol character (default)\n                                • \"overlay\": display over the specified\n                                  column, without shifting the underlying\n                                  text.\n\n                              • ephemeral : for use with\n                                |nvim_set_decoration_provider| callbacks. The\n                                mark will only be used for the current redraw\n                                cycle, and not be permantently stored in the\n                                buffer.\n                              • right_gravity : boolean that indicates the\n                                direction the extmark will be shifted in when\n                                new text is inserted (true for right, false\n                                for left). defaults to true.\n                              • end_right_gravity : boolean that indicates the\n                                direction the extmark end position (if it\n                                exists) will be shifted in when new text is\n                                inserted (true for right, false for left).\n                                Defaults to false.\n\n                Return: ~\n                    Id of the created/updated extmark",
    "argsStr": "{buffer}, {ns_id}, {line}, {col}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_keymap",
-   "description": "Sets a buffer-local |mapping| for the given mode.",
+   "description": "Sets a buffer-local |mapping| for the given mode.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n\n                See also: ~\n                    |nvim_set_keymap()|",
    "argsStr": "{buffer}, {mode}, {lhs}, {rhs}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_lines",
-   "description": "Sets (replaces) a line-range in the buffer.",
+   "description": "Sets (replaces) a line-range in the buffer.\n\n                Indexing is zero-based, end-exclusive. Negative indices are\n                interpreted as length+1+index: -1 refers to the index past the\n                end. So to change or delete the last element use start=-2 and\n                end=-1.\n\n                To insert lines at a given index, set `start` and `end` to the\n                same index. To delete a range of lines, set `replacement` to\n                an empty array.\n\n                Out-of-bounds indices are clamped to the nearest valid value,\n                unless `strict_indexing` is set.\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {buffer}           Buffer handle, or 0 for current buffer\n                    {start}            First line index\n                    {end}              Last line index (exclusive)\n                    {strict_indexing}  Whether out-of-bounds should be an\n                                       error.\n                    {replacement}      Array of lines to use as replacement",
    "argsStr": "{buffer}, {start}, {end}, {strict_indexing}, {replacement}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_name",
-   "description": "Sets the full file name for a buffer",
+   "description": "Sets the full file name for a buffer\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {name}    Buffer name",
    "argsStr": "{buffer}, {name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_option",
-   "description": "Sets a buffer option value. Passing 'nil' as value deletes the\n                option (only works if there's a global fallback)",
+   "description": "Sets a buffer option value. Passing 'nil' as value deletes the\n                option (only works if there's a global fallback)\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {name}    Option name\n                    {value}   Option value",
    "argsStr": "{buffer}, {name}, {value}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_text",
-   "description": "{replacement})\n                Sets (replaces) a range in the buffer",
+   "description": "{replacement})\n                Sets (replaces) a range in the buffer\n\n                This is recommended over nvim_buf_set_lines when only\n                modifying parts of a line, as extmarks will be preserved on\n                non-modified parts of the touched lines.\n\n                Indexing is zero-based and end-exclusive.\n\n                To insert text at a given index, set `start` and `end` ranges\n                to the same index. To delete a range, set `replacement` to an\n                array containing an empty string, or simply an empty array.\n\n                Prefer nvim_buf_set_lines when adding or deleting entire lines\n                only.\n\n                Parameters: ~\n                    {buffer}        Buffer handle, or 0 for current buffer\n                    {start_row}     First line index\n                    {start_column}  Last column\n                    {end_row}       Last line index\n                    {end_column}    Last column\n                    {replacement}   Array of lines to use as replacement",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_var",
-   "description": "Sets a buffer-scoped (b:) variable",
+   "description": "Sets a buffer-scoped (b:) variable\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {name}    Variable name\n                    {value}   Variable value",
    "argsStr": "{buffer}, {name}, {value}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_buf_set_virtual_text",
-   "description": "Set the virtual text (annotation) for a buffer line.",
+   "description": "Set the virtual text (annotation) for a buffer line.\n\n                By default (and currently the only option) the text will be\n                placed after the buffer text. Virtual text will never cause\n                reflow, rather virtual text will be truncated at the end of\n                the screen line. The virtual text will begin one cell\n                (|lcs-eol| or space) after the ordinary text.\n\n                Namespaces are used to support batch deletion/updating of\n                virtual text. To create a namespace, use\n                |nvim_create_namespace()|. Virtual text is cleared using\n                |nvim_buf_clear_namespace()|. The same `ns_id` can be used for\n                both virtual text and highlights added by\n                |nvim_buf_add_highlight()|, both can then be cleared with a\n                single call to |nvim_buf_clear_namespace()|. If the virtual\n                text never will be cleared by an API call, pass `ns_id = -1` .\n\n                As a shorthand, `ns_id = 0` can be used to create a new\n                namespace for the virtual text, the allocated id is then\n                returned.\n\n                Parameters: ~\n                    {buffer}  Buffer handle, or 0 for current buffer\n                    {ns_id}   Namespace to use or 0 to create a namespace, or\n                              -1 for a ungrouped annotation\n                    {line}    Line to annotate with virtual text\n                              (zero-indexed)\n                    {chunks}  A list of [text, hl_group] arrays, each\n                              representing a text chunk with specified\n                              highlight. `hl_group` element can be omitted for\n                              no highlight.\n                    {opts}    Optional parameters. Currently not used.\n\n                Return: ~\n                    The ns_id that was used",
    "argsStr": "{buffer}, {src_id}, {line}, {chunks}, {opts}",
    "returnType": "any"
   }

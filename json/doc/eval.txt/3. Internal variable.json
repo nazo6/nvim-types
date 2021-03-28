@@ -6,7 +6,7 @@
   {
    "type": "value",
    "name": "buffer-variable* *b:var* *b:",
-   "description": "Thus you can have several \"b:foo\" variables, one for each buffer.\nThis kind of variable is deleted when the buffer is wiped out or deleted with\n|:bdelete|.",
+   "description": "Thus you can have several \"b:foo\" variables, one for each buffer.\nThis kind of variable is deleted when the buffer is wiped out or deleted with\n|:bdelete|.\n\nOne local buffer variable is predefined:",
    "valuetype": "any"
   },
   {
@@ -42,7 +42,7 @@
   {
    "type": "value",
    "name": "script-variable* *s:var",
-   "description": "accessed from outside of the scripts, thus are local to the script.",
+   "description": "accessed from outside of the scripts, thus are local to the script.\n\nThey can be used in:\n- commands executed while the script is sourced\n- functions defined in the script\n- autocommands defined in the script\n- functions and autocommands defined in functions and autocommands which were\n  defined in the script (recursively)\n- user defined commands defined in the script\nThus not in:\n- other scripts sourced from this one\n- mappings\n- menus\n- etc.\n\nScript variables can be used to avoid conflicts with global variable names.\nTake this example: >\n\n\tlet s:counter = 0\n\tfunction MyCounter()\n\t  let s:counter = s:counter + 1\n\t  echo s:counter\n\tendfunction\n\tcommand Tick call MyCounter()\n\nYou can now invoke \"Tick\" from any script, and the \"s:counter\" variable in\nthat script will not be changed, only the \"s:counter\" in the script where\n\"Tick\" was defined is used.\n\nAnother example that does the same: >\n\n\tlet s:counter = 0\n\tcommand Tick let s:counter = s:counter + 1 | echo s:counter\n\nWhen calling a function and invoking a user-defined command, the context for\nscript variables is set to the script where the function or command was\ndefined.\n\nThe script variables are also available when a function is defined inside a\nfunction that is defined in a script.  Example: >\n\n\tlet s:counter = 0\n\tfunction StartCounting(incr)\n\t  if a:incr\n\t    function MyCounter()\n\t      let s:counter = s:counter + 1\n\t    endfunction\n\t  else\n\t    function MyCounter()\n\t      let s:counter = s:counter - 1\n\t    endfunction\n\t  endif\n\tendfunction\n\nThis defines the MyCounter() function either for counting up or counting down\nwhen calling StartCounting().  It doesn't matter from where StartCounting() is\ncalled, the s:counter variable will be accessible in MyCounter().\n\nWhen the same script is sourced again it will use the same script variables.\nThey will remain valid as long as Vim is running.  This can be used to\nmaintain a counter: >\n\n\tif !exists(\"s:counter\")\n\t  let s:counter = 1\n\t  echo \"script executed for the first time\"\n\telse\n\t  let s:counter = s:counter + 1\n\t  echo \"script executed \" . s:counter . \" times now\"\n\tendif\n\nNote that this means that filetype plugins don't get a different set of script\nvariables for each buffer.  Use local buffer variables instead |b:var|.",
    "valuetype": "any"
   },
   {

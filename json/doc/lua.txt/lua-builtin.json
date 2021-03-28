@@ -33,7 +33,7 @@
   {
    "type": "func",
    "name": "vim.empty_dict",
-   "description": "Creates a special table which will be converted to an empty\n\tdictionary when converting lua values to vimL or API types. The\n\ttable is empty, and this property is marked using a metatable. An\n\tempty table `{}` without this metatable will default to convert to\n\tan array/list.",
+   "description": "Creates a special table which will be converted to an empty\n\tdictionary when converting lua values to vimL or API types. The\n\ttable is empty, and this property is marked using a metatable. An\n\tempty table `{}` without this metatable will default to convert to\n\tan array/list.\n\n\tNote: if numeric keys are added to the table, the metatable will be\n\tignored and the dict converted to a list/array anyway.",
    "argsStr": "",
    "returnType": "any"
   },
@@ -47,21 +47,21 @@
   {
    "type": "func",
    "name": "vim.register_keystroke_callback",
-   "description": "Register a lua {fn} with an {ns_id} to be run after every keystroke.",
+   "description": "Register a lua {fn} with an {ns_id} to be run after every keystroke.\n\n        Parameters: ~\n            {fn}: (function): Function to call on keystroke.\n                    It should take one argument, which is a string.\n                    The string will contain the literal keys typed.\n                    See |i_CTRL-V|\n\n                    If {fn} is `nil`, it removes the callback for the\n                    associated {ns_id}.\n\n            {ns_id}: (number)  Namespace ID. If not passed or 0, will generate\n                     and return a new namespace ID from |nvim_create_namespace()|\n\n        Return: ~\n            (number) Namespace ID associated with {fn}\n\n        NOTE: {fn} will be automatically removed if an error occurs while\n        calling. This is to prevent the annoying situation of every keystroke\n        erroring while trying to remove a broken callback.\n\n        NOTE: {fn} will receive the keystrokes after mappings have been\n        evaluated\n\n        NOTE: {fn} will *NOT* be cleared from |nvim_buf_clear_namespace()|",
    "argsStr": "{fn}, {ns_id}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "vim.rpcnotify",
-   "description": "Sends {event} to {channel} via |RPC| and returns immediately.\n\tIf {channel} is 0, the event is broadcast to all channels.",
+   "description": "Sends {event} to {channel} via |RPC| and returns immediately.\n\tIf {channel} is 0, the event is broadcast to all channels.\n\n\tThis function also works in a fast callback |lua-loop-callbacks|.",
    "argsStr": "{channel}, {method}[, {args}...]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "vim.rpcrequest",
-   "description": "Sends a request to {channel} to invoke {method} via\n\t|RPC| and blocks until a response is received.",
+   "description": "Sends a request to {channel} to invoke {method} via\n\t|RPC| and blocks until a response is received.\n\n\tNote: NIL values as part of the return value is represented as\n\t|vim.NIL| special value",
    "argsStr": "{channel}, {method}[, {args}...]",
    "returnType": "any"
   },
@@ -75,14 +75,14 @@
   {
    "type": "func",
    "name": "vim.str_utfindex",
-   "description": "Convert byte index to UTF-32 and UTF-16 indicies. If {index} is not\n        supplied, the length of the string is used. All indicies are zero-based.\n        Returns two values: the UTF-32 and UTF-16 indicies respectively.",
+   "description": "Convert byte index to UTF-32 and UTF-16 indicies. If {index} is not\n        supplied, the length of the string is used. All indicies are zero-based.\n        Returns two values: the UTF-32 and UTF-16 indicies respectively.\n\n        Embedded NUL bytes are treated as terminating the string. Invalid\n        UTF-8 bytes, and embedded surrogates are counted as one code\n        point each. An {index} in the middle of a UTF-8 sequence is rounded\n        upwards to the end of that sequence.",
    "argsStr": "{str}[, {index}]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "vim.str_byteindex",
-   "description": "Convert UTF-32 or UTF-16 {index} to byte index. If {use_utf16} is not\n        supplied, it defaults to false (use UTF-32). Returns the byte index.",
+   "description": "Convert UTF-32 or UTF-16 {index} to byte index. If {use_utf16} is not\n        supplied, it defaults to false (use UTF-32). Returns the byte index.\n\n        Invalid UTF-8 and NUL is treated like by |vim.str_byteindex()|. An {index}\n        in the middle of a UTF-16 sequence is rounded upwards to the end of that\n        sequence.",
    "argsStr": "{str}, {index}[, {use_utf16}]",
    "returnType": "any"
   },
@@ -96,14 +96,14 @@
   {
    "type": "func",
    "name": "vim.defer_fn",
-   "description": "Defers calling {fn} until {timeout} ms passes.  Use to do a one-shot timer\n    that calls {fn}.",
+   "description": "Defers calling {fn} until {timeout} ms passes.  Use to do a one-shot timer\n    that calls {fn}.\n\n    Note: The {fn} is |schedule_wrap|ped automatically, so API functions are\n    safe to call.\n\n    Parameters: ~\n        {fn}        Callback to call once {timeout} expires\n        {timeout}   Time in ms to wait before calling {fn}\n\n    Returns: ~\n        |vim.loop|.new_timer() object",
    "argsStr": "{fn}, {timeout}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "vim.wait",
-   "description": "Wait for {time} in milliseconds until {callback} returns `true`.",
+   "description": "Wait for {time} in milliseconds until {callback} returns `true`.\n\n        Executes {callback} immediately and at approximately {interval}\n        milliseconds (default 200). Nvim still processes other events during\n        this time.\n\n    Parameters: ~\n        {time}      Number of milliseconds to wait\n        {callback}  Optional callback. Waits until {callback} returns true\n        {interval}  (Approximate) number of milliseconds to wait between polls\n        {fast_only} If true, only |api-fast| events will be processed.\n                        If called from while in an |api-fast| event, will\n                        automatically be set to `true`.\n\n    Returns: ~\n        If {callback} returns `true` during the {time}:\n            `true, nil`\n\n        If {callback} never returns `true` during the {time}:\n            `false, -1`\n\n        If {callback} is interrupted during the {time}:\n            `false, -2`\n\n        If {callback} errors, the error is raised.\n\n        Examples: >\n\n    ---\n    -- Wait for 100 ms, allowing other events to process\n    vim.wait(100, function() end)\n\n    ---\n    -- Wait for 100 ms or until global variable set.\n    vim.wait(100, function() return vim.g.waiting_for_var end)\n\n    ---\n    -- Wait for 1 second or until global variable set, checking every ~500 ms\n    vim.wait(1000, function() return vim.g.waiting_for_var end, 500)\n\n    ---\n    -- Schedule a function to set a value in 100ms\n    vim.defer_fn(function() vim.g.timer_result = true end, 100)\n\n    -- Would wait ten seconds if results blocked. Actually only waits  100 ms\n    if vim.wait(10000, function() return vim.g.timer_result end) then\n      print('Only waiting a little bit of time!')\n    end\n<",
    "argsStr": "{time} [, {callback}, {interval}, {fast_only}]",
    "returnType": "any"
   },
@@ -122,7 +122,7 @@
   {
    "type": "value",
    "name": "vim.types",
-   "description": "Table with possible values for |vim.type_idx|.  Contains two sets \n\tof key-value pairs: first maps possible values for |vim.type_idx| \n\tto human-readable strings, second maps human-readable type names to \n\tvalues for |vim.type_idx|.  Currently contains pairs for `float`, \n\t`array` and `dictionary` types.",
+   "description": "Table with possible values for |vim.type_idx|.  Contains two sets \n\tof key-value pairs: first maps possible values for |vim.type_idx| \n\tto human-readable strings, second maps human-readable type names to \n\tvalues for |vim.type_idx|.  Currently contains pairs for `float`, \n\t`array` and `dictionary` types.\n\n\tNote: one must expect that values corresponding to `vim.types.float`, \n\t`vim.types.array` and `vim.types.dictionary` fall under only two \n\tfollowing assumptions:\n\t1. Value may serve both as a key and as a value in a table.  Given the \n\t   properties of Lua tables this basically means “value is not `nil`”.\n\t2. For each value in `vim.types` table `vim.types[vim.types[value]]` \n\t   is the same as `value`.\n\tNo other restrictions are put on types, and it is not guaranteed that \n\tvalues corresponding to `vim.types.float`, `vim.types.array` and \n\t`vim.types.dictionary` will not change or that `vim.types` table will \n\tonly contain values for these three types.",
    "valuetype": "any"
   }
  ]

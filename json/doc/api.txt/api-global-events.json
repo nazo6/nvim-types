@@ -6,7 +6,7 @@
   {
    "type": "value",
    "name": "nvim_error_event",
-   "description": "",
+   "description": "{type} is a numeric id as defined by `api_info().error_types`, and {message} is\na string with the error message.",
    "valuetype": "any"
   }
  ]

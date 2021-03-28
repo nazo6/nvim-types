@@ -5,7 +5,7 @@ type EditDataType =
     }
   | {
       name: string;
-      argsStr: {
+      args: {
         name: string;
         type: string;
       }[];

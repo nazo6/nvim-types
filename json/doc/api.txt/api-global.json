@@ -20,28 +20,28 @@
   {
    "type": "func",
    "name": "nvim__id",
-   "description": "Returns object given as argument.",
+   "description": "Returns object given as argument.\n\n                This API function is used for testing. One should not rely on\n                its presence in plugins.\n\n                Parameters: ~\n                    {obj}  Object to return.\n\n                Return: ~\n                    its argument.",
    "argsStr": "{obj}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim__id_array",
-   "description": "Returns array given as argument.",
+   "description": "Returns array given as argument.\n\n                This API function is used for testing. One should not rely on\n                its presence in plugins.\n\n                Parameters: ~\n                    {arr}  Array to return.\n\n                Return: ~\n                    its argument.",
    "argsStr": "{arr}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim__id_dictionary",
-   "description": "Returns dictionary given as argument.",
+   "description": "Returns dictionary given as argument.\n\n                This API function is used for testing. One should not rely on\n                its presence in plugins.\n\n                Parameters: ~\n                    {dct}  Dictionary to return.\n\n                Return: ~\n                    its argument.",
    "argsStr": "{dct}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim__id_float",
-   "description": "Returns floating-point value given as argument.",
+   "description": "Returns floating-point value given as argument.\n\n                This API function is used for testing. One should not rely on\n                its presence in plugins.\n\n                Parameters: ~\n                    {flt}  Value to return.\n\n                Return: ~\n                    its argument.",
    "argsStr": "{flt}",
    "returnType": "any"
   },
@@ -55,525 +55,525 @@
   {
    "type": "func",
    "name": "nvim__screenshot",
-   "description": "TODO: Documentation",
+   "description": "TODO: Documentation\n\n                Attributes: ~\n                    {fast}",
    "argsStr": "{path}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim__stats",
-   "description": "Gets internal stats.",
+   "description": "Gets internal stats.\n\n                Return: ~\n                    Map of various internal stats.",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_call_atomic",
-   "description": "Calls many API methods atomically.",
+   "description": "Calls many API methods atomically.\n\n                This has two main usages:\n                1. To perform several requests from an async context\n                   atomically, i.e. without interleaving redraws, RPC requests\n                   from other clients, or user interactions (however API\n                   methods may trigger autocommands or event processing which\n                   have such side-effects, e.g. |:sleep| may wake timers).\n                2. To minimize RPC overhead (roundtrips) of a sequence of many\n                   requests.\n\n                Parameters: ~\n                    {calls}  an array of calls, where each call is described\n                             by an array with two elements: the request name,\n                             and an array of arguments.\n\n                Return: ~\n                    Array of two elements. The first is an array of return\n                    values. The second is NIL if all calls succeeded. If a\n                    call resulted in an error, it is a three-element array\n                    with the zero-based index of the call which resulted in an\n                    error, the error type and the error message. If an error\n                    occurred, the values from all preceding calls will still\n                    be returned.",
    "argsStr": "{calls}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_call_dict_function",
-   "description": "Calls a VimL |Dictionary-function| with the given arguments.",
+   "description": "Calls a VimL |Dictionary-function| with the given arguments.\n\n                On execution error: fails with VimL error, does not update\n                v:errmsg.\n\n                Parameters: ~\n                    {dict}  Dictionary, or String evaluating to a VimL |self|\n                            dict\n                    {fn}    Name of the function defined on the VimL dict\n                    {args}  Function arguments packed in an Array\n\n                Return: ~\n                    Result of the function call",
    "argsStr": "{dict}, {fn}, {args}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_call_function",
-   "description": "Calls a VimL function with the given arguments.",
+   "description": "Calls a VimL function with the given arguments.\n\n                On execution error: fails with VimL error, does not update\n                v:errmsg.\n\n                Parameters: ~\n                    {fn}    Function to call\n                    {args}  Function arguments packed in an Array\n\n                Return: ~\n                    Result of the function call",
    "argsStr": "{fn}, {args}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_command",
-   "description": "Executes an ex-command.",
+   "description": "Executes an ex-command.\n\n                On execution error: fails with VimL error, does not update\n                v:errmsg.\n\n                Parameters: ~\n                    {command}  Ex-command string\n\n                See also: ~\n                    |nvim_exec()|",
    "argsStr": "{command}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_create_buf",
-   "description": "Creates a new, empty, unnamed buffer.",
+   "description": "Creates a new, empty, unnamed buffer.\n\n                Parameters: ~\n                    {listed}   Sets 'buflisted'\n                    {scratch}  Creates a \"throwaway\" |scratch-buffer| for\n                               temporary work (always 'nomodified'). Also sets\n                               'nomodeline' on the buffer.\n\n                Return: ~\n                    Buffer handle, or 0 on error\n\n                See also: ~\n                    buf_open_scratch",
    "argsStr": "{listed}, {scratch}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_create_namespace",
-   "description": "Creates a new namespace, or gets an existing one.",
+   "description": "Creates a new namespace, or gets an existing one.\n\n                Namespaces are used for buffer highlights and virtual text,\n                see |nvim_buf_add_highlight()| and\n                |nvim_buf_set_virtual_text()|.\n\n                Namespaces can be named or anonymous. If `name` matches an\n                existing namespace, the associated id is returned. If `name`\n                is an empty string a new, anonymous namespace is created.\n\n                Parameters: ~\n                    {name}  Namespace name or empty string\n\n                Return: ~\n                    Namespace id",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_del_current_line",
-   "description": "Deletes the current line.",
+   "description": "Deletes the current line.\n\n                Attributes: ~\n                    not allowed when |textlock| is active",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_del_keymap",
-   "description": "Unmaps a global |mapping| for the given mode.",
+   "description": "Unmaps a global |mapping| for the given mode.\n\n                To unmap a buffer-local mapping, use |nvim_buf_del_keymap()|.\n\n                See also: ~\n                    |nvim_set_keymap()|",
    "argsStr": "{mode}, {lhs}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_del_var",
-   "description": "Removes a global (g:) variable.",
+   "description": "Removes a global (g:) variable.\n\n                Parameters: ~\n                    {name}  Variable name",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_echo",
-   "description": "Echo a message.",
+   "description": "Echo a message.\n\n                Parameters: ~\n                    {chunks}   A list of [text, hl_group] arrays, each\n                               representing a text chunk with specified\n                               highlight. `hl_group` element can be omitted\n                               for no highlight.\n                    {history}  if true, add to |message-history|.\n                    {opts}     Optional parameters. Reserved for future use.",
    "argsStr": "{chunks}, {history}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_err_write",
-   "description": "Writes a message to the Vim error buffer. Does not append\n                \"\\n\", the message is buffered (won't display) until a linefeed\n                is written.",
+   "description": "Writes a message to the Vim error buffer. Does not append\n                \"\\n\", the message is buffered (won't display) until a linefeed\n                is written.\n\n                Parameters: ~\n                    {str}  Message",
    "argsStr": "{str}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_err_writeln",
-   "description": "Writes a message to the Vim error buffer. Appends \"\\n\", so the\n                buffer is flushed (and displayed).",
+   "description": "Writes a message to the Vim error buffer. Appends \"\\n\", so the\n                buffer is flushed (and displayed).\n\n                Parameters: ~\n                    {str}  Message\n\n                See also: ~\n                    nvim_err_write()",
    "argsStr": "{str}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_eval",
-   "description": "Evaluates a VimL |expression|. Dictionaries and Lists are\n                recursively expanded.",
+   "description": "Evaluates a VimL |expression|. Dictionaries and Lists are\n                recursively expanded.\n\n                On execution error: fails with VimL error, does not update\n                v:errmsg.\n\n                Parameters: ~\n                    {expr}  VimL expression string\n\n                Return: ~\n                    Evaluation result or expanded object",
    "argsStr": "{expr}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_exec",
-   "description": "Executes Vimscript (multiline block of Ex-commands), like\n                anonymous |:source|.",
+   "description": "Executes Vimscript (multiline block of Ex-commands), like\n                anonymous |:source|.\n\n                Unlike |nvim_command()| this function supports heredocs,\n                script-scope (s:), etc.\n\n                On execution error: fails with VimL error, does not update\n                v:errmsg.\n\n                Parameters: ~\n                    {src}     Vimscript code\n                    {output}  Capture and return all (non-error, non-shell\n                              |:!|) output\n\n                Return: ~\n                    Output (non-error, non-shell |:!|) if `output` is true,\n                    else empty string.\n\n                See also: ~\n                    |execute()|\n                    |nvim_command()|",
    "argsStr": "{src}, {output}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_exec_lua",
-   "description": "Execute Lua code. Parameters (if any) are available as `...`\n                inside the chunk. The chunk can return a value.",
+   "description": "Execute Lua code. Parameters (if any) are available as `...`\n                inside the chunk. The chunk can return a value.\n\n                Only statements are executed. To evaluate an expression,\n                prefix it with `return` : return my_function(...)\n\n                Parameters: ~\n                    {code}  Lua code to execute\n                    {args}  Arguments to the code\n\n                Return: ~\n                    Return value of Lua code if present or NIL.",
    "argsStr": "{code}, {args}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_feedkeys",
-   "description": "Sends input-keys to Nvim, subject to various quirks controlled\n                by `mode` flags. This is a blocking call, unlike\n                |nvim_input()|.",
+   "description": "Sends input-keys to Nvim, subject to various quirks controlled\n                by `mode` flags. This is a blocking call, unlike\n                |nvim_input()|.\n\n                On execution error: does not fail, but updates v:errmsg.\n\n                If you need to input sequences like <C-o> use\n                |nvim_replace_termcodes| to replace the termcodes and then\n                pass the resulting string to nvim_feedkeys. You'll also want\n                to enable escape_csi.\n\n                Example: >\n                    :let key = nvim_replace_termcodes(\"<C-o>\", v:true, v:false, v:true)\n                    :call nvim_feedkeys(key, 'n', v:true)\n<\n\n                Parameters: ~\n                    {keys}        to be typed\n                    {mode}        behavior flags, see |feedkeys()|\n                    {escape_csi}  If true, escape K_SPECIAL/CSI bytes in\n                                  `keys`\n\n                See also: ~\n                    feedkeys()\n                    vim_strsave_escape_csi",
    "argsStr": "{keys}, {mode}, {escape_csi}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_all_options_info",
-   "description": "Gets the option information for all options.",
+   "description": "Gets the option information for all options.\n\n                The dictionary has the full option names as keys and option\n                metadata dictionaries as detailed at |nvim_get_option_info|.\n\n                Return: ~\n                    dictionary of all options",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_api_info",
-   "description": "Returns a 2-tuple (Array), where item 0 is the current channel\n                id and item 1 is the |api-metadata| map (Dictionary).",
+   "description": "Returns a 2-tuple (Array), where item 0 is the current channel\n                id and item 1 is the |api-metadata| map (Dictionary).\n\n                Return: ~\n                    2-tuple [{channel-id}, {api-metadata}]\n\n                Attributes: ~\n                    {fast}",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_chan_info",
-   "description": "Get information about a channel.",
+   "description": "Get information about a channel.\n\n                Return: ~\n                    Dictionary describing a channel, with these keys:\n                    • \"stream\" the stream underlying the channel\n                      • \"stdio\" stdin and stdout of this Nvim instance\n                      • \"stderr\" stderr of this Nvim instance\n                      • \"socket\" TCP/IP socket or named pipe\n                      • \"job\" job with communication over its stdio\n\n                    • \"mode\" how data received on the channel is interpreted\n                      • \"bytes\" send and receive raw bytes\n                      • \"terminal\" a |terminal| instance interprets ASCII\n                        sequences\n                      • \"rpc\" |RPC| communication on the channel is active\n\n                    • \"pty\" Name of pseudoterminal, if one is used (optional).\n                      On a POSIX system, this will be a device path like\n                      /dev/pts/1. Even if the name is unknown, the key will\n                      still be present to indicate a pty is used. This is\n                      currently the case when using winpty on windows.\n                    • \"buffer\" buffer with connected |terminal| instance\n                      (optional)\n                    • \"client\" information about the client on the other end\n                      of the RPC channel, if it has added it using\n                      |nvim_set_client_info()|. (optional)",
    "argsStr": "{chan}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_color_by_name",
-   "description": "Returns the 24-bit RGB value of a |nvim_get_color_map()| color\n                name or \"#rrggbb\" hexadecimal string.",
+   "description": "Returns the 24-bit RGB value of a |nvim_get_color_map()| color\n                name or \"#rrggbb\" hexadecimal string.\n\n                Example: >\n                    :echo nvim_get_color_by_name(\"Pink\")\n                    :echo nvim_get_color_by_name(\"#cbcbcb\")\n<\n\n                Parameters: ~\n                    {name}  Color name or \"#rrggbb\" string\n\n                Return: ~\n                    24-bit RGB value, or -1 for invalid argument.",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_color_map",
-   "description": "Returns a map of color names and RGB values.",
+   "description": "Returns a map of color names and RGB values.\n\n                Keys are color names (e.g. \"Aqua\") and values are 24-bit RGB\n                color values (e.g. 65535).\n\n                Return: ~\n                    Map of color names and RGB values.",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_commands",
-   "description": "Gets a map of global (non-buffer-local) Ex commands.",
+   "description": "Gets a map of global (non-buffer-local) Ex commands.\n\n                Currently only |user-commands| are supported, not builtin Ex\n                commands.\n\n                Parameters: ~\n                    {opts}  Optional parameters. Currently only supports\n                            {\"builtin\":false}\n\n                Return: ~\n                    Map of maps describing commands.",
    "argsStr": "{opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_context",
-   "description": "Gets a map of the current editor state.",
+   "description": "Gets a map of the current editor state.\n\n                Parameters: ~\n                    {opts}  Optional parameters.\n                            • types: List of |context-types| (\"regs\", \"jumps\",\n                              \"bufs\", \"gvars\", …) to gather, or empty for\n                              \"all\".\n\n                Return: ~\n                    map of global |context|.",
    "argsStr": "{opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_current_buf",
-   "description": "Gets the current buffer.",
+   "description": "Gets the current buffer.\n\n                Return: ~\n                    Buffer handle",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_current_line",
-   "description": "Gets the current line.",
+   "description": "Gets the current line.\n\n                Return: ~\n                    Current line string",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_current_tabpage",
-   "description": "Gets the current tabpage.",
+   "description": "Gets the current tabpage.\n\n                Return: ~\n                    Tabpage handle",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_current_win",
-   "description": "Gets the current window.",
+   "description": "Gets the current window.\n\n                Return: ~\n                    Window handle",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_hl_by_id",
-   "description": "Gets a highlight definition by id. |hlID()|",
+   "description": "Gets a highlight definition by id. |hlID()|\n\n                Parameters: ~\n                    {hl_id}  Highlight id as returned by |hlID()|\n                    {rgb}    Export RGB colors\n\n                Return: ~\n                    Highlight definition map\n\n                See also: ~\n                    nvim_get_hl_by_name",
    "argsStr": "{hl_id}, {rgb}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_hl_by_name",
-   "description": "Gets a highlight definition by name.",
+   "description": "Gets a highlight definition by name.\n\n                Parameters: ~\n                    {name}  Highlight group name\n                    {rgb}   Export RGB colors\n\n                Return: ~\n                    Highlight definition map\n\n                See also: ~\n                    nvim_get_hl_by_id",
    "argsStr": "{name}, {rgb}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_hl_id_by_name",
-   "description": "Gets a highlight group by name",
+   "description": "Gets a highlight group by name\n\n                similar to |hlID()|, but allocates a new ID if not present.",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_keymap",
-   "description": "Gets a list of global (non-buffer-local) |mapping|\n                definitions.",
+   "description": "Gets a list of global (non-buffer-local) |mapping|\n                definitions.\n\n                Parameters: ~\n                    {mode}  Mode short-name (\"n\", \"i\", \"v\", ...)\n\n                Return: ~\n                    Array of maparg()-like dictionaries describing mappings.\n                    The \"buffer\" key is always zero.",
    "argsStr": "{mode}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_mode",
-   "description": "Gets the current mode. |mode()| \"blocking\" is true if Nvim is\n                waiting for input.",
+   "description": "Gets the current mode. |mode()| \"blocking\" is true if Nvim is\n                waiting for input.\n\n                Return: ~\n                    Dictionary { \"mode\": String, \"blocking\": Boolean }\n\n                Attributes: ~\n                    {fast}",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_namespaces",
-   "description": "Gets existing, non-anonymous namespaces.",
+   "description": "Gets existing, non-anonymous namespaces.\n\n                Return: ~\n                    dict that maps from names to namespace ids.",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_option",
-   "description": "Gets an option value string.",
+   "description": "Gets an option value string.\n\n                Parameters: ~\n                    {name}  Option name\n\n                Return: ~\n                    Option value (global)",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_option_info",
-   "description": "Gets the option information for one option",
+   "description": "Gets the option information for one option\n\n                Resulting dictionary has keys:\n                • name: Name of the option (like 'filetype')\n                • shortname: Shortened name of the option (like 'ft')\n                • type: type of option (\"string\", \"integer\" or \"boolean\")\n                • default: The default value for the option\n                • was_set: Whether the option was set.\n                • last_set_sid: Last set script id (if any)\n                • last_set_linenr: line number where option was set\n                • last_set_chan: Channel where option was set (0 for local)\n                • scope: one of \"global\", \"win\", or \"buf\"\n                • global_local: whether win or buf option has a global value\n                • commalist: List of comma separated values\n                • flaglist: List of single char flags\n\n                Parameters: ~\n                    {name}  Option name\n\n                Return: ~\n                    Option Information",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_proc",
-   "description": "Gets info describing process `pid` .",
+   "description": "Gets info describing process `pid` .\n\n                Return: ~\n                    Map of process properties, or NIL if process not found.",
    "argsStr": "{pid}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_proc_children",
-   "description": "Gets the immediate children of process `pid` .",
+   "description": "Gets the immediate children of process `pid` .\n\n                Return: ~\n                    Array of child process ids, empty if process not found.",
    "argsStr": "{pid}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_runtime_file",
-   "description": "Find files in runtime directories",
+   "description": "Find files in runtime directories\n\n                'name' can contain wildcards. For example\n                nvim_get_runtime_file(\"colors/*.vim\", true) will return all\n                color scheme files. Always use forward slashes (/) in the\n                search pattern for subdirectories regardless of platform.\n\n                It is not an error to not find any files. An empty array is\n                returned then.\n\n                To find a directory, `name` must end with a forward slash,\n                like \"rplugin/python/\". Without the slash it would instead\n                look for an ordinary file called \"rplugin/python\".\n\n                Attributes: ~\n                    {fast}\n\n                Parameters: ~\n                    {name}  pattern of files to search for\n                    {all}   whether to return all matches or only the first\n\n                Return: ~\n                    list of absolute paths to the found files",
    "argsStr": "{name}, {all}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_var",
-   "description": "Gets a global (g:) variable.",
+   "description": "Gets a global (g:) variable.\n\n                Parameters: ~\n                    {name}  Variable name\n\n                Return: ~\n                    Variable value",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_get_vvar",
-   "description": "Gets a v: variable.",
+   "description": "Gets a v: variable.\n\n                Parameters: ~\n                    {name}  Variable name\n\n                Return: ~\n                    Variable value",
    "argsStr": "{name}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_input",
-   "description": "Queues raw user-input. Unlike |nvim_feedkeys()|, this uses a\n                low-level input buffer and the call is non-blocking (input is\n                processed asynchronously by the eventloop).",
+   "description": "Queues raw user-input. Unlike |nvim_feedkeys()|, this uses a\n                low-level input buffer and the call is non-blocking (input is\n                processed asynchronously by the eventloop).\n\n                On execution error: does not fail, but updates v:errmsg.\n\n                Note:\n                    |keycodes| like <CR> are translated, so \"<\" is special. To\n                    input a literal \"<\", send <LT>.\n\n                Note:\n                    For mouse events use |nvim_input_mouse()|. The pseudokey\n                    form \"<LeftMouse><col,row>\" is deprecated since\n                    |api-level| 6.\n\n                Attributes: ~\n                    {fast}\n\n                Parameters: ~\n                    {keys}  to be typed\n\n                Return: ~\n                    Number of bytes actually written (can be fewer than\n                    requested if the buffer becomes full).",
    "argsStr": "{keys}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_input_mouse",
-   "description": "Send mouse event from GUI.",
+   "description": "Send mouse event from GUI.\n\n                Non-blocking: does not wait on any result, but queues the\n                event to be processed soon by the event loop.\n\n                Note:\n                    Currently this doesn't support \"scripting\" multiple mouse\n                    events by calling it multiple times in a loop: the\n                    intermediate mouse positions will be ignored. It should be\n                    used to implement real-time mouse input in a GUI. The\n                    deprecated pseudokey form (\"<LeftMouse><col,row>\") of\n                    |nvim_input()| has the same limitiation.\n\n                Attributes: ~\n                    {fast}\n\n                Parameters: ~\n                    {button}    Mouse button: one of \"left\", \"right\",\n                                \"middle\", \"wheel\".\n                    {action}    For ordinary buttons, one of \"press\", \"drag\",\n                                \"release\". For the wheel, one of \"up\", \"down\",\n                                \"left\", \"right\".\n                    {modifier}  String of modifiers each represented by a\n                                single char. The same specifiers are used as\n                                for a key press, except that the \"-\" separator\n                                is optional, so \"C-A-\", \"c-a\" and \"CA\" can all\n                                be used to specify Ctrl+Alt+click.\n                    {grid}      Grid number if the client uses |ui-multigrid|,\n                                else 0.\n                    {row}       Mouse row-position (zero-based, like redraw\n                                events)\n                    {col}       Mouse column-position (zero-based, like redraw\n                                events)",
    "argsStr": "{button}, {action}, {modifier}, {grid}, {row}, {col}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_list_bufs",
-   "description": "Gets the current list of buffer handles",
+   "description": "Gets the current list of buffer handles\n\n                Includes unlisted (unloaded/deleted) buffers, like `:ls!` .\n                Use |nvim_buf_is_loaded()| to check if a buffer is loaded.\n\n                Return: ~\n                    List of buffer handles",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_list_chans",
-   "description": "Get information about all open channels.",
+   "description": "Get information about all open channels.\n\n                Return: ~\n                    Array of Dictionaries, each describing a channel with the\n                    format specified at |nvim_get_chan_info()|.",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_list_runtime_paths",
-   "description": "Gets the paths contained in 'runtimepath'.",
+   "description": "Gets the paths contained in 'runtimepath'.\n\n                Return: ~\n                    List of paths",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_list_tabpages",
-   "description": "Gets the current list of tabpage handles.",
+   "description": "Gets the current list of tabpage handles.\n\n                Return: ~\n                    List of tabpage handles",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_list_uis",
-   "description": "Gets a list of dictionaries representing attached UIs.",
+   "description": "Gets a list of dictionaries representing attached UIs.\n\n                Return: ~\n                    Array of UI dictionaries, each with these keys:\n                    • \"height\" Requested height of the UI\n                    • \"width\" Requested width of the UI\n                    • \"rgb\" true if the UI uses RGB colors (false implies\n                      |cterm-colors|)\n                    • \"ext_...\" Requested UI extensions, see |ui-option|\n                    • \"chan\" Channel id of remote UI (not present for TUI)",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_list_wins",
-   "description": "Gets the current list of window handles.",
+   "description": "Gets the current list of window handles.\n\n                Return: ~\n                    List of window handles",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_load_context",
-   "description": "Sets the current editor state from the given |context| map.",
+   "description": "Sets the current editor state from the given |context| map.\n\n                Parameters: ~\n                    {dict}  |Context| map.",
    "argsStr": "{dict}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_notify",
-   "description": "Notify the user with a message",
+   "description": "Notify the user with a message\n\n                Relays the call to vim.notify . By default forwards your\n                message in the echo area but can be overriden to trigger\n                desktop notifications.\n\n                Parameters: ~\n                    {msg}        Message to display to the user\n                    {log_level}  The log level\n                    {opts}       Reserved for future use.",
    "argsStr": "{msg}, {log_level}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_open_win",
-   "description": "Open a new window.",
+   "description": "Open a new window.\n\n                Currently this is used to open floating and external windows.\n                Floats are windows that are drawn above the split layout, at\n                some anchor position in some other window. Floats can be drawn\n                internally or by external GUI with the |ui-multigrid|\n                extension. External windows are only supported with multigrid\n                GUIs, and are displayed as separate top-level windows.\n\n                For a general overview of floats, see |api-floatwin|.\n\n                Exactly one of `external` and `relative` must be specified.\n                The `width` and `height` of the new window must be specified.\n\n                With relative=editor (row=0,col=0) refers to the top-left\n                corner of the screen-grid and (row=Lines-1,col=Columns-1)\n                refers to the bottom-right corner. Fractional values are\n                allowed, but the builtin implementation (used by non-multigrid\n                UIs) will always round down to nearest integer.\n\n                Out-of-bounds values, and configurations that make the float\n                not fit inside the main editor, are allowed. The builtin\n                implementation truncates values so floats are fully within the\n                main screen grid. External GUIs could let floats hover outside\n                of the main window like a tooltip, but this should not be used\n                to specify arbitrary WM screen positions.\n\n                Example (Lua): window-relative float >\n                    vim.api.nvim_open_win(0, false,\n                      {relative='win', row=3, col=3, width=12, height=3})\n<\n\n                Example (Lua): buffer-relative float (travels as buffer is\n                scrolled) >\n                    vim.api.nvim_open_win(0, false,\n                      {relative='win', width=12, height=3, bufpos={100,10}})\n<\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {buffer}  Buffer to display, or 0 for current buffer\n                    {enter}   Enter the window (make it the current window)\n                    {config}  Map defining the window configuration. Keys:\n                              • `relative`: Sets the window layout to \"floating\", placed\n                                at (row,col) coordinates relative to:\n                                • \"editor\" The global editor grid\n                                • \"win\" Window given by the `win` field, or\n                                  current window.\n                                • \"cursor\" Cursor position in current window.\n\n                              • `win` : |window-ID| for relative=\"win\".\n                              • `anchor`: Decides which corner of the float to place\n                                at (row,col):\n                                • \"NW\" northwest (default)\n                                • \"NE\" northeast\n                                • \"SW\" southwest\n                                • \"SE\" southeast\n\n                              • `width` : Window width (in character cells).\n                                Minimum of 1.\n                              • `height` : Window height (in character cells).\n                                Minimum of 1.\n                              • `bufpos` : Places float relative to buffer\n                                text (only when relative=\"win\"). Takes a tuple\n                                of zero-indexed [line, column]. `row` and\n                                `col` if given are applied relative to this\n                                position, else they default to `row=1` and\n                                `col=0` (thus like a tooltip near the buffer\n                                text).\n                              • `row` : Row position in units of \"screen cell\n                                height\", may be fractional.\n                              • `col` : Column position in units of \"screen\n                                cell width\", may be fractional.\n                              • `focusable` : Enable focus by user actions\n                                (wincmds, mouse events). Defaults to true.\n                                Non-focusable windows can be entered by\n                                |nvim_set_current_win()|.\n                              • `external` : GUI should display the window as\n                                an external top-level window. Currently\n                                accepts no other positioning configuration\n                                together with this.\n                              • `style`: Configure the appearance of the window.\n                                Currently only takes one non-empty value:\n                                • \"minimal\" Nvim will display the window with\n                                  many UI options disabled. This is useful\n                                  when displaying a temporary float where the\n                                  text should not be edited. Disables\n                                  'number', 'relativenumber', 'cursorline',\n                                  'cursorcolumn', 'foldcolumn', 'spell' and\n                                  'list' options. 'signcolumn' is changed to\n                                  `auto` and 'colorcolumn' is cleared. The\n                                  end-of-buffer region is hidden by setting\n                                  `eob` flag of 'fillchars' to a space char,\n                                  and clearing the |EndOfBuffer| region in\n                                  'winhighlight'.\n\n                Return: ~\n                    Window handle, or 0 on error",
    "argsStr": "{buffer}, {enter}, {config}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_out_write",
-   "description": "Writes a message to the Vim output buffer. Does not append\n                \"\\n\", the message is buffered (won't display) until a linefeed\n                is written.",
+   "description": "Writes a message to the Vim output buffer. Does not append\n                \"\\n\", the message is buffered (won't display) until a linefeed\n                is written.\n\n                Parameters: ~\n                    {str}  Message",
    "argsStr": "{str}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_parse_expression",
-   "description": "Parse a VimL expression.",
+   "description": "Parse a VimL expression.\n\n                Attributes: ~\n                    {fast}\n\n                Parameters: ~\n                    {expr}       Expression to parse. Always treated as a\n                                 single line.\n                    {flags}      Flags:\n                                 • \"m\" if multiple expressions in a row are\n                                   allowed (only the first one will be\n                                   parsed),\n                                 • \"E\" if EOC tokens are not allowed\n                                   (determines whether they will stop parsing\n                                   process or be recognized as an\n                                   operator/space, though also yielding an\n                                   error).\n                                 • \"l\" when needing to start parsing with\n                                   lvalues for \":let\" or \":for\". Common flag\n                                   sets:\n                                 • \"m\" to parse like for \":echo\".\n                                 • \"E\" to parse like for \"<C-r>=\".\n                                 • empty string for \":call\".\n                                 • \"lm\" to parse for \":let\".\n                    {highlight}  If true, return value will also include\n                                 \"highlight\" key containing array of 4-tuples\n                                 (arrays) (Integer, Integer, Integer, String),\n                                 where first three numbers define the\n                                 highlighted region and represent line,\n                                 starting column and ending column (latter\n                                 exclusive: one should highlight region\n                                 [start_col, end_col)).\n\n                Return: ~\n\n                    • AST: top-level dictionary with these keys:\n                      • \"error\": Dictionary with error, present only if parser\n                        saw some error. Contains the following keys:\n                        • \"message\": String, error message in printf format,\n                          translated. Must contain exactly one \"%.*s\".\n                        • \"arg\": String, error message argument.\n\n                      • \"len\": Amount of bytes successfully parsed. With flags\n                        equal to \"\" that should be equal to the length of expr\n                        string. (“Sucessfully parsed” here means “participated\n                        in AST creation”, not “till the first error”.)\n                      • \"ast\": AST, either nil or a dictionary with these\n                        keys:\n                        • \"type\": node type, one of the value names from\n                          ExprASTNodeType stringified without \"kExprNode\"\n                          prefix.\n                        • \"start\": a pair [line, column] describing where node\n                          is \"started\" where \"line\" is always 0 (will not be 0\n                          if you will be using nvim_parse_viml() on e.g.\n                          \":let\", but that is not present yet). Both elements\n                          are Integers.\n                        • \"len\": “length” of the node. This and \"start\" are\n                          there for debugging purposes primary (debugging\n                          parser and providing debug information).\n                        • \"children\": a list of nodes described in top/\"ast\".\n                          There always is zero, one or two children, key will\n                          not be present if node has no children. Maximum\n                          number of children may be found in node_maxchildren\n                          array.\n\n                    • Local values (present only for certain nodes):\n                      • \"scope\": a single Integer, specifies scope for\n                        \"Option\" and \"PlainIdentifier\" nodes. For \"Option\" it\n                        is one of ExprOptScope values, for \"PlainIdentifier\"\n                        it is one of ExprVarScope values.\n                      • \"ident\": identifier (without scope, if any), present\n                        for \"Option\", \"PlainIdentifier\", \"PlainKey\" and\n                        \"Environment\" nodes.\n                      • \"name\": Integer, register name (one character) or -1.\n                        Only present for \"Register\" nodes.\n                      • \"cmp_type\": String, comparison type, one of the value\n                        names from ExprComparisonType, stringified without\n                        \"kExprCmp\" prefix. Only present for \"Comparison\"\n                        nodes.\n                      • \"ccs_strategy\": String, case comparison strategy, one\n                        of the value names from ExprCaseCompareStrategy,\n                        stringified without \"kCCStrategy\" prefix. Only present\n                        for \"Comparison\" nodes.\n                      • \"augmentation\": String, augmentation type for\n                        \"Assignment\" nodes. Is either an empty string, \"Add\",\n                        \"Subtract\" or \"Concat\" for \"=\", \"+=\", \"-=\" or \".=\"\n                        respectively.\n                      • \"invert\": Boolean, true if result of comparison needs\n                        to be inverted. Only present for \"Comparison\" nodes.\n                      • \"ivalue\": Integer, integer value for \"Integer\" nodes.\n                      • \"fvalue\": Float, floating-point value for \"Float\"\n                        nodes.\n                      • \"svalue\": String, value for \"SingleQuotedString\" and\n                        \"DoubleQuotedString\" nodes.",
    "argsStr": "{expr}, {flags}, {highlight}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_paste",
-   "description": "Pastes at cursor, in any mode.",
+   "description": "Pastes at cursor, in any mode.\n\n                Invokes the `vim.paste` handler, which handles each mode\n                appropriately. Sets redo/undo. Faster than |nvim_input()|.\n                Lines break at LF (\"\\n\").\n\n                Errors ('nomodifiable', `vim.paste()` failure, …) are\n                reflected in `err` but do not affect the return value (which\n                is strictly decided by `vim.paste()` ). On error, subsequent\n                calls are ignored (\"drained\") until the next paste is\n                initiated (phase 1 or -1).\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {data}   Multiline input. May be binary (containing NUL\n                             bytes).\n                    {crlf}   Also break lines at CR and CRLF.\n                    {phase}  -1: paste in a single call (i.e. without\n                             streaming). To \"stream\" a paste, call `nvim_paste` sequentially with these `phase` values:\n                             • 1: starts the paste (exactly once)\n                             • 2: continues the paste (zero or more times)\n                             • 3: ends the paste (exactly once)\n\n                Return: ~\n\n                    • true: Client may continue pasting.\n                    • false: Client must cancel the paste.",
    "argsStr": "{data}, {crlf}, {phase}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_put",
-   "description": "Puts text at cursor, in any mode.",
+   "description": "Puts text at cursor, in any mode.\n\n                Compare |:put| and |p| which are always linewise.\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {lines}   |readfile()|-style list of lines.\n                              |channel-lines|\n                    {type}    Edit behavior: any |getregtype()| result, or:\n                              • \"b\" |blockwise-visual| mode (may include\n                                width, e.g. \"b3\")\n                              • \"c\" |charwise| mode\n                              • \"l\" |linewise| mode\n                              • \"\" guess by contents, see |setreg()|\n                    {after}   If true insert after cursor (like |p|), or before (like\n                              |P|).\n                    {follow}  If true place cursor at end of inserted text.",
    "argsStr": "{lines}, {type}, {after}, {follow}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_replace_termcodes",
-   "description": "Replaces terminal codes and |keycodes| (<CR>, <Esc>, ...) in a\n                string with the internal representation.",
+   "description": "Replaces terminal codes and |keycodes| (<CR>, <Esc>, ...) in a\n                string with the internal representation.\n\n                Parameters: ~\n                    {str}        String to be converted.\n                    {from_part}  Legacy Vim parameter. Usually true.\n                    {do_lt}      Also translate <lt>. Ignored if `special` is\n                                 false.\n                    {special}    Replace |keycodes|, e.g. <CR> becomes a \"\\n\"\n                                 char.\n\n                See also: ~\n                    replace_termcodes\n                    cpoptions",
    "argsStr": "{str}, {from_part}, {do_lt}, {special}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_select_popupmenu_item",
-   "description": "Selects an item in the completion popupmenu.",
+   "description": "Selects an item in the completion popupmenu.\n\n                If |ins-completion| is not active this API call is silently\n                ignored. Useful for an external UI using |ui-popupmenu| to\n                control the popupmenu with the mouse. Can also be used in a\n                mapping; use <cmd> |:map-cmd| to ensure the mapping doesn't\n                end completion mode.\n\n                Parameters: ~\n                    {item}    Index (zero-based) of the item to select. Value\n                              of -1 selects nothing and restores the original\n                              text.\n                    {insert}  Whether the selection should be inserted in the\n                              buffer.\n                    {finish}  Finish the completion and dismiss the popupmenu.\n                              Implies `insert` .\n                    {opts}    Optional parameters. Reserved for future use.",
    "argsStr": "{item}, {insert}, {finish}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_client_info",
-   "description": "Self-identifies the client.",
+   "description": "Self-identifies the client.\n\n                The client/plugin/application should call this after\n                connecting, to provide hints about its identity and purpose,\n                for debugging and orchestration.\n\n                Can be called more than once; the caller should merge old info\n                if appropriate. Example: library first identifies the channel,\n                then a plugin using that library later identifies itself.\n\n                Note:\n                    \"Something is better than nothing\". You don't need to\n                    include all the fields.\n\n                Parameters: ~\n                    {name}        Short name for the connected client\n                    {version}     Dictionary describing the version, with\n                                  these (optional) keys:\n                                  • \"major\" major version (defaults to 0 if\n                                    not set, for no release yet)\n                                  • \"minor\" minor version\n                                  • \"patch\" patch number\n                                  • \"prerelease\" string describing a\n                                    prerelease, like \"dev\" or \"beta1\"\n                                  • \"commit\" hash or similar identifier of\n                                    commit\n                    {type}        Must be one of the following values. Client\n                                  libraries should default to \"remote\" unless\n                                  overridden by the user.\n                                  • \"remote\" remote client connected to Nvim.\n                                  • \"ui\" gui frontend\n                                  • \"embedder\" application using Nvim as a\n                                    component (for example, IDE/editor\n                                    implementing a vim mode).\n                                  • \"host\" plugin host, typically started by\n                                    nvim\n                                  • \"plugin\" single plugin, started by nvim\n                    {methods}     Builtin methods in the client. For a host,\n                                  this does not include plugin methods which\n                                  will be discovered later. The key should be\n                                  the method name, the values are dicts with\n                                  these (optional) keys (more keys may be\n                                  added in future versions of Nvim, thus\n                                  unknown keys are ignored. Clients must only\n                                  use keys defined in this or later versions\n                                  of Nvim):\n                                  • \"async\" if true, send as a notification.\n                                    If false or unspecified, use a blocking\n                                    request\n                                  • \"nargs\" Number of arguments. Could be a\n                                    single integer or an array of two\n                                    integers, minimum and maximum inclusive.\n                    {attributes}  Arbitrary string:string map of informal\n                                  client properties. Suggested keys:\n                                  • \"website\": Client homepage URL (e.g.\n                                    GitHub repository)\n                                  • \"license\": License description (\"Apache\n                                    2\", \"GPLv3\", \"MIT\", …)\n                                  • \"logo\": URI or path to image, preferably\n                                    small logo or icon. .png or .svg format is\n                                    preferred.",
    "argsStr": "{name}, {version}, {type}, {methods}, {attributes}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_current_buf",
-   "description": "Sets the current buffer.",
+   "description": "Sets the current buffer.\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {buffer}  Buffer handle",
    "argsStr": "{buffer}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_current_dir",
-   "description": "Changes the global working directory.",
+   "description": "Changes the global working directory.\n\n                Parameters: ~\n                    {dir}  Directory path",
    "argsStr": "{dir}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_current_line",
-   "description": "Sets the current line.",
+   "description": "Sets the current line.\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {line}  Line contents",
    "argsStr": "{line}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_current_tabpage",
-   "description": "Sets the current tabpage.",
+   "description": "Sets the current tabpage.\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {tabpage}  Tabpage handle",
    "argsStr": "{tabpage}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_current_win",
-   "description": "Sets the current window.",
+   "description": "Sets the current window.\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {window}  Window handle",
    "argsStr": "{window}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_decoration_provider",
-   "description": "Set or change decoration provider for a namespace",
+   "description": "Set or change decoration provider for a namespace\n\n                This is a very general purpose interface for having lua\n                callbacks being triggered during the redraw code.\n\n                The expected usage is to set extmarks for the currently\n                redrawn buffer. |nvim_buf_set_extmark| can be called to add\n                marks on a per-window or per-lines basis. Use the `ephemeral`\n                key to only use the mark for the current screen redraw (the\n                callback will be called again for the next redraw ).\n\n                Note: this function should not be called often. Rather, the\n                callbacks themselves can be used to throttle unneeded\n                callbacks. the `on_start` callback can return `false` to\n                disable the provider until the next redraw. Similarily, return\n                `false` in `on_win` will skip the `on_lines` calls for that\n                window (but any extmarks set in `on_win` will still be used).\n                A plugin managing multiple sources of decoration should\n                ideally only set one provider, and merge the sources\n                internally. You can use multiple `ns_id` for the extmarks\n                set/modified inside the callback anyway.\n\n                Note: doing anything other than setting extmarks is considered\n                experimental. Doing things like changing options are not\n                expliticly forbidden, but is likely to have unexpected\n                consequences (such as 100% CPU consumption). doing\n                `vim.rpcnotify` should be OK, but `vim.rpcrequest` is quite\n                dubious for the moment.\n\n                Parameters: ~\n                    {ns_id}  Namespace id from |nvim_create_namespace()|\n                    {opts}   Callbacks invoked during redraw:\n                             • on_start: called first on each screen redraw\n                               [\"start\", tick]\n                             • on_buf: called for each buffer being redrawn\n                               (before window callbacks) [\"buf\", bufnr, tick]\n                             • on_win: called when starting to redraw a\n                               specific window. [\"win\", winid, bufnr, topline,\n                               botline_guess]\n                             • on_line: called for each buffer line being\n                               redrawn. (The interation with fold lines is\n                               subject to change) [\"win\", winid, bufnr, row]\n                             • on_end: called at the end of a redraw cycle\n                               [\"end\", tick]",
    "argsStr": "{ns_id}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_hl",
-   "description": "Set a highlight group.",
+   "description": "Set a highlight group.\n\n                TODO: ns_id = 0, should modify :highlight namespace TODO val\n                should take update vs reset flag\n\n                Parameters: ~\n                    {ns_id}  number of namespace for this highlight\n                    {name}   highlight group name, like ErrorMsg\n                    {val}    highlight definiton map, like\n                             |nvim_get_hl_by_name|. in addition the following\n                             keys are also recognized: `default` : don't\n                             override existing definition, like `hi default`",
    "argsStr": "{ns_id}, {name}, {val}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_hl_ns",
-   "description": "Set active namespace for highlights.",
+   "description": "Set active namespace for highlights.\n\n                NB: this function can be called from async contexts, but the\n                semantics are not yet well-defined. To start with\n                |nvim_set_decoration_provider| on_win and on_line callbacks\n                are explicitly allowed to change the namespace during a redraw\n                cycle.\n\n                Attributes: ~\n                    {fast}\n\n                Parameters: ~\n                    {ns_id}  the namespace to activate",
    "argsStr": "{ns_id}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_keymap",
-   "description": "Sets a global |mapping| for the given mode.",
+   "description": "Sets a global |mapping| for the given mode.\n\n                To set a buffer-local mapping, use |nvim_buf_set_keymap()|.\n\n                Unlike |:map|, leading/trailing whitespace is accepted as part\n                of the {lhs} or {rhs}. Empty {rhs} is |<Nop>|. |keycodes| are\n                replaced as usual.\n\n                Example: >\n                    call nvim_set_keymap('n', ' <NL>', '', {'nowait': v:true})\n<\n\n                is equivalent to: >\n                    nmap <nowait> <Space><NL> <Nop>\n<\n\n                Parameters: ~\n                    {mode}  Mode short-name (map command prefix: \"n\", \"i\",\n                            \"v\", \"x\", …) or \"!\" for |:map!|, or empty string\n                            for |:map|.\n                    {lhs}   Left-hand-side |{lhs}| of the mapping.\n                    {rhs}   Right-hand-side |{rhs}| of the mapping.\n                    {opts}  Optional parameters map. Accepts all\n                            |:map-arguments| as keys excluding |<buffer>| but\n                            including |noremap|. Values are Booleans. Unknown\n                            key is an error.",
    "argsStr": "{mode}, {lhs}, {rhs}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_option",
-   "description": "Sets an option value.",
+   "description": "Sets an option value.\n\n                Parameters: ~\n                    {name}   Option name\n                    {value}  New option value",
    "argsStr": "{name}, {value}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_var",
-   "description": "Sets a global (g:) variable.",
+   "description": "Sets a global (g:) variable.\n\n                Parameters: ~\n                    {name}   Variable name\n                    {value}  Variable value",
    "argsStr": "{name}, {value}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_set_vvar",
-   "description": "Sets a v: variable, if it is not readonly.",
+   "description": "Sets a v: variable, if it is not readonly.\n\n                Parameters: ~\n                    {name}   Variable name\n                    {value}  Variable value",
    "argsStr": "{name}, {value}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_strwidth",
-   "description": "Calculates the number of display cells occupied by `text` .\n                <Tab> counts as one cell.",
+   "description": "Calculates the number of display cells occupied by `text` .\n                <Tab> counts as one cell.\n\n                Parameters: ~\n                    {text}  Some text\n\n                Return: ~\n                    Number of cells",
    "argsStr": "{text}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_subscribe",
-   "description": "Subscribes to event broadcasts.",
+   "description": "Subscribes to event broadcasts.\n\n                Parameters: ~\n                    {event}  Event type string",
    "argsStr": "{event}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "nvim_unsubscribe",
-   "description": "Unsubscribes to event broadcasts.",
+   "description": "Unsubscribes to event broadcasts.\n\n                Parameters: ~\n                    {event}  Event type string",
    "argsStr": "{event}",
    "returnType": "any"
   }

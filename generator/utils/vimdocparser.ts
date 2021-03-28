@@ -83,7 +83,7 @@ export const vimdocParser = (text: string) => {
             : "value";
         crrLine++;
         while (true) {
-          if (!lines[crrLine]) {
+          if (lines[crrLine] == undefined) {
             break;
           }
           if (headerMatcherFunc(lines[crrLine])) {

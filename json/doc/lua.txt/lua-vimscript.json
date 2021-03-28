@@ -20,14 +20,14 @@
   {
    "type": "func",
    "name": "vim.fn.{func}",
-   "description": "Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        To call autoload functions, use the syntax: >\n            vim.fn['some#function']({...})\n<\n        Unlike vim.api.|nvim_call_function| this converts directly between Vim\n        objects and Lua objects. If the Vim function returns a float, it will\n        be represented directly as a Lua number. Empty lists and dictionaries\n        both are represented by an empty table.",
+   "description": "Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        To call autoload functions, use the syntax: >\n            vim.fn['some#function']({...})\n<\n        Unlike vim.api.|nvim_call_function| this converts directly between Vim\n        objects and Lua objects. If the Vim function returns a float, it will\n        be represented directly as a Lua number. Empty lists and dictionaries\n        both are represented by an empty table.\n\n        Note: |v:null| values as part of the return value is represented as\n        |vim.NIL| special value\n\n        Note: vim.fn keys are generated lazily, thus `pairs(vim.fn)` only\n        enumerates functions that were called at least once.",
    "argsStr": "{...}",
    "returnType": "any"
   },
   {
    "type": "value",
    "name": "lua-vim-variables",
-   "description": "from Lua conveniently and idiomatically by referencing the `vim.*` Lua tables\ndescribed below. In this way you can easily read and modify global Vimscript\nvariables from Lua.",
+   "description": "from Lua conveniently and idiomatically by referencing the `vim.*` Lua tables\ndescribed below. In this way you can easily read and modify global Vimscript\nvariables from Lua.\n\nExample: >\n\n    vim.g.foo = 5     -- Set the g:foo Vimscript variable.\n    print(vim.g.foo)  -- Get and print the g:foo Vimscript variable.\n    vim.g.foo = nil   -- Delete (:unlet) the Vimscript variable.",
    "valuetype": "any"
   },
   {

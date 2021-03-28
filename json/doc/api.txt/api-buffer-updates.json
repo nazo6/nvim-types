@@ -6,25 +6,25 @@
   {
    "type": "value",
    "name": "nvim_buf_lines_event",
-   "description": "",
+   "description": "When the buffer text between {firstline} and {lastline} (end-exclusive,\n  zero-indexed) were changed to the new text in the {linedata} list. The\n  granularity is a line, i.e. if a single character is changed in the editor,\n  the entire line is sent.\n\n  When {changedtick} is |v:null| this means the screen lines (display) changed\n  but not the buffer contents. {linedata} contains the changed screen lines.\n  This happens when 'inccommand' shows a buffer preview.\n\n  Properties:~\n    {buf} API buffer handle (buffer number)\n\n    {changedtick} value of |b:changedtick| for the buffer. If you send an API\n    command back to nvim you can check the value of |b:changedtick| as part of\n    your request to ensure that no other changes have been made.\n\n    {firstline} integer line number of the first line that was replaced.\n    Zero-indexed: if line 1 was replaced then {firstline} will be 0, not 1.\n    {firstline} is always less than or equal to the number of lines that were\n    in the buffer before the lines were replaced.\n\n    {lastline} integer line number of the first line that was not replaced\n    (i.e. the range {firstline}, {lastline} is end-exclusive).\n    Zero-indexed: if line numbers 2 to 5 were replaced, this will be 5 instead\n    of 6. {lastline} is always be less than or equal to the number of lines\n    that were in the buffer before the lines were replaced. {lastline} will be\n    -1 if the event is part of the initial update after attaching.\n\n    {linedata} list of strings containing the contents of the new buffer\n    lines. Newline characters are omitted; empty lines are sent as empty\n    strings.\n\n    {more} boolean, true for a \"multipart\" change notification: the current\n    change was chunked into multiple |nvim_buf_lines_event| notifications\n    (e.g. because it was too big).",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "nvim_buf_changedtick_event",
-   "description": "",
+   "description": "When |b:changedtick| was incremented but no text was changed. Relevant for\n  undo/redo.\n\n  Properties:~\n    {buf} API buffer handle (buffer number)\n    {changedtick} new value of |b:changedtick| for the buffer",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "nvim_buf_detach_event",
-   "description": "",
+   "description": "When buffer is detached (i.e. updates are disabled). Triggered explicitly by\n  |nvim_buf_detach()| or implicitly in these cases:\n  - Buffer was |abandon|ed and 'hidden' is not set.\n  - Buffer was reloaded, e.g. with |:edit| or an external change triggered\n    |:checktime| or 'autoread'.\n  - Generally: whenever the buffer contents are unloaded from memory.\n\n  Properties:~\n    {buf} API buffer handle (buffer number)\n\n\nEXAMPLE ~\n\nCalling |nvim_buf_attach()| with send_buffer=true on an empty buffer, emits: >\n  nvim_buf_lines_event[{buf}, {changedtick}, 0, -1, [\"\"], v:false]\n\nUser adds two lines to the buffer, emits: >\n  nvim_buf_lines_event[{buf}, {changedtick}, 0, 0, [\"line1\", \"line2\"], v:false]\n\nUser moves to a line containing the text \"Hello world\" and inserts \"!\", emits: >\n  nvim_buf_lines_event[{buf}, {changedtick}, {linenr}, {linenr} + 1,\n                       [\"Hello world!\"], v:false]\n\nUser moves to line 3 and deletes 20 lines using \"20dd\", emits: >\n  nvim_buf_lines_event[{buf}, {changedtick}, 2, 22, [], v:false]\n\nUser selects lines 3-5 using |linewise-visual| mode and then types \"p\" to\npaste a block of 6 lines, emits: >\n  nvim_buf_lines_event[{buf}, {changedtick}, 2, 5,\n    ['pasted line 1', 'pasted line 2', 'pasted line 3', 'pasted line 4',\n     'pasted line 5', 'pasted line 6'],\n    v:false\n  ]\n\nUser reloads the buffer with \":edit\", emits: >\n  nvim_buf_detach_event[{buf}]\n<\n\nLUA ~",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "api-buffer-updates-lua",
-   "description": "callbacks. These callbacks are called frequently in various contexts;\n|textlock| prevents changing buffer contents and window layout (use\n|vim.schedule| to defer such operations to the main loop instead).",
+   "description": "callbacks. These callbacks are called frequently in various contexts;\n|textlock| prevents changing buffer contents and window layout (use\n|vim.schedule| to defer such operations to the main loop instead).\n\n|nvim_buf_attach()| will take keyword args for the callbacks. \"on_lines\" will\nreceive parameters (\"lines\", {buf}, {changedtick}, {firstline}, {lastline},\n{new_lastline}, {old_byte_size}[, {old_utf32_size}, {old_utf16_size}]).\nUnlike remote channel events the text contents are not passed. The new text can\nbe accessed inside the callback as\n\n    `vim.api.nvim_buf_get_lines(buf, firstline, new_lastline, true)`\n\n{old_byte_size} is the total size of the replaced region {firstline} to\n{lastline} in bytes, including the final newline after {lastline}. if\n`utf_sizes` is set to true in |nvim_buf_attach()| keyword args, then the\nUTF-32 and UTF-16 sizes of the deleted region is also passed as additional\narguments {old_utf32_size} and {old_utf16_size}.\n\n\"on_changedtick\" is invoked when |b:changedtick| was incremented but no text\nwas changed. The parameters recieved are (\"changedtick\", {buf}, {changedtick}).",
    "valuetype": "any"
   },
   {

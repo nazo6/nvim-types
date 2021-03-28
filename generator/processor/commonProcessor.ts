@@ -29,6 +29,11 @@ const normalizeArg = (arg: string, option: boolean) => {
   }
   return null;
 };
+const normalizeCommentStr = (str: string) => {
+  const nullChar = String.fromCodePoint(8205);
+
+  return str.replace("/*", `/${nullChar}*`).replace("*/", `*${nullChar}/`);
+};
 
 const getArgs = (argsStr: string) => {
   let args: string[] = [];
@@ -61,7 +66,7 @@ export const commonNamespaceChildProcessor = (data: SectionDataType) => {
       if (propertyData.type === "func") {
         text +=
           `/** 
-        ${propertyData.description}
+          ${normalizeCommentStr(propertyData.description)}}
       */` + "\n";
         text += createFunction(propName, getArgs(propertyData.argsStr), "any");
       } else {
@@ -88,7 +93,7 @@ export const commonInterfaceChildProcessor = (data: SectionDataType) => {
       if (propertyData.type === "func") {
         text +=
           `/** 
-      * ${propertyData.description}
+      ${normalizeCommentStr(propertyData.description)}}
       */` + "\n";
         text += createInterfaceFunction(
           propName,
