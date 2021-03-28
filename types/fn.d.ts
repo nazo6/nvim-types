@@ -41,7 +41,7 @@ interface fn {
 		Example: >
 			:let flag = and(bits, 0x80)}
       */
-  and: (expr: any, expr: any) => any;
+  and: (expr1: any, expr2: any) => any;
   /** 
       Returns Dictionary of |api-metadata|.
 
@@ -3914,7 +3914,7 @@ luaeval({expr}[, {expr}])
 		Example: >
 			:let bits = or(bits, 0x80)}
       */
-  or: (expr: any, expr: any) => any;
+  or: (expr1: any, expr2: any) => any;
   /** 
       Shorten directory names in the path {expr} and return the
 		result.  The tail, the file name, is kept as-is.  The other
@@ -7031,5 +7031,5 @@ remove({dict}, {key})
 			:let bits = xor(bits, 0x80)
 <}
       */
-  xor: (expr: any, expr: any) => any;
+  xor: (expr1: any, expr2: any) => any;
 }
