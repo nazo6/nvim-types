@@ -3,6 +3,7 @@ import {
   createFunction,
   createInterfaceFunction,
   createInterfaceVariable,
+  createJsdoc,
   createVariable,
 } from "../utils/sourcegenerator";
 import * as reserved from "reserved-words";
@@ -85,16 +86,10 @@ export const commonNamespaceChildProcessor = (data: SectionDataType) => {
     ];
     if (variableNameMatcher.test(propName)) {
       if (propertyData.type === "func") {
-        text +=
-          `/** 
-          ${normalizeCommentStr(propertyData.description)}}
-      */` + "\n";
+        text += createJsdoc(normalizeCommentStr(propertyData.description));
         text += createFunction(propName, getArgs(propertyData.argsStr), "any");
       } else {
-        text +=
-          `/** 
-      ${propertyData.description}
-      */` + "\n";
+        text += createJsdoc(propertyData.description);
         text += createVariable(propName, "any");
       }
     } else {
@@ -112,20 +107,14 @@ export const commonInterfaceChildProcessor = (data: SectionDataType) => {
     ];
     if (variableNameMatcher.test(propName)) {
       if (propertyData.type === "func") {
-        text +=
-          `/** 
-      ${normalizeCommentStr(propertyData.description)}
-      */` + "\n";
+        text += createJsdoc(normalizeCommentStr(propertyData.description));
         text += createInterfaceFunction(
           propName,
           getArgs(propertyData.argsStr),
           "any"
         );
       } else {
-        text +=
-          `/** 
-      * ${propertyData.description}
-      */` + "\n";
+        text += createJsdoc(propertyData.description);
         text += createInterfaceVariable(propName, "any");
       }
     } else {

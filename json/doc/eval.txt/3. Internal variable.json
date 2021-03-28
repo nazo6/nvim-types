@@ -108,13 +108,13 @@
   {
    "type": "value",
    "name": "v:charconvert_from* *charconvert_from-variable",
-   "description": "The name of the character encoding of a file to be converted.\n\t\tOnly valid while evaluating the 'charconvert' option.",
+   "description": "\t\tThe name of the character encoding of a file to be converted.\n\t\tOnly valid while evaluating the 'charconvert' option.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:charconvert_to* *charconvert_to-variable",
-   "description": "The name of the character encoding of a file after conversion.\n\t\tOnly valid while evaluating the 'charconvert' option.",
+   "description": "\t\tThe name of the character encoding of a file after conversion.\n\t\tOnly valid while evaluating the 'charconvert' option.",
    "valuetype": "any"
   },
   {
@@ -132,7 +132,7 @@
   {
    "type": "value",
    "name": "v:completed_item* *completed_item-variable",
-   "description": "Dictionary containing the most recent |complete-items| after\n\t\t|CompleteDone|.  Empty if the completion failed, or after\n\t\tleaving and re-entering insert mode.",
+   "description": "\t\tDictionary containing the most recent |complete-items| after\n\t\t|CompleteDone|.  Empty if the completion failed, or after\n\t\tleaving and re-entering insert mode.",
    "valuetype": "any"
   },
   {
@@ -348,19 +348,19 @@
   {
    "type": "value",
    "name": "v:option_new",
-   "description": "autocommand.",
+   "description": "\t\tautocommand.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:option_old",
-   "description": "autocommand.",
+   "description": "\t\tautocommand.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:option_type",
-   "description": "|OptionSet| autocommand. Can be either \"global\" or \"local\"",
+   "description": "\t\t|OptionSet| autocommand. Can be either \"global\" or \"local\"",
    "valuetype": "any"
   },
   {
@@ -414,7 +414,7 @@
   {
    "type": "value",
    "name": "v:searchforward* *searchforward-variable",
-   "description": "Search direction:  1 after a forward search, 0 after a\n\t\tbackward search.  It is reset to forward when directly setting\n\t\tthe last search pattern, see |quote/|.\n\t\tNote that the value is restored when returning from a\n\t\tfunction. |function-search-undo|.\n\t\tRead-write.",
+   "description": "\t\tSearch direction:  1 after a forward search, 0 after a\n\t\tbackward search.  It is reset to forward when directly setting\n\t\tthe last search pattern, see |quote/|.\n\t\tNote that the value is restored when returning from a\n\t\tfunction. |function-search-undo|.\n\t\tRead-write.",
    "valuetype": "any"
   },
   {

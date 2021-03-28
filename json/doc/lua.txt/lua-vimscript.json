@@ -6,21 +6,21 @@
   {
    "type": "func",
    "name": "vim.call",
-   "description": "Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        See also |vim.fn|.\n        Equivalent to: >\n            vim.fn[func]({...})",
+   "description": "        Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        See also |vim.fn|.\n        Equivalent to: >\n            vim.fn[func]({...})",
    "argsStr": "{func}, {...}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "vim.cmd",
-   "description": "Invokes an Ex command (the \":\" commands, Vimscript statements).\n        See also |ex-cmd-index|.\n        Example: >\n            vim.cmd('echo 42')",
+   "description": "        Invokes an Ex command (the \":\" commands, Vimscript statements).\n        See also |ex-cmd-index|.\n        Example: >\n            vim.cmd('echo 42')",
    "argsStr": "{cmd}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "vim.fn.{func}",
-   "description": "Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        To call autoload functions, use the syntax: >\n            vim.fn['some#function']({...})\n<\n        Unlike vim.api.|nvim_call_function| this converts directly between Vim\n        objects and Lua objects. If the Vim function returns a float, it will\n        be represented directly as a Lua number. Empty lists and dictionaries\n        both are represented by an empty table.\n\n        Note: |v:null| values as part of the return value is represented as\n        |vim.NIL| special value\n\n        Note: vim.fn keys are generated lazily, thus `pairs(vim.fn)` only\n        enumerates functions that were called at least once.",
+   "description": "        Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        To call autoload functions, use the syntax: >\n            vim.fn['some#function']({...})\n<\n        Unlike vim.api.|nvim_call_function| this converts directly between Vim\n        objects and Lua objects. If the Vim function returns a float, it will\n        be represented directly as a Lua number. Empty lists and dictionaries\n        both are represented by an empty table.\n\n        Note: |v:null| values as part of the return value is represented as\n        |vim.NIL| special value\n\n        Note: vim.fn keys are generated lazily, thus `pairs(vim.fn)` only\n        enumerates functions that were called at least once.",
    "argsStr": "{...}",
    "returnType": "any"
   },
@@ -33,37 +33,37 @@
   {
    "type": "value",
    "name": "vim.g",
-   "description": "Global (|g:|) editor variables.\n        Key with no value returns `nil`.",
+   "description": "        Global (|g:|) editor variables.\n        Key with no value returns `nil`.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.b",
-   "description": "Buffer-scoped (|b:|) variables for the current buffer.\n        Invalid or unset key returns `nil`.",
+   "description": "        Buffer-scoped (|b:|) variables for the current buffer.\n        Invalid or unset key returns `nil`.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.w",
-   "description": "Window-scoped (|w:|) variables for the current window.\n        Invalid or unset key returns `nil`.",
+   "description": "        Window-scoped (|w:|) variables for the current window.\n        Invalid or unset key returns `nil`.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.t",
-   "description": "Tabpage-scoped (|t:|) variables for the current tabpage.\n        Invalid or unset key returns `nil`.",
+   "description": "        Tabpage-scoped (|t:|) variables for the current tabpage.\n        Invalid or unset key returns `nil`.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.v",
-   "description": "|v:| variables.\n        Invalid or unset key returns `nil`.",
+   "description": "        |v:| variables.\n        Invalid or unset key returns `nil`.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.env",
-   "description": "Environment variables defined in the editor session.\n        See |expand-env| and |:let-environment| for the Vimscript behavior.\n        Invalid or unset key returns `nil`.\n        Example: >\n            vim.env.FOO = 'bar'\n            print(vim.env.TERM)\n<",
+   "description": "        Environment variables defined in the editor session.\n        See |expand-env| and |:let-environment| for the Vimscript behavior.\n        Invalid or unset key returns `nil`.\n        Example: >\n            vim.env.FOO = 'bar'\n            print(vim.env.TERM)\n<",
    "valuetype": "any"
   },
   {
@@ -75,19 +75,19 @@
   {
    "type": "value",
    "name": "vim.o",
-   "description": "Get or set editor options, like |:set|. Invalid key is an error.\n        Example: >\n            vim.o.cmdheight = 4\n            print(vim.o.columns)",
+   "description": "        Get or set editor options, like |:set|. Invalid key is an error.\n        Example: >\n            vim.o.cmdheight = 4\n            print(vim.o.columns)",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.bo",
-   "description": "Get or set buffer-scoped |local-options|. Invalid key is an error.\n        Example: >\n            vim.bo.buflisted = true\n            print(vim.bo.comments)",
+   "description": "        Get or set buffer-scoped |local-options|. Invalid key is an error.\n        Example: >\n            vim.bo.buflisted = true\n            print(vim.bo.comments)",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.wo",
-   "description": "Get or set window-scoped |local-options|. Invalid key is an error.\n        Example: >\n            vim.wo.cursorcolumn = true\n            print(vim.wo.foldmarker)",
+   "description": "        Get or set window-scoped |local-options|. Invalid key is an error.\n        Example: >\n            vim.wo.cursorcolumn = true\n            print(vim.wo.foldmarker)",
    "valuetype": "any"
   }
  ]

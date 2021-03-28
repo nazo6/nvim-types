@@ -6,196 +6,196 @@
   {
    "type": "func",
    "name": "inspect",
-   "description": "Return a human-readable representation of the given object.\n\n                See also: ~\n                    https://github.com/kikito/inspect.lua\n                    https://github.com/mpeterv/vinspect",
+   "description": "                Return a human-readable representation of the given object.\n\n                See also: ~\n                    https://github.com/kikito/inspect.lua\n                    https://github.com/mpeterv/vinspect",
    "argsStr": "{object}, {options}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "make_meta_accessor",
-   "description": "TODO: Documentation",
+   "description": "                TODO: Documentation",
    "argsStr": "{get}, {set}, {del}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "paste",
-   "description": "Paste handler, invoked by |nvim_paste()| when a conforming UI\n                (such as the |TUI|) pastes text into the editor.\n\n                Example: To remove ANSI color codes when pasting: >\n\n                 vim.paste = (function(overridden)\n                   return function(lines, phase)\n                     for i,line in ipairs(lines) do\n                       -- Scrub ANSI color codes from paste input.\n                       lines[i] = line:gsub('\\27%[[0-9;mK]+', '')\n                     end\n                     overridden(lines, phase)\n                   end\n                 end)(vim.paste)\n<\n\n                Parameters: ~\n                    {lines}  |readfile()|-style list of lines to paste.\n                             |channel-lines|\n                    {phase}  -1: \"non-streaming\" paste: the call contains all\n                             lines. If paste is \"streamed\", `phase` indicates the stream state:\n                             • 1: starts the paste (exactly once)\n                             • 2: continues the paste (zero or more times)\n                             • 3: ends the paste (exactly once)\n\n                Return: ~\n                    false if client should cancel the paste.\n\n                See also: ~\n                    |paste|",
+   "description": "                Paste handler, invoked by |nvim_paste()| when a conforming UI\n                (such as the |TUI|) pastes text into the editor.\n\n                Example: To remove ANSI color codes when pasting: >\n\n                 vim.paste = (function(overridden)\n                   return function(lines, phase)\n                     for i,line in ipairs(lines) do\n                       -- Scrub ANSI color codes from paste input.\n                       lines[i] = line:gsub('\\27%[[0-9;mK]+', '')\n                     end\n                     overridden(lines, phase)\n                   end\n                 end)(vim.paste)\n<\n\n                Parameters: ~\n                    {lines}  |readfile()|-style list of lines to paste.\n                             |channel-lines|\n                    {phase}  -1: \"non-streaming\" paste: the call contains all\n                             lines. If paste is \"streamed\", `phase` indicates the stream state:\n                             • 1: starts the paste (exactly once)\n                             • 2: continues the paste (zero or more times)\n                             • 3: ends the paste (exactly once)\n\n                Return: ~\n                    false if client should cancel the paste.\n\n                See also: ~\n                    |paste|",
    "argsStr": "{lines}, {phase}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "schedule_wrap",
-   "description": "Defers callback `cb` until the Nvim API is safe to call.\n\n                See also: ~\n                    |lua-loop-callbacks|\n                    |vim.schedule()|\n                    |vim.in_fast_event()|",
+   "description": "                Defers callback `cb` until the Nvim API is safe to call.\n\n                See also: ~\n                    |lua-loop-callbacks|\n                    |vim.schedule()|\n                    |vim.in_fast_event()|",
    "argsStr": "{cb}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "deep_equal",
-   "description": "TODO: Documentation",
+   "description": "                TODO: Documentation",
    "argsStr": "{a}, {b}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "deepcopy",
-   "description": "Returns a deep copy of the given object. Non-table objects are\n                copied as in a typical Lua assignment, whereas table objects\n                are copied recursively. Functions are naively copied, so\n                functions in the copied table point to the same functions as\n                those in the input table. Userdata and threads are not copied\n                and will throw an error.\n\n                Parameters: ~\n                    {orig}  Table to copy\n\n                Return: ~\n                    New table of copied keys and (nested) values.",
+   "description": "                Returns a deep copy of the given object. Non-table objects are\n                copied as in a typical Lua assignment, whereas table objects\n                are copied recursively. Functions are naively copied, so\n                functions in the copied table point to the same functions as\n                those in the input table. Userdata and threads are not copied\n                and will throw an error.\n\n                Parameters: ~\n                    {orig}  Table to copy\n\n                Return: ~\n                    New table of copied keys and (nested) values.",
    "argsStr": "{orig}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "endswith",
-   "description": "Tests if `s` ends with `suffix` .\n\n                Parameters: ~\n                    {s}       (string) a string\n                    {suffix}  (string) a suffix\n\n                Return: ~\n                    (boolean) true if `suffix` is a suffix of s",
+   "description": "                Tests if `s` ends with `suffix` .\n\n                Parameters: ~\n                    {s}       (string) a string\n                    {suffix}  (string) a suffix\n\n                Return: ~\n                    (boolean) true if `suffix` is a suffix of s",
    "argsStr": "{s}, {suffix}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "gsplit",
-   "description": "Splits a string at each instance of a separator.\n\n                Parameters: ~\n                    {s}      String to split\n                    {sep}    Separator string or pattern\n                    {plain}  If `true` use `sep` literally (passed to\n                             String.find)\n\n                Return: ~\n                    Iterator over the split components\n\n                See also: ~\n                    |vim.split()|\n                    https://www.lua.org/pil/20.2.html\n                    http://lua-users.org/wiki/StringLibraryTutorial",
+   "description": "                Splits a string at each instance of a separator.\n\n                Parameters: ~\n                    {s}      String to split\n                    {sep}    Separator string or pattern\n                    {plain}  If `true` use `sep` literally (passed to\n                             String.find)\n\n                Return: ~\n                    Iterator over the split components\n\n                See also: ~\n                    |vim.split()|\n                    https://www.lua.org/pil/20.2.html\n                    http://lua-users.org/wiki/StringLibraryTutorial",
    "argsStr": "{s}, {sep}, {plain}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "is_callable",
-   "description": "Returns true if object `f` can be called as a function.\n\n                Parameters: ~\n                    {f}  Any object\n\n                Return: ~\n                    true if `f` is callable, else false",
+   "description": "                Returns true if object `f` can be called as a function.\n\n                Parameters: ~\n                    {f}  Any object\n\n                Return: ~\n                    true if `f` is callable, else false",
    "argsStr": "{f}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "is_valid",
-   "description": "TODO: Documentation",
+   "description": "                TODO: Documentation",
    "argsStr": "{opt}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "list_extend",
-   "description": "Extends a list-like table with the values of another list-like\n                table.\n\n                NOTE: This mutates dst!\n\n                Parameters: ~\n                    {dst}     list which will be modified and appended to.\n                    {src}     list from which values will be inserted.\n                    {start}   Start index on src. defaults to 1\n                    {finish}  Final index on src. defaults to #src\n\n                Return: ~\n                    dst\n\n                See also: ~\n                    |vim.tbl_extend()|",
+   "description": "                Extends a list-like table with the values of another list-like\n                table.\n\n                NOTE: This mutates dst!\n\n                Parameters: ~\n                    {dst}     list which will be modified and appended to.\n                    {src}     list from which values will be inserted.\n                    {start}   Start index on src. defaults to 1\n                    {finish}  Final index on src. defaults to #src\n\n                Return: ~\n                    dst\n\n                See also: ~\n                    |vim.tbl_extend()|",
    "argsStr": "{dst}, {src}, {start}, {finish}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "pesc",
-   "description": "Escapes magic chars in a Lua pattern.\n\n                Parameters: ~\n                    {s}  String to escape\n\n                Return: ~\n                    %-escaped pattern string\n\n                See also: ~\n                    https://github.com/rxi/lume",
+   "description": "                Escapes magic chars in a Lua pattern.\n\n                Parameters: ~\n                    {s}  String to escape\n\n                Return: ~\n                    %-escaped pattern string\n\n                See also: ~\n                    https://github.com/rxi/lume",
    "argsStr": "{s}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "split",
-   "description": "Splits a string at each instance of a separator.\n\n                Examples: >\n                 split(\":aa::b:\", \":\")     --> {'','aa','','b',''}\n                 split(\"axaby\", \"ab?\")     --> {'','x','y'}\n                 split(x*yz*o, \"*\", true)  --> {'x','yz','o'}\n<\n\n                Parameters: ~\n                    {s}      String to split\n                    {sep}    Separator string or pattern\n                    {plain}  If `true` use `sep` literally (passed to\n                             String.find)\n\n                Return: ~\n                    List-like table of the split components.\n\n                See also: ~\n                    |vim.gsplit()|",
+   "description": "                Splits a string at each instance of a separator.\n\n                Examples: >\n                 split(\":aa::b:\", \":\")     --> {'','aa','','b',''}\n                 split(\"axaby\", \"ab?\")     --> {'','x','y'}\n                 split(x*yz*o, \"*\", true)  --> {'x','yz','o'}\n<\n\n                Parameters: ~\n                    {s}      String to split\n                    {sep}    Separator string or pattern\n                    {plain}  If `true` use `sep` literally (passed to\n                             String.find)\n\n                Return: ~\n                    List-like table of the split components.\n\n                See also: ~\n                    |vim.gsplit()|",
    "argsStr": "{s}, {sep}, {plain}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "startswith",
-   "description": "Tests if `s` starts with `prefix` .\n\n                Parameters: ~\n                    {s}       (string) a string\n                    {prefix}  (string) a prefix\n\n                Return: ~\n                    (boolean) true if `prefix` is a prefix of s",
+   "description": "                Tests if `s` starts with `prefix` .\n\n                Parameters: ~\n                    {s}       (string) a string\n                    {prefix}  (string) a prefix\n\n                Return: ~\n                    (boolean) true if `prefix` is a prefix of s",
    "argsStr": "{s}, {prefix}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_add_reverse_lookup",
-   "description": "Add the reverse lookup values to an existing table. For\n                example: tbl_add_reverse_lookup { A = 1 } == { [1] = 'A , A = 1 }`\n\n                Parameters: ~\n                    {o}  table The table to add the reverse to.",
+   "description": "                Add the reverse lookup values to an existing table. For\n                example: tbl_add_reverse_lookup { A = 1 } == { [1] = 'A , A = 1 }`\n\n                Parameters: ~\n                    {o}  table The table to add the reverse to.",
    "argsStr": "{o}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_contains",
-   "description": "Checks if a list-like (vector) table contains `value` .\n\n                Parameters: ~\n                    {t}      Table to check\n                    {value}  Value to compare\n\n                Return: ~\n                    true if `t` contains `value`",
+   "description": "                Checks if a list-like (vector) table contains `value` .\n\n                Parameters: ~\n                    {t}      Table to check\n                    {value}  Value to compare\n\n                Return: ~\n                    true if `t` contains `value`",
    "argsStr": "{t}, {value}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_count",
-   "description": "Counts the number of non-nil values in table `t` .\n>\n\n    vim.tbl_count({ a=1, b=2 }) => 2\n    vim.tbl_count({ 1, 2 }) => 2\n<\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    Number that is the number of the value in table\n\n                See also: ~\n                    https://github.com/Tieske/Penlight/blob/master/lua/pl/tablex.lua",
+   "description": "                Counts the number of non-nil values in table `t` .\n>\n\n    vim.tbl_count({ a=1, b=2 }) => 2\n    vim.tbl_count({ 1, 2 }) => 2\n<\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    Number that is the number of the value in table\n\n                See also: ~\n                    https://github.com/Tieske/Penlight/blob/master/lua/pl/tablex.lua",
    "argsStr": "{t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_deep_extend",
-   "description": "Merges recursively two or more map-like tables.\n\n                Parameters: ~\n                    {behavior}  Decides what to do if a key is found in more\n                                than one map:\n                                • \"error\": raise an error\n                                • \"keep\": use value from the leftmost map\n                                • \"force\": use value from the rightmost map\n                    {...}       Two or more map-like tables.\n\n                See also: ~\n                    |tbl_extend()|",
+   "description": "                Merges recursively two or more map-like tables.\n\n                Parameters: ~\n                    {behavior}  Decides what to do if a key is found in more\n                                than one map:\n                                • \"error\": raise an error\n                                • \"keep\": use value from the leftmost map\n                                • \"force\": use value from the rightmost map\n                    {...}       Two or more map-like tables.\n\n                See also: ~\n                    |tbl_extend()|",
    "argsStr": "{behavior}, {...}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_extend",
-   "description": "Merges two or more map-like tables.\n\n                Parameters: ~\n                    {behavior}  Decides what to do if a key is found in more\n                                than one map:\n                                • \"error\": raise an error\n                                • \"keep\": use value from the leftmost map\n                                • \"force\": use value from the rightmost map\n                    {...}       Two or more map-like tables.\n\n                See also: ~\n                    |extend()|",
+   "description": "                Merges two or more map-like tables.\n\n                Parameters: ~\n                    {behavior}  Decides what to do if a key is found in more\n                                than one map:\n                                • \"error\": raise an error\n                                • \"keep\": use value from the leftmost map\n                                • \"force\": use value from the rightmost map\n                    {...}       Two or more map-like tables.\n\n                See also: ~\n                    |extend()|",
    "argsStr": "{behavior}, {...}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_filter",
-   "description": "Filter a table using a predicate function\n\n                Parameters: ~\n                    {func}  function or callable table\n                    {t}     table",
+   "description": "                Filter a table using a predicate function\n\n                Parameters: ~\n                    {func}  function or callable table\n                    {t}     table",
    "argsStr": "{func}, {t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_flatten",
-   "description": "Creates a copy of a list-like table such that any nested\n                tables are \"unrolled\" and appended to the result.\n\n                Parameters: ~\n                    {t}  List-like table\n\n                Return: ~\n                    Flattened copy of the given list-like table.\n\n                See also: ~\n                    Fromhttps://github.com/premake/premake-core/blob/master/src/base/table.lua",
+   "description": "                Creates a copy of a list-like table such that any nested\n                tables are \"unrolled\" and appended to the result.\n\n                Parameters: ~\n                    {t}  List-like table\n\n                Return: ~\n                    Flattened copy of the given list-like table.\n\n                See also: ~\n                    Fromhttps://github.com/premake/premake-core/blob/master/src/base/table.lua",
    "argsStr": "{t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_isempty",
-   "description": "Checks if a table is empty.\n\n                Parameters: ~\n                    {t}  Table to check\n\n                See also: ~\n                    https://github.com/premake/premake-core/blob/master/src/base/table.lua",
+   "description": "                Checks if a table is empty.\n\n                Parameters: ~\n                    {t}  Table to check\n\n                See also: ~\n                    https://github.com/premake/premake-core/blob/master/src/base/table.lua",
    "argsStr": "{t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_islist",
-   "description": "Tests if a Lua table can be treated as an array.\n\n                Empty table `{}` is assumed to be an array, unless it was\n                created by |vim.empty_dict()| or returned as a dict-like |API|\n                or Vimscript result, for example from |rpcrequest()| or\n                |vim.fn|.\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    `true` if array-like table, else `false` .",
+   "description": "                Tests if a Lua table can be treated as an array.\n\n                Empty table `{}` is assumed to be an array, unless it was\n                created by |vim.empty_dict()| or returned as a dict-like |API|\n                or Vimscript result, for example from |rpcrequest()| or\n                |vim.fn|.\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    `true` if array-like table, else `false` .",
    "argsStr": "{t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_keys",
-   "description": "Return a list of all keys used in a table. However, the order\n                of the return table of keys is not guaranteed.\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    list of keys\n\n                See also: ~\n                    Fromhttps://github.com/premake/premake-core/blob/master/src/base/table.lua",
+   "description": "                Return a list of all keys used in a table. However, the order\n                of the return table of keys is not guaranteed.\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    list of keys\n\n                See also: ~\n                    Fromhttps://github.com/premake/premake-core/blob/master/src/base/table.lua",
    "argsStr": "{t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_map",
-   "description": "Apply a function to all values of a table.\n\n                Parameters: ~\n                    {func}  function or callable table\n                    {t}     table",
+   "description": "                Apply a function to all values of a table.\n\n                Parameters: ~\n                    {func}  function or callable table\n                    {t}     table",
    "argsStr": "{func}, {t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "tbl_values",
-   "description": "Return a list of all values used in a table. However, the\n                order of the return table of values is not guaranteed.\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    list of values",
+   "description": "                Return a list of all values used in a table. However, the\n                order of the return table of values is not guaranteed.\n\n                Parameters: ~\n                    {t}  Table\n\n                Return: ~\n                    list of values",
    "argsStr": "{t}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "trim",
-   "description": "Trim whitespace (Lua pattern \"%s\") from both sides of a\n                string.\n\n                Parameters: ~\n                    {s}  String to trim\n\n                Return: ~\n                    String with whitespace removed from its beginning and end\n\n                See also: ~\n                    https://www.lua.org/pil/20.2.html",
+   "description": "                Trim whitespace (Lua pattern \"%s\") from both sides of a\n                string.\n\n                Parameters: ~\n                    {s}  String to trim\n\n                Return: ~\n                    String with whitespace removed from its beginning and end\n\n                See also: ~\n                    https://www.lua.org/pil/20.2.html",
    "argsStr": "{s}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "validate",
-   "description": "Validates a parameter specification (types and values).\n\n                Usage example: >\n\n                  function user.new(name, age, hobbies)\n                    vim.validate{\n                      name={name, 'string'},\n                      age={age, 'number'},\n                      hobbies={hobbies, 'table'},\n                    }\n                    ...\n                  end\n<\n\n                Examples with explicit argument values (can be run directly): >\n\n                  vim.validate{arg1={{'foo'}, 'table'}, arg2={'foo', 'string'}}\n                     => NOP (success)\n\n                  vim.validate{arg1={1, 'table'}}\n                     => error('arg1: expected table, got number')\n\n                  vim.validate{arg1={3, function(a) return (a % 2) == 0 end, 'even number'}}\n                     => error('arg1: expected even number, got 3')\n<\n\n                Parameters: ~\n                    {opt}  Map of parameter names to validations. Each key is\n                           a parameter name; each value is a tuple in one of\n                           these forms:\n                           1. (arg_value, type_name, optional)\n                              • arg_value: argument value\n                              • type_name: string type name, one of: (\"table\",\n                                \"t\", \"string\", \"s\", \"number\", \"n\", \"boolean\",\n                                \"b\", \"function\", \"f\", \"nil\", \"thread\",\n                                \"userdata\")\n                              • optional: (optional) boolean, if true, `nil`\n                                is valid\n\n                           2. (arg_value, fn, msg)\n                              • arg_value: argument value\n                              • fn: any function accepting one argument,\n                                returns true if and only if the argument is\n                                valid. Can optionally return an additional\n                                informative error message as the second\n                                returned value.\n                              • msg: (optional) error string if validation\n                                fails",
+   "description": "                Validates a parameter specification (types and values).\n\n                Usage example: >\n\n                  function user.new(name, age, hobbies)\n                    vim.validate{\n                      name={name, 'string'},\n                      age={age, 'number'},\n                      hobbies={hobbies, 'table'},\n                    }\n                    ...\n                  end\n<\n\n                Examples with explicit argument values (can be run directly): >\n\n                  vim.validate{arg1={{'foo'}, 'table'}, arg2={'foo', 'string'}}\n                     => NOP (success)\n\n                  vim.validate{arg1={1, 'table'}}\n                     => error('arg1: expected table, got number')\n\n                  vim.validate{arg1={3, function(a) return (a % 2) == 0 end, 'even number'}}\n                     => error('arg1: expected even number, got 3')\n<\n\n                Parameters: ~\n                    {opt}  Map of parameter names to validations. Each key is\n                           a parameter name; each value is a tuple in one of\n                           these forms:\n                           1. (arg_value, type_name, optional)\n                              • arg_value: argument value\n                              • type_name: string type name, one of: (\"table\",\n                                \"t\", \"string\", \"s\", \"number\", \"n\", \"boolean\",\n                                \"b\", \"function\", \"f\", \"nil\", \"thread\",\n                                \"userdata\")\n                              • optional: (optional) boolean, if true, `nil`\n                                is valid\n\n                           2. (arg_value, fn, msg)\n                              • arg_value: argument value\n                              • fn: any function accepting one argument,\n                                returns true if and only if the argument is\n                                valid. Can optionally return an additional\n                                informative error message as the second\n                                returned value.\n                              • msg: (optional) error string if validation\n                                fails",
    "argsStr": "{opt}",
    "returnType": "any"
   }

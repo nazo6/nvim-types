@@ -4,6 +4,7 @@ devDependencies:
   '@types/reserved-words': 0.1.0
   prettier: 2.2.1
   reserved-words: 0.1.2
+  trim-newlines: 3.0.0
   ts-node: 9.1.1_typescript@4.2.3
   typescript: 4.2.3
 lockfileVersion: 5.2
@@ -66,6 +67,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
+  /trim-newlines/3.0.0:
+    dev: true
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-C4+gOpvmxaSMKuEf9Qc134F1ZuOHVXKRbtEflf4NTtuuJDEIJ9p5PXsalL8SkeRw+qit1Mo+yuvMPAKwWg/1hA==
   /ts-node/9.1.1_typescript@4.2.3:
     dependencies:
       arg: 4.1.3
@@ -102,5 +109,6 @@ specifiers:
   '@types/reserved-words': ^0.1.0
   prettier: ^2.2.1
   reserved-words: ^0.1.2
+  trim-newlines: ^3.0.0
   ts-node: ^9.1.1
   typescript: ^4.2.3

@@ -6,21 +6,21 @@
   {
    "type": "func",
    "name": "vim.regex",
-   "description": "Parse the regex {re} and return a regex object. 'magic' and\n        'ignorecase' options are ignored, lua regexes always defaults to magic\n        and ignoring case.  The behavior can be changed with flags in\n        the beginning of the string |/magic|.\n\nRegex objects support the following methods:",
+   "description": "        Parse the regex {re} and return a regex object. 'magic' and\n        'ignorecase' options are ignored, lua regexes always defaults to magic\n        and ignoring case.  The behavior can be changed with flags in\n        the beginning of the string |/magic|.\n\nRegex objects support the following methods:",
    "argsStr": "{re}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "regex:match_str",
-   "description": "Match the string against the regex. If the string should match the\n        regex precisely, surround the regex with `^` and `$`.\n        If the was a match, the byte indices for the beginning and end of\n        the match is returned. When there is no match, `nil` is returned.\n        As any integer is truth-y, `regex:match()` can be directly used\n        as a condition in an if-statement.",
+   "description": "        Match the string against the regex. If the string should match the\n        regex precisely, surround the regex with `^` and `$`.\n        If the was a match, the byte indices for the beginning and end of\n        the match is returned. When there is no match, `nil` is returned.\n        As any integer is truth-y, `regex:match()` can be directly used\n        as a condition in an if-statement.",
    "argsStr": "{str}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "regex:match_line",
-   "description": "Match line {line_idx} (zero-based) in buffer {bufnr}. If {start} and\n        {end} are supplied, match only this byte index range. Otherwise see\n        |regex:match_str()|. If {start} is used, then the returned byte\n        indices will be relative {start}.",
+   "description": "        Match line {line_idx} (zero-based) in buffer {bufnr}. If {start} and\n        {end} are supplied, match only this byte index range. Otherwise see\n        |regex:match_str()|. If {start} is used, then the returned byte\n        indices will be relative {start}.",
    "argsStr": "{bufnr}, {line_idx}[, {start}, {end}]",
    "returnType": "any"
   }

@@ -1,3 +1,4 @@
+import { default as trimNl } from "trim-newlines";
 import { SectionDataType } from "../types";
 
 export const vimdocParser = (text: string) => {
@@ -93,7 +94,7 @@ export const vimdocParser = (text: string) => {
           propDescription += lines[crrLine] + "\n";
           crrLine++;
         }
-        propDescription = propDescription.trim();
+        propDescription = trimNl(propDescription);
         if (propType === "func") {
           const functionMatcher = /(?<funcName>.+?)\((?<arguments>.*?)\)/;
           const functionMatch = functionMatcher.exec(leftTitle);

@@ -6,14 +6,14 @@
   {
    "type": "func",
    "name": "vim.highlight.on_yank",
-   "description": "Highlights the yanked text. The fields of the optional dict {opts}\n        control the highlight:\n          - {higroup} highlight group for yanked region (default `\"IncSearch\"`)\n          - {timeout} time in ms before highlight is cleared (default `150`)\n          - {on_macro} highlight when executing macro (default `false`)\n          - {on_visual} highlight when yanking visual selection (default `true`)\n          - {event} event structure (default `vim.v.event`)\n\nvim.highlight.range({bufnr}, {ns}, {higroup}, {start}, {finish}, {rtype}, {inclusive})",
+   "description": "        Highlights the yanked text. The fields of the optional dict {opts}\n        control the highlight:\n          - {higroup} highlight group for yanked region (default `\"IncSearch\"`)\n          - {timeout} time in ms before highlight is cleared (default `150`)\n          - {on_macro} highlight when executing macro (default `false`)\n          - {on_visual} highlight when yanking visual selection (default `true`)\n          - {event} event structure (default `vim.v.event`)\n\nvim.highlight.range({bufnr}, {ns}, {higroup}, {start}, {finish}, {rtype}, {inclusive})",
    "argsStr": "{opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "        Highlights the range between {start} and {finish} ",
-   "description": "in buffer {bufnr} with the highlight group {higroup} using the namespace\n        {ns}. Optional arguments are the type of range (characterwise, linewise,\n        or blockwise, see |setreg|; default to characterwise) and whether the\n        range is inclusive (default false).",
+   "description": "        in buffer {bufnr} with the highlight group {higroup} using the namespace\n        {ns}. Optional arguments are the type of range (characterwise, linewise,\n        or blockwise, see |setreg|; default to characterwise) and whether the\n        range is inclusive (default false).",
    "argsStr": "tuples of {line,col}",
    "returnType": "any"
   }
