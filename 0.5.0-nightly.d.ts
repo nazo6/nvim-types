@@ -29,4 +29,18 @@ declare namespace vim {
    *   au TextYankPost * silent! lua vim.highlight.on_yank {on_visual=false}
    */
   const highlight: highlight;
+  /** Parse the regex {re} and return a regex object. 'magic' and
+   *  'ignorecase' options are ignored, lua regexes always defaults to magic
+   *  and ignoring case.  The behavior can be changed with flags in
+   *  the beginning of the string |/magic|. */
+  function regex(re: any): any;
+  /** `vim.loop` exposes all features of the Nvim event-loop.  This is a low-level
+   *  API that provides functionality for networking, filesystem, and process
+   *  management.  Try this command to see available functions:
+   *    :lua print(vim.inspect(vim.loop))
+   *
+   *  Reference: https://github.com/luvit/luv/blob/master/docs.md
+   *  Examples:  https://github.com/luvit/luv/tree/master/examples
+   */
+  const loop: any;
 }
