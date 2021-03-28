@@ -114,7 +114,7 @@ export const commonInterfaceChildProcessor = (data: SectionDataType) => {
       if (propertyData.type === "func") {
         text +=
           `/** 
-      ${normalizeCommentStr(propertyData.description)}}
+      ${normalizeCommentStr(propertyData.description)}
       */` + "\n";
         text += createInterfaceFunction(
           propName,

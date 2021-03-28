@@ -1,11 +1,11 @@
 /** @noSelf **/
 interface api {
   /** 
-      TODO: Documentation}
+      TODO: Documentation
       */
   nvim__get_hl_defs: (ns_id: any) => any;
   /** 
-      TODO: Documentation}
+      TODO: Documentation
       */
   nvim__get_lib_dir: () => any;
   /** 
@@ -18,7 +18,7 @@ interface api {
                     {obj}  Object to return.
 
                 Return: ~
-                    its argument.}
+                    its argument.
       */
   nvim__id: (obj: any) => any;
   /** 
@@ -31,7 +31,7 @@ interface api {
                     {arr}  Array to return.
 
                 Return: ~
-                    its argument.}
+                    its argument.
       */
   nvim__id_array: (arr: any) => any;
   /** 
@@ -44,7 +44,7 @@ interface api {
                     {dct}  Dictionary to return.
 
                 Return: ~
-                    its argument.}
+                    its argument.
       */
   nvim__id_dictionary: (dct: any) => any;
   /** 
@@ -57,25 +57,25 @@ interface api {
                     {flt}  Value to return.
 
                 Return: ~
-                    its argument.}
+                    its argument.
       */
   nvim__id_float: (flt: any) => any;
   /** 
-      TODO: Documentation}
+      TODO: Documentation
       */
   nvim__inspect_cell: (grid: any, row: any, col: any) => any;
   /** 
       TODO: Documentation
 
                 Attributes: ~
-                    {fast}}
+                    {fast}
       */
   nvim__screenshot: (path: any) => any;
   /** 
       Gets internal stats.
 
                 Return: ~
-                    Map of various internal stats.}
+                    Map of various internal stats.
       */
   nvim__stats: () => any;
   /** 
@@ -102,7 +102,7 @@ interface api {
                     with the zero-based index of the call which resulted in an
                     error, the error type and the error message. If an error
                     occurred, the values from all preceding calls will still
-                    be returned.}
+                    be returned.
       */
   nvim_call_atomic: (calls: any) => any;
   /** 
@@ -118,7 +118,7 @@ interface api {
                     {args}  Function arguments packed in an Array
 
                 Return: ~
-                    Result of the function call}
+                    Result of the function call
       */
   nvim_call_dict_function: (dict: any, fn: any, args: any) => any;
   /** 
@@ -132,7 +132,7 @@ interface api {
                     {args}  Function arguments packed in an Array
 
                 Return: ~
-                    Result of the function call}
+                    Result of the function call
       */
   nvim_call_function: (fn: any, args: any) => any;
   /** 
@@ -145,7 +145,7 @@ interface api {
                     {command}  Ex-command string
 
                 See also: ~
-                    |nvim_exec()|}
+                    |nvim_exec()|
       */
   nvim_command: (command: any) => any;
   /** 
@@ -161,7 +161,7 @@ interface api {
                     Buffer handle, or 0 on error
 
                 See also: ~
-                    buf_open_scratch}
+                    buf_open_scratch
       */
   nvim_create_buf: (listed: any, scratch: any) => any;
   /** 
@@ -179,14 +179,14 @@ interface api {
                     {name}  Namespace name or empty string
 
                 Return: ~
-                    Namespace id}
+                    Namespace id
       */
   nvim_create_namespace: (name: any) => any;
   /** 
       Deletes the current line.
 
                 Attributes: ~
-                    not allowed when |textlock| is active}
+                    not allowed when |textlock| is active
       */
   nvim_del_current_line: () => any;
   /** 
@@ -195,14 +195,14 @@ interface api {
                 To unmap a buffer-local mapping, use |nvim_buf_del_keymap()|.
 
                 See also: ~
-                    |nvim_set_keymap()|}
+                    |nvim_set_keymap()|
       */
   nvim_del_keymap: (mode: any, lhs: any) => any;
   /** 
       Removes a global (g:) variable.
 
                 Parameters: ~
-                    {name}  Variable name}
+                    {name}  Variable name
       */
   nvim_del_var: (name: any) => any;
   /** 
@@ -214,7 +214,7 @@ interface api {
                                highlight. `hl_group` element can be omitted
                                for no highlight.
                     {history}  if true, add to |message-history|.
-                    {opts}     Optional parameters. Reserved for future use.}
+                    {opts}     Optional parameters. Reserved for future use.
       */
   nvim_echo: (chunks: any, history: any, opts: any) => any;
   /** 
@@ -223,7 +223,7 @@ interface api {
                 is written.
 
                 Parameters: ~
-                    {str}  Message}
+                    {str}  Message
       */
   nvim_err_write: (str: any) => any;
   /** 
@@ -234,7 +234,7 @@ interface api {
                     {str}  Message
 
                 See also: ~
-                    nvim_err_write()}
+                    nvim_err_write()
       */
   nvim_err_writeln: (str: any) => any;
   /** 
@@ -248,7 +248,7 @@ interface api {
                     {expr}  VimL expression string
 
                 Return: ~
-                    Evaluation result or expanded object}
+                    Evaluation result or expanded object
       */
   nvim_eval: (expr: any) => any;
   /** 
@@ -272,7 +272,7 @@ interface api {
 
                 See also: ~
                     |execute()|
-                    |nvim_command()|}
+                    |nvim_command()|
       */
   nvim_exec: (src: any, output: any) => any;
   /** 
@@ -287,7 +287,7 @@ interface api {
                     {args}  Arguments to the code
 
                 Return: ~
-                    Return value of Lua code if present or NIL.}
+                    Return value of Lua code if present or NIL.
       */
   nvim_exec_lua: (code: any, args: any) => any;
   /** 
@@ -315,7 +315,7 @@ interface api {
 
                 See also: ~
                     feedkeys()
-                    vim_strsave_escape_csi}
+                    vim_strsave_escape_csi
       */
   nvim_feedkeys: (keys: any, mode: any, escape_csi: any) => any;
   /** 
@@ -325,7 +325,7 @@ interface api {
                 metadata dictionaries as detailed at |nvim_get_option_info|.
 
                 Return: ~
-                    dictionary of all options}
+                    dictionary of all options
       */
   nvim_get_all_options_info: () => any;
   /** 
@@ -336,7 +336,7 @@ interface api {
                     2-tuple [{channel-id}, {api-metadata}]
 
                 Attributes: ~
-                    {fast}}
+                    {fast}
       */
   nvim_get_api_info: () => any;
   /** 
@@ -365,7 +365,7 @@ interface api {
                       (optional)
                     • "client" information about the client on the other end
                       of the RPC channel, if it has added it using
-                      |nvim_set_client_info()|. (optional)}
+                      |nvim_set_client_info()|. (optional)
       */
   nvim_get_chan_info: (chan: any) => any;
   /** 
@@ -381,7 +381,7 @@ interface api {
                     {name}  Color name or "#rrggbb" string
 
                 Return: ~
-                    24-bit RGB value, or -1 for invalid argument.}
+                    24-bit RGB value, or -1 for invalid argument.
       */
   nvim_get_color_by_name: (name: any) => any;
   /** 
@@ -391,7 +391,7 @@ interface api {
                 color values (e.g. 65535).
 
                 Return: ~
-                    Map of color names and RGB values.}
+                    Map of color names and RGB values.
       */
   nvim_get_color_map: () => any;
   /** 
@@ -405,7 +405,7 @@ interface api {
                             {"builtin":false}
 
                 Return: ~
-                    Map of maps describing commands.}
+                    Map of maps describing commands.
       */
   nvim_get_commands: (opts: any) => any;
   /** 
@@ -418,35 +418,35 @@ interface api {
                               "all".
 
                 Return: ~
-                    map of global |context|.}
+                    map of global |context|.
       */
   nvim_get_context: (opts: any) => any;
   /** 
       Gets the current buffer.
 
                 Return: ~
-                    Buffer handle}
+                    Buffer handle
       */
   nvim_get_current_buf: () => any;
   /** 
       Gets the current line.
 
                 Return: ~
-                    Current line string}
+                    Current line string
       */
   nvim_get_current_line: () => any;
   /** 
       Gets the current tabpage.
 
                 Return: ~
-                    Tabpage handle}
+                    Tabpage handle
       */
   nvim_get_current_tabpage: () => any;
   /** 
       Gets the current window.
 
                 Return: ~
-                    Window handle}
+                    Window handle
       */
   nvim_get_current_win: () => any;
   /** 
@@ -460,7 +460,7 @@ interface api {
                     Highlight definition map
 
                 See also: ~
-                    nvim_get_hl_by_name}
+                    nvim_get_hl_by_name
       */
   nvim_get_hl_by_id: (hl_id: any, rgb: any) => any;
   /** 
@@ -474,13 +474,13 @@ interface api {
                     Highlight definition map
 
                 See also: ~
-                    nvim_get_hl_by_id}
+                    nvim_get_hl_by_id
       */
   nvim_get_hl_by_name: (name: any, rgb: any) => any;
   /** 
       Gets a highlight group by name
 
-                similar to |hlID()|, but allocates a new ID if not present.}
+                similar to |hlID()|, but allocates a new ID if not present.
       */
   nvim_get_hl_id_by_name: (name: any) => any;
   /** 
@@ -492,7 +492,7 @@ interface api {
 
                 Return: ~
                     Array of maparg()-like dictionaries describing mappings.
-                    The "buffer" key is always zero.}
+                    The "buffer" key is always zero.
       */
   nvim_get_keymap: (mode: any) => any;
   /** 
@@ -503,14 +503,14 @@ interface api {
                     Dictionary { "mode": String, "blocking": Boolean }
 
                 Attributes: ~
-                    {fast}}
+                    {fast}
       */
   nvim_get_mode: () => any;
   /** 
       Gets existing, non-anonymous namespaces.
 
                 Return: ~
-                    dict that maps from names to namespace ids.}
+                    dict that maps from names to namespace ids.
       */
   nvim_get_namespaces: () => any;
   /** 
@@ -520,7 +520,7 @@ interface api {
                     {name}  Option name
 
                 Return: ~
-                    Option value (global)}
+                    Option value (global)
       */
   nvim_get_option: (name: any) => any;
   /** 
@@ -544,21 +544,21 @@ interface api {
                     {name}  Option name
 
                 Return: ~
-                    Option Information}
+                    Option Information
       */
   nvim_get_option_info: (name: any) => any;
   /** 
       Gets info describing process `pid` .
 
                 Return: ~
-                    Map of process properties, or NIL if process not found.}
+                    Map of process properties, or NIL if process not found.
       */
   nvim_get_proc: (pid: any) => any;
   /** 
       Gets the immediate children of process `pid` .
 
                 Return: ~
-                    Array of child process ids, empty if process not found.}
+                    Array of child process ids, empty if process not found.
       */
   nvim_get_proc_children: (pid: any) => any;
   /** 
@@ -584,7 +584,7 @@ interface api {
                     {all}   whether to return all matches or only the first
 
                 Return: ~
-                    list of absolute paths to the found files}
+                    list of absolute paths to the found files
       */
   nvim_get_runtime_file: (name: any, all: any) => any;
   /** 
@@ -594,7 +594,7 @@ interface api {
                     {name}  Variable name
 
                 Return: ~
-                    Variable value}
+                    Variable value
       */
   nvim_get_var: (name: any) => any;
   /** 
@@ -604,7 +604,7 @@ interface api {
                     {name}  Variable name
 
                 Return: ~
-                    Variable value}
+                    Variable value
       */
   nvim_get_vvar: (name: any) => any;
   /** 
@@ -631,7 +631,7 @@ interface api {
 
                 Return: ~
                     Number of bytes actually written (can be fewer than
-                    requested if the buffer becomes full).}
+                    requested if the buffer becomes full).
       */
   nvim_input: (keys: any) => any;
   /** 
@@ -667,7 +667,7 @@ interface api {
                     {row}       Mouse row-position (zero-based, like redraw
                                 events)
                     {col}       Mouse column-position (zero-based, like redraw
-                                events)}
+                                events)
       */
   nvim_input_mouse: (
     button: any,
@@ -684,7 +684,7 @@ interface api {
                 Use |nvim_buf_is_loaded()| to check if a buffer is loaded.
 
                 Return: ~
-                    List of buffer handles}
+                    List of buffer handles
       */
   nvim_list_bufs: () => any;
   /** 
@@ -692,21 +692,21 @@ interface api {
 
                 Return: ~
                     Array of Dictionaries, each describing a channel with the
-                    format specified at |nvim_get_chan_info()|.}
+                    format specified at |nvim_get_chan_info()|.
       */
   nvim_list_chans: () => any;
   /** 
       Gets the paths contained in 'runtimepath'.
 
                 Return: ~
-                    List of paths}
+                    List of paths
       */
   nvim_list_runtime_paths: () => any;
   /** 
       Gets the current list of tabpage handles.
 
                 Return: ~
-                    List of tabpage handles}
+                    List of tabpage handles
       */
   nvim_list_tabpages: () => any;
   /** 
@@ -719,21 +719,21 @@ interface api {
                     • "rgb" true if the UI uses RGB colors (false implies
                       |cterm-colors|)
                     • "ext_..." Requested UI extensions, see |ui-option|
-                    • "chan" Channel id of remote UI (not present for TUI)}
+                    • "chan" Channel id of remote UI (not present for TUI)
       */
   nvim_list_uis: () => any;
   /** 
       Gets the current list of window handles.
 
                 Return: ~
-                    List of window handles}
+                    List of window handles
       */
   nvim_list_wins: () => any;
   /** 
       Sets the current editor state from the given |context| map.
 
                 Parameters: ~
-                    {dict}  |Context| map.}
+                    {dict}  |Context| map.
       */
   nvim_load_context: (dict: any) => any;
   /** 
@@ -746,7 +746,7 @@ interface api {
                 Parameters: ~
                     {msg}        Message to display to the user
                     {log_level}  The log level
-                    {opts}       Reserved for future use.}
+                    {opts}       Reserved for future use.
       */
   nvim_notify: (msg: any, log_level: any, opts: any) => any;
   /** 
@@ -849,7 +849,7 @@ interface api {
                                   'winhighlight'.
 
                 Return: ~
-                    Window handle, or 0 on error}
+                    Window handle, or 0 on error
       */
   nvim_open_win: (buffer: any, enter: any, config: any) => any;
   /** 
@@ -858,7 +858,7 @@ interface api {
                 is written.
 
                 Parameters: ~
-                    {str}  Message}
+                    {str}  Message
       */
   nvim_out_write: (str: any) => any;
   /** 
@@ -955,7 +955,7 @@ interface api {
                       • "fvalue": Float, floating-point value for "Float"
                         nodes.
                       • "svalue": String, value for "SingleQuotedString" and
-                        "DoubleQuotedString" nodes.}
+                        "DoubleQuotedString" nodes.
       */
   nvim_parse_expression: (expr: any, flags: any, highlight: any) => any;
   /** 
@@ -987,7 +987,7 @@ interface api {
                 Return: ~
 
                     • true: Client may continue pasting.
-                    • false: Client must cancel the paste.}
+                    • false: Client must cancel the paste.
       */
   nvim_paste: (data: any, crlf: any, phase: any) => any;
   /** 
@@ -1009,7 +1009,7 @@ interface api {
                               • "" guess by contents, see |setreg()|
                     {after}   If true insert after cursor (like |p|), or before (like
                               |P|).
-                    {follow}  If true place cursor at end of inserted text.}
+                    {follow}  If true place cursor at end of inserted text.
       */
   nvim_put: (lines: any, type: any, after: any, follow: any) => any;
   /** 
@@ -1026,7 +1026,7 @@ interface api {
 
                 See also: ~
                     replace_termcodes
-                    cpoptions}
+                    cpoptions
       */
   nvim_replace_termcodes: (
     str: any,
@@ -1051,7 +1051,7 @@ interface api {
                               buffer.
                     {finish}  Finish the completion and dismiss the popupmenu.
                               Implies `insert` .
-                    {opts}    Optional parameters. Reserved for future use.}
+                    {opts}    Optional parameters. Reserved for future use.
       */
   nvim_select_popupmenu_item: (
     item: any,
@@ -1120,7 +1120,7 @@ interface api {
                                     2", "GPLv3", "MIT", …)
                                   • "logo": URI or path to image, preferably
                                     small logo or icon. .png or .svg format is
-                                    preferred.}
+                                    preferred.
       */
   nvim_set_client_info: (
     name: any,
@@ -1136,14 +1136,14 @@ interface api {
                     not allowed when |textlock| is active
 
                 Parameters: ~
-                    {buffer}  Buffer handle}
+                    {buffer}  Buffer handle
       */
   nvim_set_current_buf: (buffer: any) => any;
   /** 
       Changes the global working directory.
 
                 Parameters: ~
-                    {dir}  Directory path}
+                    {dir}  Directory path
       */
   nvim_set_current_dir: (dir: any) => any;
   /** 
@@ -1153,7 +1153,7 @@ interface api {
                     not allowed when |textlock| is active
 
                 Parameters: ~
-                    {line}  Line contents}
+                    {line}  Line contents
       */
   nvim_set_current_line: (line: any) => any;
   /** 
@@ -1163,7 +1163,7 @@ interface api {
                     not allowed when |textlock| is active
 
                 Parameters: ~
-                    {tabpage}  Tabpage handle}
+                    {tabpage}  Tabpage handle
       */
   nvim_set_current_tabpage: (tabpage: any) => any;
   /** 
@@ -1173,7 +1173,7 @@ interface api {
                     not allowed when |textlock| is active
 
                 Parameters: ~
-                    {window}  Window handle}
+                    {window}  Window handle
       */
   nvim_set_current_win: (window: any) => any;
   /** 
@@ -1220,7 +1220,7 @@ interface api {
                                redrawn. (The interation with fold lines is
                                subject to change) ["win", winid, bufnr, row]
                              • on_end: called at the end of a redraw cycle
-                               ["end", tick]}
+                               ["end", tick]
       */
   nvim_set_decoration_provider: (ns_id: any, opts: any) => any;
   /** 
@@ -1235,7 +1235,7 @@ interface api {
                     {val}    highlight definiton map, like
                              |nvim_get_hl_by_name|. in addition the following
                              keys are also recognized: `default` : don't
-                             override existing definition, like `hi default`}
+                             override existing definition, like `hi default`
       */
   nvim_set_hl: (ns_id: any, name: any, val: any) => any;
   /** 
@@ -1251,7 +1251,7 @@ interface api {
                     {fast}
 
                 Parameters: ~
-                    {ns_id}  the namespace to activate}
+                    {ns_id}  the namespace to activate
       */
   nvim_set_hl_ns: (ns_id: any) => any;
   /** 
@@ -1280,7 +1280,7 @@ interface api {
                     {opts}  Optional parameters map. Accepts all
                             |:map-arguments| as keys excluding |<buffer>| but
                             including |noremap|. Values are Booleans. Unknown
-                            key is an error.}
+                            key is an error.
       */
   nvim_set_keymap: (mode: any, lhs: any, rhs: any, opts: any) => any;
   /** 
@@ -1288,7 +1288,7 @@ interface api {
 
                 Parameters: ~
                     {name}   Option name
-                    {value}  New option value}
+                    {value}  New option value
       */
   nvim_set_option: (name: any, value: any) => any;
   /** 
@@ -1296,7 +1296,7 @@ interface api {
 
                 Parameters: ~
                     {name}   Variable name
-                    {value}  Variable value}
+                    {value}  Variable value
       */
   nvim_set_var: (name: any, value: any) => any;
   /** 
@@ -1304,7 +1304,7 @@ interface api {
 
                 Parameters: ~
                     {name}   Variable name
-                    {value}  Variable value}
+                    {value}  Variable value
       */
   nvim_set_vvar: (name: any, value: any) => any;
   /** 
@@ -1315,21 +1315,21 @@ interface api {
                     {text}  Some text
 
                 Return: ~
-                    Number of cells}
+                    Number of cells
       */
   nvim_strwidth: (text: any) => any;
   /** 
       Subscribes to event broadcasts.
 
                 Parameters: ~
-                    {event}  Event type string}
+                    {event}  Event type string
       */
   nvim_subscribe: (event: any) => any;
   /** 
       Unsubscribes to event broadcasts.
 
                 Parameters: ~
-                    {event}  Event type string}
+                    {event}  Event type string
       */
   nvim_unsubscribe: (event: any) => any;
 }

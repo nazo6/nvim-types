@@ -9,7 +9,7 @@ interface highlight {
           - {on_visual} highlight when yanking visual selection (default `true`)
           - {event} event structure (default `vim.v.event`)
 
-vim.highlight.range({bufnr}, {ns}, {higroup}, {start}, {finish}, {rtype}, {inclusive})}
+vim.highlight.range({bufnr}, {ns}, {higroup}, {start}, {finish}, {rtype}, {inclusive})
       */
   on_yank: (opts: any) => any;
 }
