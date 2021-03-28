@@ -1332,4 +1332,1046 @@ interface api {
                     {event}  Event type string
       */
   nvim_unsubscribe: (event: any) => any;
+  /** 
+      TODO: Documentation
+      */
+  nvim__buf_redraw_range: (buffer: any, first: any, last: any) => any;
+  /** 
+      TODO: Documentation
+      */
+  nvim__buf_stats: (buffer: any) => any;
+  /** 
+      {col_end})
+                Adds a highlight to buffer.
+
+                Useful for plugins that dynamically generate highlights to a
+                buffer (like a semantic highlighter or linter). The function
+                adds a single highlight to a buffer. Unlike |matchaddpos()|
+                highlights follow changes to line numbering (as lines are
+                inserted/removed above the highlighted line), like signs and
+                marks do.
+
+                Namespaces are used for batch deletion/updating of a set of
+                highlights. To create a namespace, use
+                |nvim_create_namespace()| which returns a namespace id. Pass
+                it in to this function as `ns_id` to add highlights to the
+                namespace. All highlights in the same namespace can then be
+                cleared with single call to |nvim_buf_clear_namespace()|. If
+                the highlight never will be deleted by an API call, pass
+                `ns_id = -1` .
+
+                As a shorthand, `ns_id = 0` can be used to create a new
+                namespace for the highlight, the allocated id is then
+                returned. If `hl_group` is the empty string no highlight is
+                added, but a new `ns_id` is still returned. This is supported
+                for backwards compatibility, new code should use
+                |nvim_create_namespace()| to create a new empty namespace.
+
+                Parameters: ~
+                    {buffer}     Buffer handle, or 0 for current buffer
+                    {ns_id}      namespace to use or -1 for ungrouped
+                                 highlight
+                    {hl_group}   Name of the highlight group to use
+                    {line}       Line to highlight (zero-indexed)
+                    {col_start}  Start of (byte-indexed) column range to
+                                 highlight
+                    {col_end}    End of (byte-indexed) column range to
+                                 highlight, or -1 to highlight to end of line
+
+                Return: ~
+                    The ns_id that was used
+      */
+  nvim_buf_add_highlight: () => any;
+  /** 
+      Activates buffer-update events on a channel, or as Lua
+                callbacks.
+
+                Example (Lua): capture buffer updates in a global `events` variable (use "print(vim.inspect(events))" to see its
+                contents): >
+                  events = {}
+                  vim.api.nvim_buf_attach(0, false, {
+                    on_lines=function(...) table.insert(events, {...}) end})
+<
+
+                Parameters: ~
+                    {buffer}       Buffer handle, or 0 for current buffer
+                    {send_buffer}  True if the initial notification should
+                                   contain the whole buffer: first
+                                   notification will be `nvim_buf_lines_event`
+                                   . Else the first notification will be
+                                   `nvim_buf_changedtick_event` . Not for Lua
+                                   callbacks.
+                    {opts}         Optional parameters.
+                                   • on_lines: Lua callback invoked on change.
+                                     Return`true`to detach. Args:
+                                     • the string "lines"
+                                     • buffer handle
+                                     • b:changedtick
+                                     • first line that changed (zero-indexed)
+                                     • last line that was changed
+                                     • last line in the updated range
+                                     • byte count of previous contents
+                                     • deleted_codepoints (if `utf_sizes` is
+                                       true)
+                                     • deleted_codeunits (if `utf_sizes` is
+                                       true)
+
+                                   • on_bytes: lua callback invoked on change.
+                                     This callback receives more granular
+                                     information about the change compared to
+                                     on_lines. Return`true`to detach. Args:
+                                     • the string "bytes"
+                                     • buffer handle
+                                     • b:changedtick
+                                     • start row of the changed text
+                                       (zero-indexed)
+                                     • start column of the changed text
+                                     • byte offset of the changed text (from
+                                       the start of the buffer)
+                                     • old end row of the changed text
+                                     • old end column of the changed text
+                                     • old end byte length of the changed text
+                                     • new end row of the changed text
+                                     • new end column of the changed text
+                                     • new end byte length of the changed text
+
+                                   • on_changedtick: Lua callback invoked on
+                                     changedtick increment without text
+                                     change. Args:
+                                     • the string "changedtick"
+                                     • buffer handle
+                                     • b:changedtick
+
+                                   • on_detach: Lua callback invoked on
+                                     detach. Args:
+                                     • the string "detach"
+                                     • buffer handle
+
+                                   • on_reload: Lua callback invoked on
+                                     reload. The entire buffer content should
+                                     be considered changed. Args:
+                                     • the string "detach"
+                                     • buffer handle
+
+                                   • utf_sizes: include UTF-32 and UTF-16 size
+                                     of the replaced region, as args to
+                                     `on_lines` .
+                                   • preview: also attach to command preview
+                                     (i.e. 'inccommand') events.
+
+                Return: ~
+                    False if attach failed (invalid parameter, or buffer isn't
+                    loaded); otherwise True. TODO: LUA_API_NO_EVAL
+
+                See also: ~
+                    |nvim_buf_detach()|
+                    |api-buffer-updates-lua|
+      */
+  nvim_buf_attach: (buffer: any, send_buffer: any, opts: any) => any;
+  /** 
+      call a function with buffer as temporary current buffer
+
+                This temporarily switches current buffer to "buffer". If the
+                current window already shows "buffer", the window is not
+                switched If a window inside the current tabpage (including a
+                float) already shows the buffer One of these windows will be
+                set as current window temporarily. Otherwise a temporary
+                scratch window (calleed the "autocmd window" for historical
+                reasons) will be used.
+
+                This is useful e.g. to call vimL functions that only work with
+                the current buffer/window currently, like |termopen()|.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {fun}     Function to call inside the buffer (currently
+                              lua callable only)
+
+                Return: ~
+                    Return value of function. NB: will deepcopy lua values
+                    currently, use upvalues to send lua references in and out.
+      */
+  nvim_buf_call: (buffer: any, fun: any) => any;
+  /** 
+      Clears namespaced objects (highlights, extmarks, virtual text)
+                from a region.
+
+                Lines are 0-indexed. |api-indexing| To clear the namespace in
+                the entire buffer, specify line_start=0 and line_end=-1.
+
+                Parameters: ~
+                    {buffer}      Buffer handle, or 0 for current buffer
+                    {ns_id}       Namespace to clear, or -1 to clear all
+                                  namespaces.
+                    {line_start}  Start of range of lines to clear
+                    {line_end}    End of range of lines to clear (exclusive)
+                                  or -1 to clear to end of buffer.
+      */
+  nvim_buf_clear_namespace: (
+    buffer: any,
+    ns_id: any,
+    line_start: any,
+    line_end: any
+  ) => any;
+  /** 
+      Removes an extmark.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {ns_id}   Namespace id from |nvim_create_namespace()|
+                    {id}      Extmark id
+
+                Return: ~
+                    true if the extmark was found, else false
+      */
+  nvim_buf_del_extmark: (buffer: any, ns_id: any, id: any) => any;
+  /** 
+      Unmaps a buffer-local |mapping| for the given mode.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                See also: ~
+                    |nvim_del_keymap()|
+      */
+  nvim_buf_del_keymap: (buffer: any, mode: any, lhs: any) => any;
+  /** 
+      Removes a buffer-scoped (b:) variable
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {name}    Variable name
+      */
+  nvim_buf_del_var: (buffer: any, name: any) => any;
+  /** 
+      Deletes the buffer. See |:bwipeout|
+
+                Attributes: ~
+                    not allowed when |textlock| is active
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {opts}    Optional parameters. Keys:
+                              • force: Force deletion and ignore unsaved
+                                changes.
+                              • unload: Unloaded only, do not delete. See
+                                |:bunload|
+      */
+  nvim_buf_delete: (buffer: any, opts: any) => any;
+  /** 
+      Deactivates buffer-update events on the channel.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                Return: ~
+                    False if detach failed (because the buffer isn't loaded);
+                    otherwise True.
+
+                See also: ~
+                    |nvim_buf_attach()|
+                    |api-lua-detach| for detaching Lua callbacks
+      */
+  nvim_buf_detach: (buffer: any) => any;
+  /** 
+      Gets a changed tick of a buffer
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                Return: ~
+                    `b:changedtick` value.
+      */
+  nvim_buf_get_changedtick: (buffer: any) => any;
+  /** 
+      Gets a map of buffer-local |user-commands|.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {opts}    Optional parameters. Currently not used.
+
+                Return: ~
+                    Map of maps describing commands.
+      */
+  nvim_buf_get_commands: (buffer: any, opts: any) => any;
+  /** 
+      Returns position for a given extmark id
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {ns_id}   Namespace id from |nvim_create_namespace()|
+                    {id}      Extmark id
+                    {opts}    Optional parameters. Keys:
+                              • details: Whether to include the details dict
+
+                Return: ~
+                    (row, col) tuple or empty list () if extmark id was absent
+      */
+  nvim_buf_get_extmark_by_id: (
+    buffer: any,
+    ns_id: any,
+    id: any,
+    opts: any
+  ) => any;
+  /** 
+      Gets extmarks in "traversal order" from a |charwise| region
+                defined by buffer positions (inclusive, 0-indexed
+                |api-indexing|).
+
+                Region can be given as (row,col) tuples, or valid extmark ids
+                (whose positions define the bounds). 0 and -1 are understood
+                as (0,0) and (-1,-1) respectively, thus the following are
+                equivalent:
+>
+    nvim_buf_get_extmarks(0, my_ns, 0, -1, {})
+    nvim_buf_get_extmarks(0, my_ns, [0,0], [-1,-1], {})
+<
+
+                If `end` is less than `start` , traversal works backwards.
+                (Useful with `limit` , to get the first marks prior to a given
+                position.)
+
+                Example:
+>
+    local a   = vim.api
+    local pos = a.nvim_win_get_cursor(0)
+    local ns  = a.nvim_create_namespace('my-plugin')
+    -- Create new extmark at line 1, column 1.
+    local m1  = a.nvim_buf_set_extmark(0, ns, 0, 0, 0, {})
+    -- Create new extmark at line 3, column 1.
+    local m2  = a.nvim_buf_set_extmark(0, ns, 0, 2, 0, {})
+    -- Get extmarks only from line 3.
+    local ms  = a.nvim_buf_get_extmarks(0, ns, {2,0}, {2,0}, {})
+    -- Get all marks in this buffer + namespace.
+    local all = a.nvim_buf_get_extmarks(0, ns, 0, -1, {})
+    print(vim.inspect(ms))
+<
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {ns_id}   Namespace id from |nvim_create_namespace()|
+                    {start}   Start of range, given as (row, col) or valid
+                              extmark id (whose position defines the bound)
+                    {end}     End of range, given as (row, col) or valid
+                              extmark id (whose position defines the bound)
+                    {opts}    Optional parameters. Keys:
+                              • limit: Maximum number of marks to return
+                              • details Whether to include the details dict
+
+                Return: ~
+                    List of [extmark_id, row, col] tuples in "traversal
+                    order".
+      */
+  nvim_buf_get_extmarks: (
+    buffer: any,
+    ns_id: any,
+    start: any,
+    end: any,
+    opts: any
+  ) => any;
+  /** 
+      Gets a list of buffer-local |mapping| definitions.
+
+                Parameters: ~
+                    {mode}    Mode short-name ("n", "i", "v", ...)
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                Return: ~
+                    Array of maparg()-like dictionaries describing mappings.
+                    The "buffer" key holds the associated buffer handle.
+      */
+  nvim_buf_get_keymap: (buffer: any, mode: any) => any;
+  /** 
+      Gets a line-range from the buffer.
+
+                Indexing is zero-based, end-exclusive. Negative indices are
+                interpreted as length+1+index: -1 refers to the index past the
+                end. So to get the last element use start=-2 and end=-1.
+
+                Out-of-bounds indices are clamped to the nearest valid value,
+                unless `strict_indexing` is set.
+
+                Parameters: ~
+                    {buffer}           Buffer handle, or 0 for current buffer
+                    {start}            First line index
+                    {end}              Last line index (exclusive)
+                    {strict_indexing}  Whether out-of-bounds should be an
+                                       error.
+
+                Return: ~
+                    Array of lines, or empty array for unloaded buffer.
+      */
+  nvim_buf_get_lines: (
+    buffer: any,
+    start: any,
+    end: any,
+    strict_indexing: any
+  ) => any;
+  /** 
+      Return a tuple (row,col) representing the position of the
+                named mark.
+
+                Marks are (1,0)-indexed. |api-indexing|
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {name}    Mark name
+
+                Return: ~
+                    (row, col) tuple
+      */
+  nvim_buf_get_mark: (buffer: any, name: any) => any;
+  /** 
+      Gets the full file name for the buffer
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                Return: ~
+                    Buffer name
+      */
+  nvim_buf_get_name: (buffer: any) => any;
+  /** 
+      Returns the byte offset of a line (0-indexed). |api-indexing|
+
+                Line 1 (index=0) has offset 0. UTF-8 bytes are counted. EOL is
+                one byte. 'fileformat' and 'fileencoding' are ignored. The
+                line index just after the last line gives the total byte-count
+                of the buffer. A final EOL byte is counted if it would be
+                written, see 'eol'.
+
+                Unlike |line2byte()|, throws error for out-of-bounds indexing.
+                Returns -1 for unloaded buffer.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {index}   Line index
+
+                Return: ~
+                    Integer byte offset, or -1 for unloaded buffer.
+      */
+  nvim_buf_get_offset: (buffer: any, index: any) => any;
+  /** 
+      Gets a buffer option value
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {name}    Option name
+
+                Return: ~
+                    Option value
+      */
+  nvim_buf_get_option: (buffer: any, name: any) => any;
+  /** 
+      Gets a buffer-scoped (b:) variable.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {name}    Variable name
+
+                Return: ~
+                    Variable value
+      */
+  nvim_buf_get_var: (buffer: any, name: any) => any;
+  /** 
+      Checks if a buffer is valid and loaded. See |api-buffer| for
+                more info about unloaded buffers.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                Return: ~
+                    true if the buffer is valid and loaded, false otherwise.
+      */
+  nvim_buf_is_loaded: (buffer: any) => any;
+  /** 
+      Checks if a buffer is valid.
+
+                Note:
+                    Even if a buffer is valid it may have been unloaded. See
+                    |api-buffer| for more info about unloaded buffers.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                Return: ~
+                    true if the buffer is valid, false otherwise.
+      */
+  nvim_buf_is_valid: (buffer: any) => any;
+  /** 
+      Gets the buffer line count
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                Return: ~
+                    Line count, or 0 for unloaded buffer. |api-buffer|
+      */
+  nvim_buf_line_count: (buffer: any) => any;
+  /** 
+      Creates or updates an extmark.
+
+                To create a new extmark, pass id=0. The extmark id will be
+                returned. To move an existing mark, pass its id.
+
+                It is also allowed to create a new mark by passing in a
+                previously unused id, but the caller must then keep track of
+                existing and unused ids itself. (Useful over RPC, to avoid
+                waiting for the return value.)
+
+                Using the optional arguments, it is possible to use this to
+                highlight a range of text, and also to associate virtual text
+                to the mark.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {ns_id}   Namespace id from |nvim_create_namespace()|
+                    {line}    Line number where to place the mark
+                    {col}     Column where to place the mark
+                    {opts}    Optional parameters.
+                              • id : id of the extmark to edit.
+                              • end_line : ending line of the mark, 0-based
+                                inclusive.
+                              • end_col : ending col of the mark, 0-based
+                                inclusive.
+                              • hl_group : name of the highlight group used to
+                                highlight this mark.
+                              • virt_text : virtual text to link to this mark.
+                              • virt_text_pos : positioning of virtual text.
+                                Possible values:
+                                • "eol": right after eol character (default)
+                                • "overlay": display over the specified
+                                  column, without shifting the underlying
+                                  text.
+
+                              • ephemeral : for use with
+                                |nvim_set_decoration_provider| callbacks. The
+                                mark will only be used for the current redraw
+                                cycle, and not be permantently stored in the
+                                buffer.
+                              • right_gravity : boolean that indicates the
+                                direction the extmark will be shifted in when
+                                new text is inserted (true for right, false
+                                for left). defaults to true.
+                              • end_right_gravity : boolean that indicates the
+                                direction the extmark end position (if it
+                                exists) will be shifted in when new text is
+                                inserted (true for right, false for left).
+                                Defaults to false.
+
+                Return: ~
+                    Id of the created/updated extmark
+      */
+  nvim_buf_set_extmark: (
+    buffer: any,
+    ns_id: any,
+    line: any,
+    col: any,
+    opts: any
+  ) => any;
+  /** 
+      Sets a buffer-local |mapping| for the given mode.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+
+                See also: ~
+                    |nvim_set_keymap()|
+      */
+  nvim_buf_set_keymap: (
+    buffer: any,
+    mode: any,
+    lhs: any,
+    rhs: any,
+    opts: any
+  ) => any;
+  /** 
+      Sets (replaces) a line-range in the buffer.
+
+                Indexing is zero-based, end-exclusive. Negative indices are
+                interpreted as length+1+index: -1 refers to the index past the
+                end. So to change or delete the last element use start=-2 and
+                end=-1.
+
+                To insert lines at a given index, set `start` and `end` to the
+                same index. To delete a range of lines, set `replacement` to
+                an empty array.
+
+                Out-of-bounds indices are clamped to the nearest valid value,
+                unless `strict_indexing` is set.
+
+                Attributes: ~
+                    not allowed when |textlock| is active
+
+                Parameters: ~
+                    {buffer}           Buffer handle, or 0 for current buffer
+                    {start}            First line index
+                    {end}              Last line index (exclusive)
+                    {strict_indexing}  Whether out-of-bounds should be an
+                                       error.
+                    {replacement}      Array of lines to use as replacement
+      */
+  nvim_buf_set_lines: (
+    buffer: any,
+    start: any,
+    end: any,
+    strict_indexing: any,
+    replacement: any
+  ) => any;
+  /** 
+      Sets the full file name for a buffer
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {name}    Buffer name
+      */
+  nvim_buf_set_name: (buffer: any, name: any) => any;
+  /** 
+      Sets a buffer option value. Passing 'nil' as value deletes the
+                option (only works if there's a global fallback)
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {name}    Option name
+                    {value}   Option value
+      */
+  nvim_buf_set_option: (buffer: any, name: any, value: any) => any;
+  /** 
+      {replacement})
+                Sets (replaces) a range in the buffer
+
+                This is recommended over nvim_buf_set_lines when only
+                modifying parts of a line, as extmarks will be preserved on
+                non-modified parts of the touched lines.
+
+                Indexing is zero-based and end-exclusive.
+
+                To insert text at a given index, set `start` and `end` ranges
+                to the same index. To delete a range, set `replacement` to an
+                array containing an empty string, or simply an empty array.
+
+                Prefer nvim_buf_set_lines when adding or deleting entire lines
+                only.
+
+                Parameters: ~
+                    {buffer}        Buffer handle, or 0 for current buffer
+                    {start_row}     First line index
+                    {start_column}  Last column
+                    {end_row}       Last line index
+                    {end_column}    Last column
+                    {replacement}   Array of lines to use as replacement
+      */
+  nvim_buf_set_text: () => any;
+  /** 
+      Sets a buffer-scoped (b:) variable
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {name}    Variable name
+                    {value}   Variable value
+      */
+  nvim_buf_set_var: (buffer: any, name: any, value: any) => any;
+  /** 
+      Set the virtual text (annotation) for a buffer line.
+
+                By default (and currently the only option) the text will be
+                placed after the buffer text. Virtual text will never cause
+                reflow, rather virtual text will be truncated at the end of
+                the screen line. The virtual text will begin one cell
+                (|lcs-eol| or space) after the ordinary text.
+
+                Namespaces are used to support batch deletion/updating of
+                virtual text. To create a namespace, use
+                |nvim_create_namespace()|. Virtual text is cleared using
+                |nvim_buf_clear_namespace()|. The same `ns_id` can be used for
+                both virtual text and highlights added by
+                |nvim_buf_add_highlight()|, both can then be cleared with a
+                single call to |nvim_buf_clear_namespace()|. If the virtual
+                text never will be cleared by an API call, pass `ns_id = -1` .
+
+                As a shorthand, `ns_id = 0` can be used to create a new
+                namespace for the virtual text, the allocated id is then
+                returned.
+
+                Parameters: ~
+                    {buffer}  Buffer handle, or 0 for current buffer
+                    {ns_id}   Namespace to use or 0 to create a namespace, or
+                              -1 for a ungrouped annotation
+                    {line}    Line to annotate with virtual text
+                              (zero-indexed)
+                    {chunks}  A list of [text, hl_group] arrays, each
+                              representing a text chunk with specified
+                              highlight. `hl_group` element can be omitted for
+                              no highlight.
+                    {opts}    Optional parameters. Currently not used.
+
+                Return: ~
+                    The ns_id that was used
+      */
+  nvim_buf_set_virtual_text: (
+    buffer: any,
+    src_id: any,
+    line: any,
+    chunks: any,
+    opts: any
+  ) => any;
+  /** 
+      Removes a tab-scoped (t:) variable
+
+                Parameters: ~
+                    {tabpage}  Tabpage handle, or 0 for current tabpage
+                    {name}     Variable name
+      */
+  nvim_tabpage_del_var: (tabpage: any, name: any) => any;
+  /** 
+      Gets the tabpage number
+
+                Parameters: ~
+                    {tabpage}  Tabpage handle, or 0 for current tabpage
+
+                Return: ~
+                    Tabpage number
+      */
+  nvim_tabpage_get_number: (tabpage: any) => any;
+  /** 
+      Gets a tab-scoped (t:) variable
+
+                Parameters: ~
+                    {tabpage}  Tabpage handle, or 0 for current tabpage
+                    {name}     Variable name
+
+                Return: ~
+                    Variable value
+      */
+  nvim_tabpage_get_var: (tabpage: any, name: any) => any;
+  /** 
+      Gets the current window in a tabpage
+
+                Parameters: ~
+                    {tabpage}  Tabpage handle, or 0 for current tabpage
+
+                Return: ~
+                    Window handle
+      */
+  nvim_tabpage_get_win: (tabpage: any) => any;
+  /** 
+      Checks if a tabpage is valid
+
+                Parameters: ~
+                    {tabpage}  Tabpage handle, or 0 for current tabpage
+
+                Return: ~
+                    true if the tabpage is valid, false otherwise
+      */
+  nvim_tabpage_is_valid: (tabpage: any) => any;
+  /** 
+      Gets the windows in a tabpage
+
+                Parameters: ~
+                    {tabpage}  Tabpage handle, or 0 for current tabpage
+
+                Return: ~
+                    List of windows in `tabpage`
+      */
+  nvim_tabpage_list_wins: (tabpage: any) => any;
+  /** 
+      Sets a tab-scoped (t:) variable
+
+                Parameters: ~
+                    {tabpage}  Tabpage handle, or 0 for current tabpage
+                    {name}     Variable name
+                    {value}    Variable value
+      */
+  nvim_tabpage_set_var: (tabpage: any, name: any, value: any) => any;
+  /** 
+      Activates UI events on the channel.
+
+                Entry point of all UI clients. Allows |--embed| to continue
+                startup. Implies that the client is ready to show the UI. Adds
+                the client to the list of UIs. |nvim_list_uis()|
+
+                Note:
+                    If multiple UI clients are attached, the global screen
+                    dimensions degrade to the smallest client. E.g. if client
+                    A requests 80x40 but client B requests 200x100, the global
+                    screen has size 80x40.
+
+                Parameters: ~
+                    {width}    Requested screen columns
+                    {height}   Requested screen rows
+                    {options}  |ui-option| map
+      */
+  nvim_ui_attach: (width: any, height: any, options: any) => any;
+  /** 
+      Deactivates UI events on the channel.
+
+                Removes the client from the list of UIs. |nvim_list_uis()|
+      */
+  nvim_ui_detach: () => any;
+  /** 
+      Tells Nvim the geometry of the popumenu, to align floating
+                windows with an external popup menu.
+
+                Note that this method is not to be confused with
+                |nvim_ui_pum_set_height()|, which sets the number of visible
+                items in the popup menu, while this function sets the bounding
+                box of the popup menu, including visual elements such as
+                borders and sliders. Floats need not use the same font size,
+                nor be anchored to exact grid corners, so one can set
+                floating-point numbers to the popup menu geometry.
+
+                Parameters: ~
+                    {width}   Popupmenu width.
+                    {height}  Popupmenu height.
+                    {row}     Popupmenu row.
+                    {col}     Popupmenu height.
+      */
+  nvim_ui_pum_set_bounds: (width: any, height: any, row: any, col: any) => any;
+  /** 
+      Tells Nvim the number of elements displaying in the popumenu,
+                to decide <PageUp> and <PageDown> movement.
+
+                Parameters: ~
+                    {height}  Popupmenu height, must be greater than zero.
+      */
+  nvim_ui_pum_set_height: (height: any) => any;
+  /** 
+      TODO: Documentation
+      */
+  nvim_ui_set_option: (name: any, value: any) => any;
+  /** 
+      TODO: Documentation
+      */
+  nvim_ui_try_resize: (width: any, height: any) => any;
+  /** 
+      Tell Nvim to resize a grid. Triggers a grid_resize event with
+                the requested grid size or the maximum size if it exceeds size
+                limits.
+
+                On invalid grid handle, fails with error.
+
+                Parameters: ~
+                    {grid}    The handle of the grid to be changed.
+                    {width}   The new requested width.
+                    {height}  The new requested height.
+
+ vim:tw=78:ts=8:ft=help:norl:
+      */
+  nvim_ui_try_resize_grid: (grid: any, width: any, height: any) => any;
+  /** 
+      Closes the window (like |:close| with a |window-ID|).
+
+                Attributes: ~
+                    not allowed when |textlock| is active
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {force}   Behave like `:close!` The last window of a
+                              buffer with unwritten changes can be closed. The
+                              buffer will become hidden, even if 'hidden' is
+                              not set.
+      */
+  nvim_win_close: (window: any, force: any) => any;
+  /** 
+      Removes a window-scoped (w:) variable
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {name}    Variable name
+      */
+  nvim_win_del_var: (window: any, name: any) => any;
+  /** 
+      Gets the current buffer in a window
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    Buffer handle
+      */
+  nvim_win_get_buf: (window: any) => any;
+  /** 
+      Gets window configuration.
+
+                The returned value may be given to |nvim_open_win()|.
+
+                `relative` is empty for normal windows.
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    Map defining the window configuration, see
+                    |nvim_open_win()|
+      */
+  nvim_win_get_config: (window: any) => any;
+  /** 
+      Gets the (1,0)-indexed cursor position in the window.
+                |api-indexing|
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    (row, col) tuple
+      */
+  nvim_win_get_cursor: (window: any) => any;
+  /** 
+      Gets the window height
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    Height as a count of rows
+      */
+  nvim_win_get_height: (window: any) => any;
+  /** 
+      Gets the window number
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    Window number
+      */
+  nvim_win_get_number: (window: any) => any;
+  /** 
+      Gets a window option value
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {name}    Option name
+
+                Return: ~
+                    Option value
+      */
+  nvim_win_get_option: (window: any, name: any) => any;
+  /** 
+      Gets the window position in display cells. First position is
+                zero.
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    (row, col) tuple with the window position
+      */
+  nvim_win_get_position: (window: any) => any;
+  /** 
+      Gets the window tabpage
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    Tabpage that contains the window
+      */
+  nvim_win_get_tabpage: (window: any) => any;
+  /** 
+      Gets a window-scoped (w:) variable
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {name}    Variable name
+
+                Return: ~
+                    Variable value
+      */
+  nvim_win_get_var: (window: any, name: any) => any;
+  /** 
+      Gets the window width
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    Width as a count of columns
+      */
+  nvim_win_get_width: (window: any) => any;
+  /** 
+      Checks if a window is valid
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+
+                Return: ~
+                    true if the window is valid, false otherwise
+      */
+  nvim_win_is_valid: (window: any) => any;
+  /** 
+      Sets the current buffer in a window, without side-effects
+
+                Attributes: ~
+                    not allowed when |textlock| is active
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {buffer}  Buffer handle
+      */
+  nvim_win_set_buf: (window: any, buffer: any) => any;
+  /** 
+      Configures window layout. Currently only for floating and
+                external windows (including changing a split window to those
+                layouts).
+
+                When reconfiguring a floating window, absent option keys will
+                not be changed. `row` / `col` and `relative` must be
+                reconfigured together.
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {config}  Map defining the window configuration, see
+                              |nvim_open_win()|
+
+                See also: ~
+                    |nvim_open_win()|
+      */
+  nvim_win_set_config: (window: any, config: any) => any;
+  /** 
+      Sets the (1,0)-indexed cursor position in the window.
+                |api-indexing|
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {pos}     (row, col) tuple representing the new position
+      */
+  nvim_win_set_cursor: (window: any, pos: any) => any;
+  /** 
+      Sets the window height. This will only succeed if the screen
+                is split horizontally.
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {height}  Height as a count of rows
+      */
+  nvim_win_set_height: (window: any, height: any) => any;
+  /** 
+      Sets a window option value. Passing 'nil' as value deletes the
+                option(only works if there's a global fallback)
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {name}    Option name
+                    {value}   Option value
+      */
+  nvim_win_set_option: (window: any, name: any, value: any) => any;
+  /** 
+      Sets a window-scoped (w:) variable
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {name}    Variable name
+                    {value}   Variable value
+      */
+  nvim_win_set_var: (window: any, name: any, value: any) => any;
+  /** 
+      Sets the window width. This will only succeed if the screen is
+                split vertically.
+
+                Parameters: ~
+                    {window}  Window handle, or 0 for current window
+                    {width}   Width as a count of columns
+      */
+  nvim_win_set_width: (window: any, width: any) => any;
 }

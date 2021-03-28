@@ -2,7 +2,7 @@ export const createDeclareNamespace = (name: string, content: string) => {
   return `/** @noSelf **/
   declare namespace ${name} {
     ${content}
-  }`;
+  }\n\n`;
 };
 export const createConstant = (name: string, type: string) => {
   return `const ${name}: ${type};` + "\n";
@@ -22,7 +22,7 @@ export const createInterface = (name: string, content: string) => {
   return `/** @noSelf **/
   interface ${name} {
     ${content}
-  }`;
+  }\n\n`;
 };
 export const createInterfaceVariable = (name: string, type: string) => {
   return `${name}: ${type},` + "\n";
