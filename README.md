@@ -12,9 +12,9 @@ You can write your [neovim](https://github.com/neovim/neovim) settings with type
 1. Install this package
 
 ```
-yarn add -D lua-types
+yarn add -D nvim-types
 # or
-npm install -D lua-types
+npm install -D nvim-types
 ```
 
 2. Modify your tsconfig.json
