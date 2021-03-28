@@ -7,11 +7,11 @@ declare namespace vim {
                     https://github.com/kikito/inspect.lua
                     https://github.com/mpeterv/vinspect}
       */
-  function inspect(): (object: any, options: any) => any;
+  function inspect(object: any, options: any): any;
   /** 
           TODO: Documentation}
       */
-  function make_meta_accessor(): (get: any, set: any, del: any) => any;
+  function make_meta_accessor(get: any, set: any, del: any): any;
   /** 
           Paste handler, invoked by |nvim_paste()| when a conforming UI
                 (such as the |TUI|) pastes text into the editor.
@@ -44,7 +44,7 @@ declare namespace vim {
                 See also: ~
                     |paste|}
       */
-  function paste(): (lines: any, phase: any) => any;
+  function paste(lines: any, phase: any): any;
   /** 
           Defers callback `cb` until the Nvim API is safe to call.
 
@@ -53,11 +53,11 @@ declare namespace vim {
                     |vim.schedule()|
                     |vim.in_fast_event()|}
       */
-  function schedule_wrap(): (cb: any) => any;
+  function schedule_wrap(cb: any): any;
   /** 
           TODO: Documentation}
       */
-  function deep_equal(): (a: any, b: any) => any;
+  function deep_equal(a: any, b: any): any;
   /** 
           Returns a deep copy of the given object. Non-table objects are
                 copied as in a typical Lua assignment, whereas table objects
@@ -72,7 +72,7 @@ declare namespace vim {
                 Return: ~
                     New table of copied keys and (nested) values.}
       */
-  function deepcopy(): (orig: any) => any;
+  function deepcopy(orig: any): any;
   /** 
           Tests if `s` ends with `suffix` .
 
@@ -83,7 +83,7 @@ declare namespace vim {
                 Return: ~
                     (boolean) true if `suffix` is a suffix of s}
       */
-  function endswith(): (s: any, suffix: any) => any;
+  function endswith(s: any, suffix: any): any;
   /** 
           Splits a string at each instance of a separator.
 
@@ -101,7 +101,7 @@ declare namespace vim {
                     https://www.lua.org/pil/20.2.html
                     http://lua-users.org/wiki/StringLibraryTutorial}
       */
-  function gsplit(): (s: any, sep: any, plain: any) => any;
+  function gsplit(s: any, sep: any, plain: any): any;
   /** 
           Returns true if object `f` can be called as a function.
 
@@ -111,11 +111,11 @@ declare namespace vim {
                 Return: ~
                     true if `f` is callable, else false}
       */
-  function is_callable(): (f: any) => any;
+  function is_callable(f: any): any;
   /** 
           TODO: Documentation}
       */
-  function is_valid(): (opt: any) => any;
+  function is_valid(opt: any): any;
   /** 
           Extends a list-like table with the values of another list-like
                 table.
@@ -134,7 +134,7 @@ declare namespace vim {
                 See also: ~
                     |vim.tbl_extend()|}
       */
-  function list_extend(): (dst: any, src: any, start: any, finish: any) => any;
+  function list_extend(dst: any, src: any, start: any, finish: any): any;
   /** 
           Escapes magic chars in a Lua pattern.
 
@@ -147,7 +147,7 @@ declare namespace vim {
                 See also: ~
                     https://github.com/rxi/lume}
       */
-  function pesc(): (s: any) => any;
+  function pesc(s: any): any;
   /** 
           Splits a string at each instance of a separator.
 
@@ -169,7 +169,7 @@ declare namespace vim {
                 See also: ~
                     |vim.gsplit()|}
       */
-  function split(): (s: any, sep: any, plain: any) => any;
+  function split(s: any, sep: any, plain: any): any;
   /** 
           Tests if `s` starts with `prefix` .
 
@@ -180,7 +180,7 @@ declare namespace vim {
                 Return: ~
                     (boolean) true if `prefix` is a prefix of s}
       */
-  function startswith(): (s: any, prefix: any) => any;
+  function startswith(s: any, prefix: any): any;
   /** 
           Add the reverse lookup values to an existing table. For
                 example: tbl_add_reverse_lookup { A = 1 } == { [1] = 'A , A = 1 }`
@@ -188,7 +188,7 @@ declare namespace vim {
                 Parameters: ~
                     {o}  table The table to add the reverse to.}
       */
-  function tbl_add_reverse_lookup(): (o: any) => any;
+  function tbl_add_reverse_lookup(o: any): any;
   /** 
           Checks if a list-like (vector) table contains `value` .
 
@@ -199,7 +199,7 @@ declare namespace vim {
                 Return: ~
                     true if `t` contains `value`}
       */
-  function tbl_contains(): (t: any, value: any) => any;
+  function tbl_contains(t: any, value: any): any;
   /** 
           Counts the number of non-nil values in table `t` .
 >
@@ -217,7 +217,7 @@ declare namespace vim {
                 See also: ~
                     https://github.com/Tieske/Penlight/blob/master/lua/pl/tablex.lua}
       */
-  function tbl_count(): (t: any) => any;
+  function tbl_count(t: any): any;
   /** 
           Merges recursively two or more map-like tables.
 
@@ -232,7 +232,7 @@ declare namespace vim {
                 See also: ~
                     |tbl_extend()|}
       */
-  function tbl_deep_extend(): (behavior: any, arguments: any[]) => any;
+  function tbl_deep_extend(behavior: any, arguments: any[]): any;
   /** 
           Merges two or more map-like tables.
 
@@ -247,7 +247,7 @@ declare namespace vim {
                 See also: ~
                     |extend()|}
       */
-  function tbl_extend(): (behavior: any, arguments: any[]) => any;
+  function tbl_extend(behavior: any, arguments: any[]): any;
   /** 
           Filter a table using a predicate function
 
@@ -255,7 +255,7 @@ declare namespace vim {
                     {func}  function or callable table
                     {t}     table}
       */
-  function tbl_filter(): (func: any, t: any) => any;
+  function tbl_filter(func: any, t: any): any;
   /** 
           Creates a copy of a list-like table such that any nested
                 tables are "unrolled" and appended to the result.
@@ -269,7 +269,7 @@ declare namespace vim {
                 See also: ~
                     Fromhttps://github.com/premake/premake-core/blob/master/src/base/table.lua}
       */
-  function tbl_flatten(): (t: any) => any;
+  function tbl_flatten(t: any): any;
   /** 
           Checks if a table is empty.
 
@@ -279,7 +279,7 @@ declare namespace vim {
                 See also: ~
                     https://github.com/premake/premake-core/blob/master/src/base/table.lua}
       */
-  function tbl_isempty(): (t: any) => any;
+  function tbl_isempty(t: any): any;
   /** 
           Tests if a Lua table can be treated as an array.
 
@@ -294,7 +294,7 @@ declare namespace vim {
                 Return: ~
                     `true` if array-like table, else `false` .}
       */
-  function tbl_islist(): (t: any) => any;
+  function tbl_islist(t: any): any;
   /** 
           Return a list of all keys used in a table. However, the order
                 of the return table of keys is not guaranteed.
@@ -308,7 +308,7 @@ declare namespace vim {
                 See also: ~
                     Fromhttps://github.com/premake/premake-core/blob/master/src/base/table.lua}
       */
-  function tbl_keys(): (t: any) => any;
+  function tbl_keys(t: any): any;
   /** 
           Apply a function to all values of a table.
 
@@ -316,7 +316,7 @@ declare namespace vim {
                     {func}  function or callable table
                     {t}     table}
       */
-  function tbl_map(): (func: any, t: any) => any;
+  function tbl_map(func: any, t: any): any;
   /** 
           Return a list of all values used in a table. However, the
                 order of the return table of values is not guaranteed.
@@ -327,7 +327,7 @@ declare namespace vim {
                 Return: ~
                     list of values}
       */
-  function tbl_values(): (t: any) => any;
+  function tbl_values(t: any): any;
   /** 
           Trim whitespace (Lua pattern "%s") from both sides of a
                 string.
@@ -341,7 +341,7 @@ declare namespace vim {
                 See also: ~
                     https://www.lua.org/pil/20.2.html}
       */
-  function trim(): (s: any) => any;
+  function trim(s: any): any;
   /** 
           Validates a parameter specification (types and values).
 
@@ -392,21 +392,21 @@ declare namespace vim {
                               • msg: (optional) error string if validation
                                 fails}
       */
-  function validate(): (opt: any) => any;
+  function validate(opt: any): any;
   /** 
           Invokes |vim-function| or |user-function| {func} with arguments {...}.
         See also |vim.fn|.
         Equivalent to: >
             vim.fn[func]({...})}
       */
-  function call(): (func: any, arguments: any[]) => any;
+  function call(func: any, arguments: any[]): any;
   /** 
           Invokes an Ex command (the ":" commands, Vimscript statements).
         See also |ex-cmd-index|.
         Example: >
             vim.cmd('echo 42')}
       */
-  function cmd(): (cmd: any) => any;
+  function cmd(cmd: any): any;
   /** 
       Global (|g:|) editor variables.
         Key with no value returns `nil`.
@@ -465,7 +465,7 @@ declare namespace vim {
                 Return: ~
                     URI}
       */
-  function uri_from_bufnr(): (bufnr: any) => any;
+  function uri_from_bufnr(bufnr: any): any;
   /** 
           Get a URI from a file path.
 
@@ -475,7 +475,7 @@ declare namespace vim {
                 Return: ~
                     URI}
       */
-  function uri_from_fname(): (path: any) => any;
+  function uri_from_fname(path: any): any;
   /** 
           Return or create a buffer for a uri.
 
@@ -488,7 +488,7 @@ declare namespace vim {
                 Note:
                     Creates buffer but does not load it}
       */
-  function uri_to_bufnr(): (uri: any) => any;
+  function uri_to_bufnr(uri: any): any;
   /** 
           Get a filename from a URI
 
@@ -500,11 +500,11 @@ declare namespace vim {
 
  vim:tw=78:ts=8:ft=help:norl:}
       */
-  function uri_to_fname(): (uri: any) => any;
+  function uri_to_fname(uri: any): any;
   /** 
           Returns the version of the current neovim build.}
       */
-  function version(): () => any;
+  function version(): any;
   /** 
           Returns true if the code is executing as part of a "fast" event
         handler, where most of the API is disabled. These are low-level events
@@ -512,7 +512,7 @@ declare namespace vim {
         for input.  When this is `false` most API functions are callable (but
         may be subject to other restrictions such as |textlock|).}
       */
-  function in_fast_event(): () => any;
+  function in_fast_event(): any;
   /** 
       Special value used to represent NIL in msgpack-rpc and |v:null| in
 	vimL interaction, and similar cases. Lua `nil` cannot be used as
@@ -531,7 +531,7 @@ declare namespace vim {
 	Note: if numeric keys are added to the table, the metatable will be
 	ignored and the dict converted to a list/array anyway.}
       */
-  function empty_dict(): () => any;
+  function empty_dict(): any;
   /** 
           Converts a selection specified by the buffer ({bufnr}), starting
         position ({pos1}, a zero-indexed pair `{line1,column1}`), ending
@@ -540,13 +540,13 @@ declare namespace vim {
         whether the selection is inclusive or not, into a zero-indexed table 
         of linewise selections of the form `{linenr = {startcol, endcol}}` .}
       */
-  function region(): (
+  function region(
     bufnr: any,
     pos1: any,
     pos2: any,
     type: any,
     inclusive: any
-  ) => any;
+  ): any;
   /** 
           Register a lua {fn} with an {ns_id} to be run after every keystroke.
 
@@ -574,14 +574,14 @@ declare namespace vim {
 
         NOTE: {fn} will *NOT* be cleared from |nvim_buf_clear_namespace()|}
       */
-  function register_keystroke_callback(): (fn: any, ns_id: any) => any;
+  function register_keystroke_callback(fn: any, ns_id: any): any;
   /** 
           Sends {event} to {channel} via |RPC| and returns immediately.
 	If {channel} is 0, the event is broadcast to all channels.
 
 	This function also works in a fast callback |lua-loop-callbacks|.}
       */
-  function rpcnotify(): (channel: any, method: any, arguments?: any[]) => any;
+  function rpcnotify(channel: any, method: any, arguments?: any[]): any;
   /** 
           Sends a request to {channel} to invoke {method} via
 	|RPC| and blocks until a response is received.
@@ -589,13 +589,13 @@ declare namespace vim {
 	Note: NIL values as part of the return value is represented as
 	|vim.NIL| special value}
       */
-  function rpcrequest(): (channel: any, method: any, arguments?: any[]) => any;
+  function rpcrequest(channel: any, method: any, arguments?: any[]): any;
   /** 
           Compares strings case-insensitively.  Returns 0, 1 or -1 if strings
         are equal, {a} is greater than {b} or {a} is lesser than {b},
         respectively.}
       */
-  function stricmp(): (a: any, b: any) => any;
+  function stricmp(a: any, b: any): any;
   /** 
           Convert byte index to UTF-32 and UTF-16 indicies. If {index} is not
         supplied, the length of the string is used. All indicies are zero-based.
@@ -606,7 +606,7 @@ declare namespace vim {
         point each. An {index} in the middle of a UTF-8 sequence is rounded
         upwards to the end of that sequence.}
       */
-  function str_utfindex(): (str: any, index?: any) => any;
+  function str_utfindex(str: any, index?: any): any;
   /** 
           Convert UTF-32 or UTF-16 {index} to byte index. If {use_utf16} is not
         supplied, it defaults to false (use UTF-32). Returns the byte index.
@@ -615,12 +615,12 @@ declare namespace vim {
         in the middle of a UTF-16 sequence is rounded upwards to the end of that
         sequence.}
       */
-  function str_byteindex(): (str: any, index: any, use_utf16?: any) => any;
+  function str_byteindex(str: any, index: any, use_utf16?: any): any;
   /** 
           Schedules {callback} to be invoked soon by the main event-loop. Useful
         to avoid |textlock| or other temporary restrictions.}
       */
-  function schedule(): (callback: any) => any;
+  function schedule(callback: any): any;
   /** 
           Defers calling {fn} until {timeout} ms passes.  Use to do a one-shot timer
     that calls {fn}.
@@ -635,7 +635,7 @@ declare namespace vim {
     Returns: ~
         |vim.loop|.new_timer() object}
       */
-  function defer_fn(): (fn: any, timeout: any) => any;
+  function defer_fn(fn: any, timeout: any): any;
   /** 
           Wait for {time} in milliseconds until {callback} returns `true`.
 
@@ -687,12 +687,12 @@ declare namespace vim {
     end
 <}
       */
-  function wait(): (
+  function wait(
     time: any,
     callback?: any,
     interval?: any,
     fast_only?: any
-  ) => any;
+  ): any;
   /** 
       Type index for use in |lua-special-tbl|.  Specifying one of the 
 	values from |vim.types| allows typing the empty table (it is 

@@ -15,7 +15,7 @@ export const createFunction = (
   argsStr: string,
   returnType: string
 ) => {
-  return `function ${name}(): (${argsStr}) => ${returnType}` + "\n";
+  return `function ${name}(${argsStr}): ${returnType}` + "\n";
 };
 
 export const createInterface = (name: string, content: string) => {
