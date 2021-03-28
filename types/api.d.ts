@@ -1,3 +1,4 @@
+/** @noSelf **/
 interface api {
   /** 
       TODO: Documentation}

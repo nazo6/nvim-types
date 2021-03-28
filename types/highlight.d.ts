@@ -1,3 +1,4 @@
+/** @noSelf **/
 interface highlight {
   /** 
       Highlights the yanked text. The fields of the optional dict {opts}

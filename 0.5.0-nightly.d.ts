@@ -3,6 +3,7 @@
 /// <reference path="types/global.d.ts" />
 /// <reference path="types/highlight.d.ts" />
 
+/** @noSelf **/
 declare namespace vim {
   /**
    * Invokes vim-function or user-function.
@@ -11,7 +12,7 @@ declare namespace vim {
    *   vim.fn['some#function']({...})
    */
   const fn: fn & {
-    [key: string]: any;
+    [key: string]: (args?: any) => any;
   };
   /**
    * Invokes Nvim |API| function {func} with arguments {...}.

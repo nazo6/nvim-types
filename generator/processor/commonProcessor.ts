@@ -57,7 +57,7 @@ const getArgs = (argsStr: string) => {
   }
   let duplicateIndexes: number[] = [];
   let newArgs = [...args];
-  console.log(newArgs);
+  //console.log(newArgs);
   args.forEach((item, i) => {
     newArgs.forEach((item2, i2) => {
       if (item.name === item2.name) {

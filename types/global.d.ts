@@ -1,3 +1,4 @@
+/** @noSelf **/
 declare namespace vim {
   /** 
           Return a human-readable representation of the given object.

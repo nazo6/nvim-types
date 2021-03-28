@@ -1,5 +1,6 @@
 export const createDeclareNamespace = (name: string, content: string) => {
-  return `declare namespace ${name} {
+  return `/** @noSelf **/
+  declare namespace ${name} {
     ${content}
   }`;
 };
@@ -18,7 +19,8 @@ export const createFunction = (
 };
 
 export const createInterface = (name: string, content: string) => {
-  return `interface ${name} {
+  return `/** @noSelf **/
+  interface ${name} {
     ${content}
   }`;
 };

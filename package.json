@@ -8,6 +8,9 @@
   "files": [
     "**/*.d.ts"
   ],
+  "scripts": {
+    "build": "ts-node generator/main.ts"
+  },
   "devDependencies": {
     "@types/node": "^14.14.36",
     "@types/prettier": "^2.2.3",

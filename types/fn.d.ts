@@ -1,3 +1,4 @@
+/** @noSelf **/
 interface fn {
   /** 
       Return the absolute value of {expr}.  When {expr} evaluates to
