@@ -43,12 +43,12 @@ export const loadJson = async (
     if ("action" in value) {
       switch (value.action) {
         case "ignore":
-          docJson.data.splice(
-            docJson.data.findIndex(
-              (propertyData) => propertyData.name === value.name
-            ),
-            1
+          const index = docJson.data.findIndex(
+            (propertyData) => propertyData.name === value.name
           );
+          if (index !== -1) {
+            docJson.data.splice(index, 1);
+          }
           break;
         default:
           break;

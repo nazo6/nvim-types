@@ -418,6 +418,13 @@ declare namespace vim {
    */
   let bo: any;
   /**
+   * Get or set window-scoped |local-options|. Invalid key is an error.
+   * Example: >
+   *     vim.wo.cursorcolumn = true
+   *     print(vim.wo.foldmarker)
+   */
+  let wo: any;
+  /**
    * Get a URI from a bufnr
    *
    * @param bufnr - (number): Buffer number
@@ -661,4 +668,24 @@ declare namespace vim {
    *  See also |vim.type_idx| and |lua-special-tbl|.
    */
   let val_idx: any;
+  /**
+   * Table with possible values for |vim.type_idx|.  Contains two sets
+   * of key-value pairs: first maps possible values for |vim.type_idx|
+   * to human-readable strings, second maps human-readable type names to
+   * values for |vim.type_idx|.  Currently contains pairs for `float`,
+   * `array` and `dictionary` types.
+   *
+   * Note: one must expect that values corresponding to `vim.types.float`,
+   * `vim.types.array` and `vim.types.dictionary` fall under only two
+   * following assumptions:
+   * 1. Value may serve both as a key and as a value in a table.  Given the
+   *    properties of Lua tables this basically means “value is not `nil`”.
+   * 2. For each value in `vim.types` table `vim.types[vim.types[value]]`
+   *    is the same as `value`.
+   * No other restrictions are put on types, and it is not guaranteed that
+   * values corresponding to `vim.types.float`, `vim.types.array` and
+   * `vim.types.dictionary` will not change or that `vim.types` table will
+   * only contain values for these three types.
+   */
+  let types: any;
 }
