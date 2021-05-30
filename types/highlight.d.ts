@@ -11,5 +11,5 @@ interface highlight {
    *
    * light.range({bufnr}, {ns}, {higroup}, {start}, {finish}, {rtype}, {inclusive})
    */
-  on_yank: (opts: any) => any;
+  on_yank: (opts?: any) => any;
 }

@@ -47,7 +47,7 @@ const getArgs = (argsStr: string) => {
   if (requiredArgs) {
     requiredArgs.split(",").forEach((value) => {
       const normalizedArg = normalizeArg(value);
-      normalizedArg ? args.push({ ...normalizedArg, optional: false }) : "";
+      normalizedArg ? args.push({ ...normalizedArg, optional: true }) : "";
     });
   }
   if (optionalArgs) {

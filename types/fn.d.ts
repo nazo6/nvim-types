@@ -13,7 +13,7 @@ interface fn {
    *   echo abs(-4)
    *    4
    */
-  abs: (expr: any) => any;
+  abs: (expr?: any) => any;
   /**
    * Return the arc cosine of {expr} measured in radians, as a
    * |Float| in the range of [0, pi].
@@ -25,7 +25,7 @@ interface fn {
    *   :echo acos(-0.5)
    *    2.094395
    */
-  acos: (expr: any) => any;
+  acos: (expr?: any) => any;
   /**
    * Append the item {expr} to |List| {list}.  Returns the
    * resulting |List|.  Examples: >
@@ -35,14 +35,14 @@ interface fn {
    * item.  Use |extend()| to concatenate |Lists|.
    * Use |insert()| to add an item at another position.
    */
-  add: (list: any, expr: any) => any;
+  add: (list?: any, expr?: any) => any;
   /**
    * Bitwise AND on the two arguments.  The arguments are converted
    * to a number.  A List, Dict or Float argument causes an error.
    * Example: >
    *   :let flag = and(bits, 0x80)
    */
-  and: (expr1: any, expr2: any) => any;
+  and: (expr1?: any, expr2?: any) => any;
   /**
    * Returns Dictionary of |api-metadata|.
    *
@@ -61,7 +61,7 @@ interface fn {
    *   :let failed = append(line('$'), "# THE END")
    *   :let failed = append(0, ["Chapter 1", "the beginning"])
    */
-  append: (lnum: any, text: any) => any;
+  append: (lnum?: any, text?: any) => any;
   /**
    * Like |append()| but append the text in buffer {expr}.
    *
@@ -81,7 +81,7 @@ interface fn {
    *   :let failed = appendbufline(13, 0, "# THE START")
    *
    */
-  appendbufline: (expr: any, lnum: any, text: any) => any;
+  appendbufline: (expr?: any, lnum?: any, text?: any) => any;
   /**
    * The result is the number of files in the argument list.  See
    * |arglist|.
@@ -141,7 +141,7 @@ interface fn {
    *
    * rt_ functions are documented here: |assert-functions-details|
    */
-  asin: (expr: any) => any;
+  asin: (expr?: any) => any;
   /**
    * Return the principal value of the arc tangent of {expr}, in
    * the range [-pi/2, +pi/2] radians, as a |Float|.
@@ -152,7 +152,7 @@ interface fn {
    *   :echo atan(-4.01)
    *    -1.326405
    */
-  atan: (expr: any) => any;
+  atan: (expr?: any) => any;
   /**
    * Return the arc tangent of {expr1} / {expr2}, measured in
    * radians, as a |Float| in the range [-pi, pi].
@@ -163,7 +163,7 @@ interface fn {
    *   :echo atan2(1, -1)
    *    2.356194
    */
-  atan2: (expr1: any, expr2: any) => any;
+  atan2: (expr1?: any, expr2?: any) => any;
   /**
    * Put up a file requester.  This only works when "has("browse")"
    * returns |TRUE| (only in some GUI versions).
@@ -175,7 +175,7 @@ interface fn {
    * When the "Cancel" button is hit, something went wrong, or
    * browsing is not possible, an empty string is returned.
    */
-  browse: (save: any, title: any, initdir: any, arg_default: any) => any;
+  browse: (save?: any, title?: any, initdir?: any, arg_default?: any) => any;
   /**
    * Put up a directory requester.  This only works when
    * "has("browse")" returns |TRUE| (only in some GUI versions).
@@ -188,7 +188,7 @@ interface fn {
    * When the "Cancel" button is hit, something went wrong, or
    * browsing is not possible, an empty string is returned.
    */
-  browsedir: (title: any, initdir: any) => any;
+  browsedir: (title?: any, initdir?: any) => any;
   /**
    * Add a buffer to the buffer list with {name}.
    * If a buffer for file {name} already exists, return that buffer
@@ -197,7 +197,7 @@ interface fn {
    * buffer is always created.
    * The buffer will not have' 'buflisted' set.
    */
-  bufadd: (name: any) => any;
+  bufadd: (name?: any) => any;
   /**
    * The result is a Number, which is |TRUE| if a buffer called
    * {expr} exists.
@@ -220,13 +220,13 @@ interface fn {
    * Use "bufexists(0)" to test for the existence of an alternate
    * file name.
    */
-  bufexists: (expr: any) => any;
+  bufexists: (expr?: any) => any;
   /**
    * The result is a Number, which is |TRUE| if a buffer called
    * {expr} exists and is listed (has the 'buflisted' option set).
    * The {expr} argument is used like with |bufexists()|.
    */
-  buflisted: (expr: any) => any;
+  buflisted: (expr?: any) => any;
   /**
    * Ensure the buffer {expr} is loaded.  When the buffer name
    * refers to an existing file then the file is read.  Otherwise
@@ -236,13 +236,13 @@ interface fn {
    * there will be no dialog, the buffer will be loaded anyway.
    * The {expr} argument is used like with |bufexists()|.
    */
-  bufload: (expr: any) => any;
+  bufload: (expr?: any) => any;
   /**
    * The result is a Number, which is |TRUE| if a buffer called
    * {expr} exists and is loaded (shown in a window or hidden).
    * The {expr} argument is used like with |bufexists()|.
    */
-  bufloaded: (expr: any) => any;
+  bufloaded: (expr?: any) => any;
   /**
    * The result is the name of a buffer, as it is displayed by the
    * ":ls" command.
@@ -298,7 +298,7 @@ interface fn {
    *
    * Only deals with the current tab page.
    */
-  bufwinid: (expr: any) => any;
+  bufwinid: (expr?: any) => any;
   /**
    * The result is a Number, which is the number of the first
    * window associated with buffer {expr}.  For the use of {expr},
@@ -311,7 +311,7 @@ interface fn {
    * |:wincmd|.
    * Only deals with the current tab page.
    */
-  bufwinnr: (expr: any) => any;
+  bufwinnr: (expr?: any) => any;
   /**
    * Return the line number that contains the character at byte
    * count {byte} in the current buffer.  This includes the
@@ -320,7 +320,7 @@ interface fn {
    * one.
    * Also see |line2byte()|, |go| and |:goto|.
    */
-  byte2line: (byte: any) => any;
+  byte2line: (byte?: any) => any;
   /**
    * Return byte index of the {nr}'th character in the string
    * {expr}.  Use zero for the first character, it then returns
@@ -343,7 +343,7 @@ interface fn {
    * If there are exactly {nr} characters the length of the string
    * in bytes is returned.
    */
-  byteidx: (expr: any, nr: any) => any;
+  byteidx: (expr?: any, nr?: any) => any;
   /**
    * Like byteidx(), except that a composing character is counted
    * as a separate character.  Example: >
@@ -357,7 +357,7 @@ interface fn {
    * Only works differently from byteidx() when 'encoding' is set to
    * a Unicode encoding.
    */
-  byteidxcomp: (expr: any, nr: any) => any;
+  byteidxcomp: (expr?: any, nr?: any) => any;
   /**
    * Call function {func} with the items in |List| {arglist} as
    * arguments.
@@ -367,7 +367,7 @@ interface fn {
    * {dict} is for functions with the "dict" attribute.  It will be
    * used to set the local variable "self". |Dictionary-function|
    */
-  call: (func: any, arglist: any, dict?: any) => any;
+  call: (func?: any, arglist?: any, dict?: any) => any;
   /**
    * Return the smallest integral value greater than or equal to
    * {expr} as a |Float| (round up).
@@ -380,7 +380,7 @@ interface fn {
    *   echo ceil(4.0)
    *    4.0
    */
-  ceil: (expr: any) => any;
+  ceil: (expr?: any) => any;
   /**
    * Return the number of the most recent change.  This is the same
    * number as what is displayed with |:undolist| and can be used
@@ -400,7 +400,7 @@ interface fn {
    * For a socket, there is only one stream, and {stream} should be
    * ommited.
    */
-  chanclose: (id: any, stream?: any) => any;
+  chanclose: (id?: any, stream?: any) => any;
   /**
    * Send data to channel {id}. For a job, it writes it to the
    * stdin of the process. For the stdio channel |channel-stdio|,
@@ -419,7 +419,7 @@ interface fn {
    * was created with `"rpc":v:true` then the channel expects RPC
    * messages, use |rpcnotify()| and |rpcrequest()| instead.
    */
-  chansend: (id: any, data: any) => any;
+  chansend: (id?: any, data?: any) => any;
   /**
    * Return number value of the first char in {expr}.  Examples: >
    *   char2nr(" ")    returns 32
@@ -432,7 +432,7 @@ interface fn {
    * A combining character is a separate character.
    * |nr2char()| does the opposite.
    */
-  char2nr: (expr: any, utf8?: any) => any;
+  char2nr: (expr?: any, utf8?: any) => any;
   /**
    * Return the character index of the byte at {idx} in {string}.
    * The index of the first character is zero.
@@ -455,7 +455,7 @@ interface fn {
    *   echo charidx('áb́ć', 6, 1)  returns 4
    *   echo charidx('áb́ć', 16)    returns -1
    */
-  charidx: (string: any, idx: any, countcc?: any) => any;
+  charidx: (string?: any, idx?: any, countcc?: any) => any;
   /**
    * Get the amount of indent for line {lnum} according the C
    * indenting rules, as with 'cindent'.
@@ -464,7 +464,7 @@ interface fn {
    * When {lnum} is invalid -1 is returned.
    * See |C-indenting|.
    */
-  cindent: (lnum: any) => any;
+  cindent: (lnum?: any) => any;
   /**
    * Clears all matches previously defined for the current window
    * by |matchadd()| and the |:match| commands.
@@ -509,7 +509,7 @@ interface fn {
    *         \let &ve = save_ve<CR>
    * <
    */
-  col: (expr: any) => any;
+  col: (expr?: any) => any;
   /**
    * Set the matches for Insert mode completion.
    * Can only be used in Insert mode.  You need to use a mapping
@@ -539,7 +539,7 @@ interface fn {
    *  This isn't very useful, but it shows how it works.  Note that
    * an empty string is returned to avoid a zero being inserted.
    */
-  complete: (startcol: any, matches: any) => any;
+  complete: (startcol?: any, matches?: any) => any;
   /**
    * Add {expr} to the list of matches.  Only to be used by the
    * function specified with the 'completefunc' option.
@@ -549,7 +549,7 @@ interface fn {
    * See |complete-functions| for an explanation of {expr}.  It is
    * the same as one item in the list that 'omnifunc' would return.
    */
-  complete_add: (expr: any) => any;
+  complete_add: (expr?: any) => any;
   /**
    * Check for a key typed while looking for completion matches.
    * This is to be used when looking for matches takes some time.
@@ -665,7 +665,7 @@ interface fn {
    * don't fit, a vertical layout is used anyway.  For some systems
    * the horizontal layout is always used.
    */
-  confirm: (msg: any, choices?: any, arg_default?: any, type?: any) => any;
+  confirm: (msg?: any, choices?: any, arg_default?: any, type?: any) => any;
   /**
    * Make a copy of {expr}.  For Numbers and Strings this isn't
    *     different from using {expr} directly.
@@ -676,7 +676,7 @@ interface fn {
    *     A |Dictionary| is copied in a similar way as a |List|.
    *     Also see |deepcopy()|.
    */
-  copy: (expr: any) => any;
+  copy: (expr?: any) => any;
   /**
    * Return the cosine of {expr}, measured in radians, as a |Float|.
    * {expr} must evaluate to a |Float| or a |Number|.
@@ -686,7 +686,7 @@ interface fn {
    *   :echo cos(-4.01)
    *    -0.646043
    */
-  cos: (expr: any) => any;
+  cos: (expr?: any) => any;
   /**
    * Return the hyperbolic cosine of {expr} as a |Float| in the range
    * [1, inf].
@@ -697,7 +697,7 @@ interface fn {
    *   :echo cosh(-0.5)
    *    -1.127626
    */
-  cosh: (expr: any) => any;
+  cosh: (expr?: any) => any;
   /**
    * Return the number of times an item with value {expr} appears
    * in |String|, |List| or |Dictionary| {comp}.
@@ -711,7 +711,7 @@ interface fn {
    * occurrences of {expr} is returned. Zero is returned when
    * {expr} is an empty string.
    */
-  count: (comp: any, expr: any, ic?: any, start?: any) => any;
+  count: (comp?: any, expr?: any, ic?: any, start?: any) => any;
   /**
    * Checks for the existence of a |cscope| connection.  If no
    * parameters are specified, then the function returns:
@@ -779,7 +779,7 @@ interface fn {
    * {context} is a Dictionary with context data (|context-dict|).
    * If {index} is not given, it is assumed to be 0 (i.e.: top).
    */
-  ctxset: (context: any, index?: any) => any;
+  ctxset: (context?: any, index?: any) => any;
   /**
    * Returns the size of the |context-stack|.
    */
@@ -813,7 +813,7 @@ interface fn {
    *     position within a <Tab> or after the last character.
    *     Returns 0 when the position could be set, -1 otherwise.
    */
-  cursor: (lnum: any, col: any, off?: any) => any;
+  cursor: (lnum?: any, col?: any, off?: any) => any;
   /**
    * Make a copy of {expr}.  For Numbers and Strings this isn't
    * different from using {expr} directly.
@@ -829,7 +829,7 @@ interface fn {
    * |List| or |Dictionary| results in a new copy.  This also means
    * that a cyclic reference causes deepcopy() to fail.
    */
-  deepcopy: (expr: any, noref?: any) => any;
+  deepcopy: (expr?: any, noref?: any) => any;
   /**
    * Nesting is possible up to 100 levels.  When there is an item
    *     that refers back to a higher level making a deep copy with
@@ -854,7 +854,7 @@ interface fn {
    * operation was successful and -1/true when the deletion failed
    * or partly failed.
    */
-  delete: (fname: any, flags?: any) => any;
+  delete: (fname?: any, flags?: any) => any;
   /**
    * Delete lines {first} to {last} (inclusive) from buffer {expr}.
    * If {last} is omitted then delete line {first} only.
@@ -869,7 +869,7 @@ interface fn {
    * when using |line()| this refers to the current buffer. Use "$"
    * to refer to the last line in buffer {expr}.
    */
-  deletebufline: (expr: any, first: any, last?: any) => any;
+  deletebufline: (expr?: any, first?: any, last?: any) => any;
   /**
    * Adds a watcher to a dictionary. A dictionary watcher is
    * identified by three components:
@@ -910,13 +910,13 @@ interface fn {
    * This function can be used by plugins to implement options with
    * validation and parsing logic.
    */
-  dictwatcheradd: (dict: any, pattern: any, callback: any) => any;
+  dictwatcheradd: (dict?: any, pattern?: any, callback?: any) => any;
   /**
    * Removes a watcher added  with |dictwatcheradd()|. All three
    * arguments must match the ones passed to |dictwatcheradd()| in
    * order for the watcher to be successfully deleted.
    */
-  dictwatcherdel: (dict: any, pattern: any, callback: any) => any;
+  dictwatcherdel: (dict?: any, pattern?: any, callback?: any) => any;
   /**
    * Returns |TRUE| when autocommands are being executed and the
    *     FileType event has been triggered at least once.  Can be used
@@ -939,7 +939,7 @@ interface fn {
    * line, "'m" mark m, etc.
    * Returns 0 if the current window is not in diff mode.
    */
-  diff_filler: (lnum: any) => any;
+  diff_filler: (lnum?: any) => any;
   /**
    * Returns the highlight ID for diff mode at line {lnum} column
    * {col} (byte index).  When the current line does not have a
@@ -951,14 +951,14 @@ interface fn {
    * The highlight ID can be used with |synIDattr()| to obtain
    * syntax information about the highlighting.
    */
-  diff_hlID: (lnum: any, col: any) => any;
+  diff_hlID: (lnum?: any, col?: any) => any;
   /**
    * Return the Number 1 if {expr} is empty, zero otherwise.
    * A |List| or |Dictionary| is empty when it does not have any
    * items.  A Number is empty when its value is zero.  Special
    * variable is empty when it is |v:false| or |v:null|.
    */
-  empty: (expr: any) => any;
+  empty: (expr?: any) => any;
   /**
    * Return all of environment variables as dictionary. You can
    * check if an environment variable exists like this: >
@@ -976,7 +976,7 @@ interface fn {
    *   c:\\program\ files\\vim
    *  Also see |shellescape()| and |fnameescape()|.
    */
-  escape: (string: any, chars: any) => any;
+  escape: (string?: any, chars?: any) => any;
   /**
    * Evaluate {string} and return the result.  Especially useful to
    *     turn the result of |string()| back into the original value.
@@ -984,7 +984,7 @@ interface fn {
    *     them.  Also works for |Funcref|s that refer to existing
    *     functions.
    */
-  eval: (string: any) => any;
+  eval: (string?: any) => any;
   /**
    * Returns 1 when inside an event handler.  That is that Vim got
    * interrupted while waiting for the user to type a character,
@@ -998,7 +998,7 @@ interface fn {
    * arguments.
    * executable() uses the value of $PATH and/or the normal
    */
-  executable: (expr: any) => any;
+  executable: (expr?: any) => any;
   /**
    * On MS-Windows the ".exe", ".bat", etc. can optionally be
    * included.  Then the extensions in $PATHEXT are tried.  Thus if
@@ -1045,14 +1045,14 @@ interface fn {
    * To execute a command in another window than the current one
    * use `win_execute()`.
    */
-  execute: (command: any, silent?: any) => any;
+  execute: (command?: any, silent?: any) => any;
   /**
    * Returns the full path of {expr} if it is an executable and
    * given as a (partial or full) path or is found in $PATH.
    * Returns empty string otherwise.
    * If {expr} starts with "./" the |current-directory| is used.
    */
-  exepath: (expr: any) => any;
+  exepath: (expr?: any) => any;
   /**
    * The result is a Number, which is |TRUE| if {expr} is
    *     defined, zero otherwise.
@@ -1138,7 +1138,7 @@ interface fn {
    * <    This doesn't check for existence of the "bufcount" variable,
    *     but gets the value of "bufcount", and checks if that exists.
    */
-  exists: (expr: any) => any;
+  exists: (expr?: any) => any;
   /**
    * Return the exponential of {expr} as a |Float| in the range
    * [0, inf].
@@ -1149,14 +1149,14 @@ interface fn {
    *   :echo exp(-1)
    *    0.367879
    */
-  exp: (expr: any) => any;
+  exp: (expr?: any) => any;
   /**
    * Specifically used to interrupt a program being debugged.  It
    * will cause process {pid} to get a SIGTRAP.  Behavior for other
    * processes is undefined. See |terminal-debugger|.
    * {Sends a SIGINT to a process {pid} other than MS-Windows}
    */
-  debugbreak: (pid: any) => any;
+  debugbreak: (pid?: any) => any;
   /**
    * Expand wildcards and the following special keywords in {expr}.
    * 'wildignorecase' applies.
@@ -1239,7 +1239,7 @@ interface fn {
    * See |glob()| for finding existing files.  See |system()| for
    * getting the raw output of an external command.
    */
-  expand: (expr: any, nosuf?: any, list?: any) => any;
+  expand: (expr?: any, nosuf?: any, list?: any) => any;
   /**
    * Expand special items in {expr} like what is done for an Ex
    * command such as `:edit`.  This expands special keywords, like
@@ -1249,7 +1249,7 @@ interface fn {
    *   :echo expandcmd('make %<.o')
    *
    */
-  expandcmd: (expr: any) => any;
+  expandcmd: (expr?: any) => any;
   /**
    * {expr1} and {expr2} must be both |Lists| or both
    * |Dictionaries|.
@@ -1277,7 +1277,7 @@ interface fn {
    * {expr3} = "keep": keep the value of {expr1}
    * {expr3} = "force": use the value of {expr2}
    */
-  extend: (expr1: any, expr2: any, expr3?: any) => any;
+  extend: (expr1?: any, expr2?: any, expr3?: any) => any;
   /**
    * When {expr3} is omitted then "force" is assumed.
    *
@@ -1334,7 +1334,7 @@ interface fn {
    *
    * Return value is always 0.
    */
-  feedkeys: (string: any, mode?: any) => any;
+  feedkeys: (string?: any, mode?: any) => any;
   /**
    * The result is a Number, which is |TRUE| when a file with the
    * name {file} exists, and can be read.  If {file} doesn't exist,
@@ -1343,14 +1343,14 @@ interface fn {
    * If you don't care about the file being readable you can use
    * |glob()|.
    */
-  filereadable: (file: any) => any;
+  filereadable: (file?: any) => any;
   /**
    * The result is a Number, which is 1 when a file with the
    * name {file} exists, and can be written.  If {file} doesn't
    * exist, or is not writable, the result is 0.  If {file} is a
    * directory, and we can write to it, the result is 2.
    */
-  filewritable: (file: any) => any;
+  filewritable: (file?: any) => any;
   /**
    * {expr1} must be a |List| or a |Dictionary|.
    * For each item in {expr1} evaluate {expr2} and when the result
@@ -1398,7 +1398,7 @@ interface fn {
    * Funcref errors inside a function are ignored, unless it was
    * defined with the "abort" flag.
    */
-  filter: (expr1: any, expr2: any) => any;
+  filter: (expr1?: any, expr2?: any) => any;
   /**
    * Find directory {name} in {path}.  Supports both downwards and
    * upwards recursive directory searches.  See |file-searching|
@@ -1412,7 +1412,7 @@ interface fn {
    * When {count} is negative return all the matches in a |List|.
    * This is quite similar to the ex-command |:find|.
    */
-  finddir: (name: any, path?: any, count?: any) => any;
+  finddir: (name?: any, path?: any, count?: any) => any;
   /**
    * Just like |finddir()|, but find a file instead of a directory.
    * Uses 'suffixesadd'.
@@ -1421,7 +1421,7 @@ interface fn {
    *  Searches from the directory of the current file upwards until
    * it finds the file "tags.vim".
    */
-  findfile: (name: any, path?: any, count?: any) => any;
+  findfile: (name?: any, path?: any, count?: any) => any;
   /**
    * Flatten {list} up to {maxdepth} levels.  Without {maxdepth}
    * the result is a |List| without nesting, as if {maxdepth} is
@@ -1429,7 +1429,7 @@ interface fn {
    * The {list} is changed in place, make a copy first if you do
    * not want that.
    */
-  flatten: (list: any, maxdepth?: any) => any;
+  flatten: (list?: any, maxdepth?: any) => any;
   /**
    * {maxdepth} means how deep in nested lists changes are made.
    *     {list} is not modified when {maxdepth} is 0.
@@ -1465,7 +1465,7 @@ interface fn {
    *   echo float2nr(1.0e-100)
    *    0
    */
-  float2nr: (expr: any) => any;
+  float2nr: (expr?: any) => any;
   /**
    * Return the largest integral value less than or equal to
    * {expr} as a |Float| (round down).
@@ -1478,7 +1478,7 @@ interface fn {
    *   echo floor(4.0)
    *    4.0
    */
-  floor: (expr: any) => any;
+  floor: (expr?: any) => any;
   /**
    * Return the remainder of {expr1} / {expr2}, even if the
    * division is not representable.  Returns {expr1} - i * {expr2}
@@ -1493,7 +1493,7 @@ interface fn {
    *   :echo fmod(-12.33, 1.22)
    *    -0.13
    */
-  fmod: (expr1: any, expr2: any) => any;
+  fmod: (expr1?: any, expr2?: any) => any;
   /**
    * Escape {string} for use as file name command argument.  All
    * characters that have a special meaning, such as '%' and '|'
@@ -1509,7 +1509,7 @@ interface fn {
    *  results in executing: >
    *   edit \+some\ str\%nge\|name
    */
-  fnameescape: (string: any) => any;
+  fnameescape: (string?: any) => any;
   /**
    * Modify file name {fname} according to {mods}.  {mods} is a
    * string of characters like it is used for file names on the
@@ -1522,19 +1522,19 @@ interface fn {
    * Note: Environment variables don't work in {fname}, use
    * |expand()| first then.
    */
-  fnamemodify: (fname: any, mods: any) => any;
+  fnamemodify: (fname?: any, mods?: any) => any;
   /**
    * The result is a Number.  If the line {lnum} is in a closed
    * fold, the result is the number of the first line in that fold.
    * If the line {lnum} is not in a closed fold, -1 is returned.
    */
-  foldclosed: (lnum: any) => any;
+  foldclosed: (lnum?: any) => any;
   /**
    * The result is a Number.  If the line {lnum} is in a closed
    * fold, the result is the number of the last line in that fold.
    * If the line {lnum} is not in a closed fold, -1 is returned.
    */
-  foldclosedend: (lnum: any) => any;
+  foldclosedend: (lnum?: any) => any;
   /**
    * The result is a Number, which is the foldlevel of line {lnum}
    * in the current buffer.  For nested folds the deepest level is
@@ -1545,7 +1545,7 @@ interface fn {
    * foldlevel is unknown.  As a special case the level of the
    * previous line is usually available.
    */
-  foldlevel: (lnum: any) => any;
+  foldlevel: (lnum?: any) => any;
   /**
    * Returns a String, to be displayed for a closed fold.  This is
    *     the default function used for the 'foldtext' option and should
@@ -1572,7 +1572,7 @@ interface fn {
    * line, "'m" mark m, etc.
    * Useful when exporting folded text, e.g., to HTML.
    */
-  foldtextresult: (lnum: any) => any;
+  foldtextresult: (lnum?: any) => any;
   /**
    * Move the Vim window to the foreground.  Useful when sent from
    *     a client to a Vim server. |remote_send()|
@@ -1591,7 +1591,7 @@ interface fn {
    * Also for autoloaded functions. {name} cannot be a builtin
    * function.
    */
-  funcref: (name: any, arglist?: any, dict?: any) => any;
+  funcref: (name?: any, arglist?: any, dict?: any) => any;
   /**
    * Return a |Funcref| variable that refers to function {name}.
    * {name} can be a user defined function or an internal function.
@@ -1641,7 +1641,7 @@ interface fn {
    *  Invokes the function as with: >
    *   call context.Callback('one', 500)
    */
-  function: (name: any, arglist?: any, dict?: any) => any;
+  function: (name?: any, arglist?: any, dict?: any) => any;
   /**
    * Cleanup unused |Lists| and |Dictionaries| that have circular
    * references.
@@ -1682,7 +1682,7 @@ interface fn {
    *   "dict"  The dictionary
    *   "args"  The list with arguments
    */
-  get: (list: any, idx: any, arg_default?: any) => any;
+  get: (list?: any, idx?: any, arg_default?: any) => any;
   /**
    * getbufinfo([{dict}])
    *     Get information about buffers as a List of Dictionaries.
@@ -1776,7 +1776,7 @@ interface fn {
    * Example: >
    *   :let lines = getbufline(bufnr("myfile"), 1, "$")
    */
-  getbufline: (expr: any, lnum: any, end?: any) => any;
+  getbufline: (expr?: any, lnum?: any, end?: any) => any;
   /**
    * The result is the value of option or local buffer variable
    * {varname} in buffer {expr}.  Note that the name without "b:"
@@ -1798,7 +1798,7 @@ interface fn {
    *   :echo "todo myvar = " . getbufvar("todo", "myvar")
    *
    */
-  getbufvar: (expr: any, varname: any, def?: any) => any;
+  getbufvar: (expr?: any, varname?: any, def?: any) => any;
   /**
    * Returns the |changelist| for the buffer {expr}. For the use
    * of {expr}, see |bufname()| above. If buffer {expr} doesn't
@@ -1815,7 +1815,7 @@ interface fn {
    * position refers to the position in the list. For other
    * buffers, it is set to the length of the list.
    */
-  getchangelist: (expr: any) => any;
+  getchangelist: (expr?: any) => any;
   /**
    * Get a single character from the user or input stream.
    * If [expr] is omitted, wait until a character is available.
@@ -2018,7 +2018,7 @@ interface fn {
    * If there are no matches, an empty list is returned.  An
    * invalid value for {type} produces an error.
    */
-  getcompletion: (pat: any, type: any, filtered?: any) => any;
+  getcompletion: (pat?: any, type?: any, filtered?: any) => any;
   /**
    * Get the position of the cursor.  This is like getpos('.'), but
    *     includes an extra "curswant" in the list:
@@ -2055,7 +2055,7 @@ interface fn {
    * is different from a variable set to an empty string.
    * See also |expr-env|.
    */
-  getenv: (name: any) => any;
+  getenv: (name?: any) => any;
   /**
    * Without an argument returns the name of the normal font being
    * used.  Like what is used for the Normal highlight group
@@ -2086,7 +2086,7 @@ interface fn {
    *
    * For setting permissions use |setfperm()|.
    */
-  getfperm: (fname: any) => any;
+  getfperm: (fname?: any) => any;
   /**
    * The result is a Number, which is the size in bytes of the
    * given file {fname}.
@@ -2095,7 +2095,7 @@ interface fn {
    * If the size of {fname} is too big to fit in a Number then -2
    * is returned.
    */
-  getfsize: (fname: any) => any;
+  getfsize: (fname?: any) => any;
   /**
    * The result is a Number, which is the last modification time of
    * the given file {fname}.  The value is measured as seconds
@@ -2103,7 +2103,7 @@ interface fn {
    * |localtime()| and |strftime()|.
    * If the file {fname} can't be found -1 is returned.
    */
-  getftime: (fname: any) => any;
+  getftime: (fname?: any) => any;
   /**
    * The result is a String, which is a description of the kind of
    * file of the given file {fname}.
@@ -2124,7 +2124,7 @@ interface fn {
    * systems that support it.  On some systems only "dir" and
    * "file" are returned.
    */
-  getftype: (fname: any) => any;
+  getftype: (fname?: any) => any;
   /**
    * Returns the |jumplist| for the specified window.
    *
@@ -2169,7 +2169,7 @@ interface fn {
    *
    *  To get lines from another buffer see |getbufline()|
    */
-  getline: (lnum: any, end?: any) => any;
+  getline: (lnum?: any, end?: any) => any;
   /**
    * Returns a |List| with all the entries in the location list for
    * window {nr}.  {nr} can be the window number or the |window-ID|.
@@ -2195,7 +2195,7 @@ interface fn {
    *   :echo getloclist(3, {'all': 0})
    *   :echo getloclist(5, {'filewinid': 0})
    */
-  getloclist: (nr: any, what?: any) => any;
+  getloclist: (nr?: any, what?: any) => any;
   /**
    * Without the {expr} argument returns a |List| with information
    * about all the global marks. |mark|
@@ -2271,7 +2271,7 @@ interface fn {
    *       call setpos("'a", save_a_mark)
    * <    Also see |getcurpos()| and |setpos()|.
    */
-  getpos: (expr: any) => any;
+  getpos: (expr?: any) => any;
   /**
    * Returns a |List| with all the current quickfix errors.  Each
    * list item is a dictionary with these entries:
@@ -2421,7 +2421,7 @@ interface fn {
    * When the tab or variable doesn't exist {def} or an empty
    * string is returned, there is no error message.
    */
-  gettabvar: (tabnr: any, varname: any, def?: any) => any;
+  gettabvar: (tabnr?: any, varname?: any, def?: any) => any;
   /**
    * Get the value of window-local variable {varname} in window
    * {winnr} in tab page {tabnr}.
@@ -2448,7 +2448,7 @@ interface fn {
    * To obtain all window-local variables use: >
    *   gettabwinvar({tabnr}, {winnr}, '&')
    */
-  gettabwinvar: (tabnr: any, winnr: any, varname: any, def?: any) => any;
+  gettabwinvar: (tabnr?: any, winnr?: any, varname?: any, def?: any) => any;
   /**
    * The result is a Dict, which is the tag stack of window {nr}.
    * {nr} can be the window number or the |window-ID|.
@@ -2553,7 +2553,7 @@ interface fn {
    *   :echo "myvar = " . getwinvar(1, 'myvar')
    *
    */
-  getwinvar: (winnr: any, varname: any, def?: any) => any;
+  getwinvar: (winnr?: any, varname?: any, def?: any) => any;
   /**
    * Expand the file wildcards in {expr}.  See |wildcards| for the
    * use of special characters.
@@ -2590,7 +2590,7 @@ interface fn {
    * See |expand()| for expanding special Vim variables.  See
    * |system()| for getting the raw output of an external command.
    */
-  glob: (expr: any, nosuf?: any, list?: any, alllinks?: any) => any;
+  glob: (expr?: any, nosuf?: any, list?: any, alllinks?: any) => any;
   /**
    * Convert a file pattern, as used by glob(), into a search
    * pattern.  The result can be used to match with a string that
@@ -2603,7 +2603,7 @@ interface fn {
    * Note that the result depends on the system.  On MS-Windows
    * a backslash usually means a path separator.
    */
-  glob2regpat: (expr: any) => any;
+  glob2regpat: (expr?: any) => any;
   /**
    * Perform glob() on all directories in {path} and concatenate
    * the results.  Example: >
@@ -2640,8 +2640,8 @@ interface fn {
    * supported, thus using 'path' will not always work properly.
    */
   globpath: (
-    path: any,
-    expr: any,
+    path?: any,
+    expr?: any,
     nosuf?: any,
     list?: any,
     allinks?: any
@@ -2674,12 +2674,12 @@ interface fn {
    *         "win32" feature checks if the current system is Windows: >
    *       :if has("win32")
    */
-  has: (feature: any) => any;
+  has: (feature?: any) => any;
   /**
    * The result is a Number, which is TRUE if |Dictionary| {dict}
    * has an entry with key {key}.  FALSE otherwise.
    */
-  has_key: (dict: any, key: any) => any;
+  has_key: (dict?: any, key?: any) => any;
   /**
    * The result is a Number, which is 1 when the tabpage or window
    * has set a local path via |:tcd| or |:lcd|, otherwise 0.
@@ -2724,11 +2724,11 @@ interface fn {
    *  This installs the mapping to "\ABCdoit" only if there isn't
    * already a mapping to "\ABCdoit".
    */
-  hasmapto: (what: any, mode?: any, abbr?: any) => any;
+  hasmapto: (what?: any, mode?: any, abbr?: any) => any;
   /**
    * Add the String {item} to the history {history} which can be
    */
-  histadd: (history: any, item: any) => any;
+  histadd: (history?: any, item?: any) => any;
   /**
    * Clear {history}, i.e. delete all its entries.  See |hist-names|
    * for the possible values of {history}.
@@ -2761,7 +2761,7 @@ interface fn {
    *   :call histdel("search", -1)
    *   :let @/ = histget("search", -1)
    */
-  histdel: (history: any, item?: any) => any;
+  histdel: (history?: any, item?: any) => any;
   /**
    * The result is a String, the entry with Number {index} from
    * {history}.  See |hist-names| for the possible values of
@@ -2778,7 +2778,7 @@ interface fn {
    *   :command -nargs=1 H execute histget("cmd", 0+<args>)
    *
    */
-  histget: (history: any, index?: any) => any;
+  histget: (history?: any, index?: any) => any;
   /**
    * The result is the Number of the current entry in {history}.
    * See |hist-names| for the possible values of {history}.
@@ -2788,7 +2788,7 @@ interface fn {
    *   :let inp_index = histnr("expr")
    *
    */
-  histnr: (history: any) => any;
+  histnr: (history?: any) => any;
   /**
    * The result is a Number, which is TRUE if a highlight group
    * called {name} exists.  This is when the group has been
@@ -2796,7 +2796,7 @@ interface fn {
    * been defined for it, it may also have been used for a syntax
    * item.
    */
-  hlexists: (name: any) => any;
+  hlexists: (name?: any) => any;
   /**
    * The result is a Number, which is the ID of the highlight group
    *     with name {name}.  When the highlight group doesn't exist,
@@ -2806,7 +2806,7 @@ interface fn {
    *     "Comment" group: >
    *   :echo synIDattr(synIDtrans(hlID("Comment")), "bg")
    */
-  hlID: (name: any) => any;
+  hlID: (name?: any) => any;
   /**
    * The result is a String, which is the name of the machine on
    * which Vim is currently running.  Machine names greater than
@@ -2828,7 +2828,7 @@ interface fn {
    * from/to UCS-2 is automatically changed to use UTF-8.  You
    * cannot use UCS-2 in a string anyway, because of the NUL bytes.
    */
-  iconv: (expr: any, from: any, to: any) => any;
+  iconv: (expr?: any, from?: any, to?: any) => any;
   /**
    * The result is a Number, which is indent of line {lnum} in the
    *     current buffer.  The indent is counted in spaces, the value
@@ -2836,7 +2836,7 @@ interface fn {
    *     |getline()|.
    *     When {lnum} is invalid -1 is returned.
    */
-  indent: (lnum: any) => any;
+  indent: (lnum?: any) => any;
   /**
    * Return the lowest index in |List| {list} where the item has a
    * value equal to {expr}.  There is no automatic conversion, so
@@ -2852,7 +2852,7 @@ interface fn {
    *   :let idx = index(words, "the")
    *   :if index(numbers, 123) >= 0
    */
-  index: (list: any, expr: any, start?: any, ic?: any) => any;
+  index: (list?: any, expr?: any, start?: any, ic?: any) => any;
   /**
    * input({opts})
    *     The result is a String, which is whatever the user typed on
@@ -2893,7 +2893,7 @@ interface fn {
    *     more information.  Example: >
    *       let fname = input("File: ", "", "file")
    */
-  input: (prompt: any, text?: any, completion?: any) => any;
+  input: (prompt?: any, text?: any, completion?: any) => any;
   /**
    * {textlist} must be a |List| of strings.  This |List| is
    * displayed, one string per line.  The user will be prompted to
@@ -2911,7 +2911,7 @@ interface fn {
    *   let color = inputlist(['Select color:', '1. red',
    *     \ '2. green', '3. blue'])
    */
-  inputlist: (textlist: any) => any;
+  inputlist: (textlist?: any) => any;
   /**
    * Restore typeahead that was saved with a previous |inputsave()|.
    * Should be called the same number of times inputsave() is
@@ -2939,7 +2939,7 @@ interface fn {
    * typed on the command-line in response to the issued prompt.
    * NOTE: Command-line completion is not supported.
    */
-  inputsecret: (prompt: any, text?: any) => any;
+  inputsecret: (prompt?: any, text?: any) => any;
   /**
    * Insert {item} at the start of |List| {list}.
    * If {idx} is specified insert {item} before the item with index
@@ -2954,7 +2954,7 @@ interface fn {
    * Note that when {item} is a |List| it is inserted as a single
    * item.  Use |extend()| to concatenate |Lists|.
    */
-  insert: (list: any, item: any, idx?: any) => any;
+  insert: (list?: any, item?: any, idx?: any) => any;
   /**
    * Interrupt script execution.  It works more or less like the
    * user typing CTRL-C, most commands won't execute and control
@@ -2974,14 +2974,14 @@ interface fn {
    * List, Dict or Float argument causes an error.  Example: >
    *   :let bits = invert(bits)
    */
-  invert: (expr: any) => any;
+  invert: (expr?: any) => any;
   /**
    * The result is a Number, which is |TRUE| when a directory
    * with the name {directory} exists.  If {directory} doesn't
    * exist, or isn't a directory, the result is |FALSE|.  {directory}
    * is any expression, which is used as a String.
    */
-  isdirectory: (directory: any) => any;
+  isdirectory: (directory?: any) => any;
   /**
    * Return 1 if {expr} is a positive infinity, or -1 a negative
    * infinity, otherwise 0. >
@@ -2990,7 +2990,7 @@ interface fn {
    *   :echo isinf(-1.0 / 0.0)
    *    -1
    */
-  isinf: (expr: any) => any;
+  isinf: (expr?: any) => any;
   /**
    * The result is a Number, which is |TRUE| when {expr} is the
    * name of a locked variable.
@@ -3004,7 +3004,7 @@ interface fn {
    *  When {expr} is a variable that does not exist you get an error
    * message.  Use |exists()| to check for existence.
    */
-  islocked: (expr: any) => any;
+  islocked: (expr?: any) => any;
   /**
    * Returns a |String| which is a unique identifier of the
    * container type (|List|, |Dict| and |Partial|). It is
@@ -3022,30 +3022,30 @@ interface fn {
    * will not be equal to some other `id()`: new containers may
    * reuse identifiers of the garbage-collected ones.
    */
-  id: (expr: any) => any;
+  id: (expr?: any) => any;
   /**
    * Return a |List| with all the key-value pairs of {dict}.  Each
    * |List| item is a list with two items: the key of a {dict}
    * entry and the value of this entry.  The |List| is in arbitrary
    * order.
    */
-  items: (dict: any) => any;
+  items: (dict?: any) => any;
   /**
    * Return |TRUE| if {expr} is a float with value NaN. >
    *   echo isnan(0.0 / 0.0)
    *    1
    */
-  isnan: (expr: any) => any;
+  isnan: (expr?: any) => any;
   /**
    * Return the PID (process id) of |job-id| {job}.
    */
-  jobpid: (job: any) => any;
+  jobpid: (job?: any) => any;
   /**
    * Resize the pseudo terminal window of |job-id| {job} to {width}
    * columns and {height} rows.
    * Fails if the job was not started with `"pty":v:true`.
    */
-  jobresize: (job: any, width: any, height: any) => any;
+  jobresize: (job?: any, width?: any, height?: any) => any;
   /**
    * Spawns {cmd} as a job.
    * If {cmd} is a List it runs directly (no 'shell').
@@ -3075,7 +3075,7 @@ interface fn {
    *     by CommandLineToArgvW https://msdn.microsoft.com/bb776391
    *     unless cmd[0] is some form of "cmd.exe".
    */
-  jobstart: (cmd: any, opts?: any) => any;
+  jobstart: (cmd?: any, opts?: any) => any;
   /**
    * Stop |job-id| {id} by sending SIGTERM to the job process. If
    * the process does not terminate after a timeout then SIGKILL
@@ -3086,7 +3086,7 @@ interface fn {
    * Returns 1 for valid job id, 0 for invalid id, including jobs have
    * exited or stopped.
    */
-  jobstop: (id: any) => any;
+  jobstop: (id?: any) => any;
   /**
    * Waits for jobs and their |on_exit| handlers to complete.
    *
@@ -3108,7 +3108,7 @@ interface fn {
    *   -2 if the job was interrupted (by |CTRL-C|)
    *   -3 if the job-id is invalid
    */
-  jobwait: (jobs: any, timeout?: any) => any;
+  jobwait: (jobs?: any, timeout?: any) => any;
   /**
    * Join the items in {list} together into one String.
    * When {sep} is specified it is put in between the items.  If
@@ -3120,7 +3120,7 @@ interface fn {
    * converted into a string like with |string()|.
    * The opposite function is |split()|.
    */
-  join: (list: any, sep?: any) => any;
+  join: (list?: any, sep?: any) => any;
   /**
    * Convert {expr} from JSON object.  Accepts |readfile()|-style
    * list as the input, as well as regular string.  May output any
@@ -3137,7 +3137,7 @@ interface fn {
    * recommended and the only one required to be supported.
    * Non-UTF-8 characters are an error.
    */
-  json_decode: (expr: any) => any;
+  json_decode: (expr?: any) => any;
   /**
    * Convert {expr} into a JSON string.  Accepts
    * |msgpack-special-dict| as the input.  Will not convert
@@ -3149,12 +3149,12 @@ interface fn {
    * Non-printable characters are converted into "\u1234" escapes
    * or special escapes like "\t", other are dumped as-is.
    */
-  json_encode: (expr: any) => any;
+  json_encode: (expr?: any) => any;
   /**
    * Return a |List| with all the keys of {dict}.  The |List| is in
    * arbitrary order.
    */
-  keys: (dict: any) => any;
+  keys: (dict?: any) => any;
   /**
    * The result is a Number, which is the length of the argument.
    *     When {expr} is a String or a Number the length in bytes is
@@ -3166,7 +3166,7 @@ interface fn {
    *     |Dictionary| is returned.
    *     Otherwise an error is given.
    */
-  len: (expr: any) => any;
+  len: (expr?: any) => any;
   /**
    * Call function {funcname} in the run-time library {libname}
    * with single argument {argument}.
@@ -3210,7 +3210,7 @@ interface fn {
    *   :echo libcall("libc.so", "getenv", "HOME")
    *
    */
-  libcall: (libname: any, funcname: any, argument: any) => any;
+  libcall: (libname?: any, funcname?: any, argument?: any) => any;
   /**
    * Just like |libcall()|, but used for a function that returns an
    * int instead of a string.
@@ -3220,7 +3220,7 @@ interface fn {
    *   :call libcallnr("libc.so", "sleep", 10)
    *
    */
-  libcallnr: (libname: any, funcname: any, argument: any) => any;
+  libcallnr: (libname?: any, funcname?: any, argument?: any) => any;
   /**
    * The result is a Number, which is the line number of the file
    *     position given with {expr}.  The accepted positions are:
@@ -3245,7 +3245,7 @@ interface fn {
    *       line("'t")    line number of mark t
    *       line("'" . marker)  line number of mark marker
    */
-  line: (expr: any) => any;
+  line: (expr?: any) => any;
   /**
    * Return the byte count from the start of the buffer for line
    * {lnum}.  This includes the end-of-line character, depending on
@@ -3259,7 +3259,7 @@ interface fn {
    * When {lnum} is invalid -1 is returned.
    * Also see |byte2line()|, |go| and |:goto|.
    */
-  line2byte: (lnum: any) => any;
+  line2byte: (lnum?: any) => any;
   /**
    * Get the amount of indent for line {lnum} according the lisp
    * indenting rules, as with 'lisp'.
@@ -3268,7 +3268,7 @@ interface fn {
    * When {lnum} is invalid or Vim was not compiled the
    * |+lispindent| feature, -1 is returned.
    */
-  lispindent: (lnum: any) => any;
+  lispindent: (lnum?: any) => any;
   /**
    * Convert each number in {list} to a character string can
    * concatenate them all.  Examples: >
@@ -3284,7 +3284,7 @@ interface fn {
    *   list2str([97, 769])  returns "á"
    *
    */
-  list2str: (list: any, utf8?: any) => any;
+  list2str: (list?: any, utf8?: any) => any;
   /**
    * Return the current time, measured as seconds since 1st Jan
    * 1970.  See also |strftime()|, |strptime()| and |getftime()|.
@@ -3300,7 +3300,7 @@ interface fn {
    *   :echo log(exp(5))
    *    5.0
    */
-  log: (expr: any) => any;
+  log: (expr?: any) => any;
   /**
    * Return the logarithm of Float {expr} to base 10 as a |Float|.
    * {expr} must evaluate to a |Float| or a |Number|.
@@ -3314,7 +3314,7 @@ interface fn {
    * Evaluate Lua expression {expr} and return its result converted
    * to Vim data structures. See |lua-eval| for more details.
    */
-  log10: (expr: any) => any;
+  log10: (expr?: any) => any;
   /**
    * {expr1} must be a |List| or a |Dictionary|.
    * Replace each item in {expr1} with the result of evaluating
@@ -3359,7 +3359,7 @@ interface fn {
    * Funcref errors inside a function are ignored, unless it was
    * defined with the "abort" flag.
    */
-  map: (expr1: any, expr2: any) => any;
+  map: (expr1?: any, expr2?: any) => any;
   /**
    * When {dict} is omitted or zero: Return the rhs of mapping
    * {name} in mode {mode}.  The returned String has special
@@ -3417,7 +3417,7 @@ interface fn {
    * mapped, and have it do the original mapping too.  Sketch: >
    *   exe 'nnoremap <Tab> ==' . maparg('<Tab>', 'n')
    */
-  maparg: (name: any, mode?: any, abbr?: any, dict?: any) => any;
+  maparg: (name?: any, mode?: any, abbr?: any, dict?: any) => any;
   /**
    * Check if there is a mapping that matches with {name} in mode
    * {mode}.  See |maparg()| for {mode} and special names in
@@ -3451,7 +3451,7 @@ interface fn {
    *  This avoids adding the "_vv" mapping when there already is a
    * mapping for "_v" or for "_vvv".
    */
-  mapcheck: (name: any, mode?: any, abbr?: any) => any;
+  mapcheck: (name?: any, mode?: any, abbr?: any) => any;
   /**
    * When {expr} is a |List| then this returns the index of the
    * first item where {pat} matches.  Each item is used as a
@@ -3470,7 +3470,7 @@ interface fn {
    *   :echo match([1, 'x'], '\a')  " results in 1
    *  See |string-match| for how {pat} is used.
    */
-  match: (expr: any, pat: any, start?: any, count?: any) => any;
+  match: (expr?: any, pat?: any, start?: any, count?: any) => any;
   /**
    * Vim doesn't have a strpbrk() function.  But you can do: >
    *       :let sepidx = match(line, '[.,;: \t]')
@@ -3574,8 +3574,8 @@ interface fn {
    * one operation by |clearmatches()|.
    */
   matchadd: (
-    group: any,
-    pattern: any,
+    group?: any,
+    pattern?: any,
     priority?: any,
     id?: any,
     dict?: any
@@ -3589,8 +3589,8 @@ interface fn {
    * required, for example to highlight matching parentheses.
    */
   matchaddpos: (
-    group: any,
-    pos: any,
+    group?: any,
+    pos?: any,
     priority?: any,
     id?: any,
     dict?: any
@@ -3607,7 +3607,7 @@ interface fn {
    * Highlighting matches using the |:match| commands are limited
    * to three matches. |matchadd()| does not have this limitation.
    */
-  matcharg: (nr: any) => any;
+  matcharg: (nr?: any) => any;
   /**
    * Deletes a match with ID {id} previously defined by |matchadd()|
    * or one of the |:match| commands.  Returns 0 if successful,
@@ -3616,14 +3616,14 @@ interface fn {
    * If {win} is specified, use the window with this number or
    * window ID instead of the current window.
    */
-  matchdelete: (id: any, win?: any) => any;
+  matchdelete: (id?: any, win?: any) => any;
   /**
    * Same as |match()|, but return the index of first character
    * after the match.  Example: >
    *   :echo matchend("testing", "ing")
    *  results in "7".
    */
-  matchend: (expr: any, pat: any, start?: any, count?: any) => any;
+  matchend: (expr?: any, pat?: any, start?: any, count?: any) => any;
   /**
    * Same as |match()|, but return a |List|.  The first item in the
    * list is the matched string, same as what matchstr() would
@@ -3634,7 +3634,7 @@ interface fn {
    *  Results in: ['acd', 'a', '', 'c', 'd', '', '', '', '', '']
    * When there is no match an empty list is returned.
    */
-  matchlist: (expr: any, pat: any, start?: any, count?: any) => any;
+  matchlist: (expr?: any, pat?: any, start?: any, count?: any) => any;
   /**
    * Same as |match()|, but return the matched string.  Example: >
    *   :echo matchstr("testing", "ing")
@@ -3648,7 +3648,7 @@ interface fn {
    * When {expr} is a |List| then the matching item is returned.
    * The type isn't changed, it's not necessarily a String.
    */
-  matchstr: (expr: any, pat: any, start?: any, count?: any) => any;
+  matchstr: (expr?: any, pat?: any, start?: any, count?: any) => any;
   /**
    * Same as |matchstr()|, but return the matched string, the start
    * position and the end position of the match.  Example: >
@@ -3667,7 +3667,7 @@ interface fn {
    *  result is ["x", 1, 2, 3].
    * The type isn't changed, it's not necessarily a String.
    */
-  matchstrpos: (expr: any, pat: any, start?: any, count?: any) => any;
+  matchstrpos: (expr?: any, pat?: any, start?: any, count?: any) => any;
   /**
    * Return the maximum value of all items in {expr}.
    *     {expr} can be a |List| or a |Dictionary|.  For a Dictionary,
@@ -3676,7 +3676,7 @@ interface fn {
    *     items in {expr} cannot be used as a Number this results in
    *                 an error.  An empty |List| or |Dictionary| results in zero.
    */
-  max: (expr: any) => any;
+  max: (expr?: any) => any;
   /**
    * Returns a |List| of |Dictionaries| describing |menus| (defined
    * by |:menu|, |:amenu|, …), including |hidden-menus|.
@@ -3723,7 +3723,7 @@ interface fn {
    *   } ]
    *
    */
-  menu_get: (path: any, modes: any) => any;
+  menu_get: (path?: any, modes?: any) => any;
   /**
    * Return the minimum value of all items in {expr}.
    *     {expr} can be a |List| or a |Dictionary|.  For a Dictionary,
@@ -3732,7 +3732,7 @@ interface fn {
    *     items in {expr} cannot be used as a Number this results in
    *     an error.  An empty |List| or |Dictionary| results in zero.
    */
-  min: (expr: any) => any;
+  min: (expr?: any) => any;
   /**
    * Create directory {name}.
    * If {path} is "p" then intermediate directories are created as
@@ -3754,7 +3754,7 @@ interface fn {
    * successful or FALSE if the directory creation failed or partly
    * failed.
    */
-  mkdir: (name: any, path?: any, prot?: any) => any;
+  mkdir: (name?: any, path?: any, prot?: any) => any;
   /**
    * Return a string that indicates the current mode.
    *     If [expr] is supplied and it evaluates to a non-zero Number or
@@ -3808,7 +3808,7 @@ interface fn {
    * (dictionary with zero items is represented by 0x80 byte in
    * messagepack).
    */
-  msgpackdump: (list: any) => any;
+  msgpackdump: (list?: any) => any;
   /**
    * Convert a |readfile()|-style list to a list of VimL objects.
    * Example: >
@@ -3827,7 +3827,7 @@ interface fn {
    *    |msgpack-special-dict| format which is not convenient to
    *    use.
    */
-  msgpackparse: (list: any) => any;
+  msgpackparse: (list?: any) => any;
   /**
    * Return the line number of the first line at or below {lnum}
    * that is not blank.  Example: >
@@ -3836,7 +3836,7 @@ interface fn {
    * below it, zero is returned.
    * See also |prevnonblank()|.
    */
-  nextnonblank: (lnum: any) => any;
+  nextnonblank: (lnum?: any) => any;
   /**
    * Return a string with a single character, which has the number
    * value {expr}.  Examples: >
@@ -3851,14 +3851,14 @@ interface fn {
    * characters.  nr2char(0) is a real NUL and terminates the
    * string, thus results in an empty string.
    */
-  nr2char: (expr: any, utf8?: any) => any;
+  nr2char: (expr?: any, utf8?: any) => any;
   /**
    * Bitwise OR on the two arguments.  The arguments are converted
    * to a number.  A List, Dict or Float argument causes an error.
    * Example: >
    *   :let bits = or(bits, 0x80)
    */
-  or: (expr1: any, expr2: any) => any;
+  or: (expr1?: any, expr2?: any) => any;
   /**
    * Shorten directory names in the path {expr} and return the
    * result.  The tail, the file name, is kept as-is.  The other
@@ -3868,7 +3868,7 @@ interface fn {
    *    ~/.c/n/a/file1.vim ~
    * It doesn't matter if the path exists or not.
    */
-  pathshorten: (expr: any) => any;
+  pathshorten: (expr?: any) => any;
   /**
    * Evaluate |perl| expression {expr} and return its result
    * converted to Vim data structures.
@@ -3884,7 +3884,7 @@ interface fn {
    *   :echo perleval('[1 .. 4]')
    *    [1, 2, 3, 4]
    */
-  perleval: (expr: any) => any;
+  perleval: (expr?: any) => any;
   /**
    * Return the power of {x} to the exponent {y} as a |Float|.
    * {x} and {y} must evaluate to a |Float| or a |Number|.
@@ -3896,7 +3896,7 @@ interface fn {
    *   :echo pow(32, 0.20)
    *    2.0
    */
-  pow: (x: any, y: any) => any;
+  pow: (x?: any, y?: any) => any;
   /**
    * Return the line number of the first line at or above {lnum}
    * that is not blank.  Example: >
@@ -3905,7 +3905,7 @@ interface fn {
    * above it, zero is returned.
    * Also see |nextnonblank()|.
    */
-  prevnonblank: (lnum: any) => any;
+  prevnonblank: (lnum?: any) => any;
   /**
    * Return a String with {fmt}, where "%" items are replaced by
    * the formatted form of their respective arguments.  Example: >
@@ -4012,7 +4012,7 @@ interface fn {
    *
    * The conversion specifiers and their meanings are:
    */
-  printf: (fmt: any, ...arguments: any[]) => any;
+  printf: (fmt?: any, ...arguments: any[]) => any;
   /**
    * Returns the effective prompt text for buffer {buf}.  {buf} can
    * be a buffer name or number.  See |prompt-buffer|.
@@ -4020,7 +4020,7 @@ interface fn {
    * If the buffer doesn't exist or isn't a prompt buffer, an empty
    * string is returned.
    */
-  prompt_getprompt: (buf: any) => any;
+  prompt_getprompt: (buf?: any) => any;
   /**
    * Set prompt callback for buffer {buf} to {expr}.  When {expr}
    * is an empty string the callback is removed.  This has only
@@ -4050,7 +4050,7 @@ interface fn {
    *      endif
    *    endfunc
    */
-  prompt_setcallback: (buf: any, expr: any) => any;
+  prompt_setcallback: (buf?: any, expr?: any) => any;
   /**
    * Set a callback for buffer {buf} to {expr}.  When {expr} is an
    * empty string the callback is removed.  This has only effect if
@@ -4060,7 +4060,7 @@ interface fn {
    * mode.  Without setting a callback Vim will exit Insert mode,
    * as in any buffer.
    */
-  prompt_setinterrupt: (buf: any, expr: any) => any;
+  prompt_setinterrupt: (buf?: any, expr?: any) => any;
   /**
    * Set prompt for buffer {buf} to {text}.  You most likely want
    * {text} to end in a space.
@@ -4068,7 +4068,7 @@ interface fn {
    * "prompt".  Example: >
    *   call prompt_setprompt(bufnr(''), 'command: ')
    */
-  prompt_setprompt: (buf: any, text: any) => any;
+  prompt_setprompt: (buf?: any, text?: any) => any;
   /**
    * If the popup menu (see |ins-completion-menu|) is not visible,
    * returns an empty |Dictionary|, otherwise, returns a
@@ -4100,7 +4100,7 @@ interface fn {
    * Dictionaries are represented as Vim |Dictionary| type with
    * keys converted to strings.
    */
-  py3eval: (expr: any) => any;
+  py3eval: (expr?: any) => any;
   /**
    * *pyeval()*
    *     Evaluate Python expression {expr} and return its result
@@ -4111,14 +4111,14 @@ interface fn {
    *     Dictionaries are represented as Vim |Dictionary| type,
    *     non-string keys result in error.
    */
-  pyeval: (expr: any) => any;
+  pyeval: (expr?: any) => any;
   /**
    * Evaluate Python expression {expr} and return its result
    * converted to Vim data structures.
    * Uses Python 2 or 3, see |python_x| and 'pyxversion'.
    * See also: |pyeval()|, |py3eval()|
    */
-  pyxeval: (expr: any) => any;
+  pyxeval: (expr?: any) => any;
   /**
    * *range()*
    *     Returns a |List| with Numbers:
@@ -4139,7 +4139,7 @@ interface fn {
    *       range(2, 0)    " error!
    * <
    */
-  range: (expr: any, max?: any, stride?: any) => any;
+  range: (expr?: any, max?: any, stride?: any) => any;
   /**
    * Return a list with file and directory names in {directory}.
    *
@@ -4167,7 +4167,7 @@ interface fn {
    *               echo s:tree(".")
    *
    */
-  readdir: (directory: any, expr?: any) => any;
+  readdir: (directory?: any, expr?: any) => any;
   /**
    * Read file {fname} and return a |List|, each line of the file
    * as an item.  Lines are broken at NL characters.  Macintosh
@@ -4198,7 +4198,7 @@ interface fn {
    * the result is an empty list.
    * Also see |writefile()|.
    */
-  readfile: (fname: any, binary?: any, max?: any) => any;
+  readfile: (fname?: any, binary?: any, max?: any) => any;
   /**
    * Returns the single letter name of the register being executed.
    * Returns an empty string when no register is being executed.
@@ -4241,7 +4241,7 @@ interface fn {
    * See the note of reltimestr() about overhead.
    *  Also see |profiling|.
    */
-  reltimefloat: (time: any) => any;
+  reltimefloat: (time?: any) => any;
   /**
    * Return a String that represents the time value of {time}.
    * This is the number of seconds, a dot and the number of
@@ -4255,7 +4255,7 @@ interface fn {
    *   echo split(reltimestr(reltime(start)))[0]
    *  Also see |profiling|.
    */
-  reltimestr: (time: any) => any;
+  reltimestr: (time?: any) => any;
   /**
    * Send the {string} to {server}.  The string is sent as an
    * expression and the result is returned after evaluation.
@@ -4282,7 +4282,7 @@ interface fn {
    *   :echo remote_expr("gvim1", "b:current_syntax")
    *
    */
-  remote_expr: (server: any, string: any, idvar?: any, timeout?: any) => any;
+  remote_expr: (server?: any, string?: any, idvar?: any, timeout?: any) => any;
   /**
    * Move the Vim server with the name {server} to the foreground.
    * This works like: >
@@ -4295,7 +4295,7 @@ interface fn {
    * This function is not available in the |sandbox|.
    * {only in the Win32 GUI and the Win32 console version}
    */
-  remote_foreground: (server: any) => any;
+  remote_foreground: (server?: any) => any;
   /**
    * Returns a positive number if there are available strings
    * from {serverid}.  Copies any reply string into the variable
@@ -4309,7 +4309,7 @@ interface fn {
    *   :let repl = ""
    *   :echo "PEEK: ".remote_peek(id, "repl").": ".repl
    */
-  remote_peek: (serverid: any, retvar?: any) => any;
+  remote_peek: (serverid?: any, retvar?: any) => any;
   /**
    * Return the oldest available reply from {serverid} and consume
    * it.  Unless a {timeout} in seconds is given, it blocks until a
@@ -4320,7 +4320,7 @@ interface fn {
    *   :echo remote_read(id)
    *
    */
-  remote_read: (serverid: any, timeout?: any) => any;
+  remote_read: (serverid?: any, timeout?: any) => any;
   /**
    * Send the {string} to {server}.  The string is sent as input
    * keys and the function returns immediately.  At the Vim server
@@ -4343,12 +4343,12 @@ interface fn {
    *  \ 'server2client(expand("<client>"), "HELLO")<CR>')
    *
    */
-  remote_send: (server: any, string: any, idvar?: any) => any;
+  remote_send: (server?: any, string?: any, idvar?: any) => any;
   /**
    * Become the server {name}.  This fails if already running as a
    * server, when |v:servername| is not empty.
    */
-  remote_startserver: (name: any) => any;
+  remote_startserver: (name?: any) => any;
   /**
    * Without {end}: Remove the item at {idx} from |List| {list} and
    * return the item.
@@ -4368,7 +4368,7 @@ interface fn {
    *
    * Use |delete()| to remove a file.
    */
-  remove: (list: any, idx: any, end?: any) => any;
+  remove: (list?: any, idx?: any, end?: any) => any;
   /**
    * Rename the file by the name {from} to the name {to}.  This
    * should also work to move files across file systems.  The
@@ -4377,7 +4377,7 @@ interface fn {
    * NOTE: If {to} exists it is overwritten without warning.
    * This function is not available in the |sandbox|.
    */
-  rename: (from: any, to: any) => any;
+  rename: (from?: any, to?: any) => any;
   /**
    * Repeat {expr} {count} times and return the concatenated
    * result.  Example: >
@@ -4388,7 +4388,7 @@ interface fn {
    *   :let longlist = repeat(['a', 'b'], 3)
    *  Results in ['a', 'b', 'a', 'b', 'a', 'b'].
    */
-  repeat: (expr: any, count: any) => any;
+  repeat: (expr?: any, count?: any) => any;
   /**
    * On MS-Windows, when {filename} is a shortcut (a .lnk file),
    * returns the path the shortcut points to in a simplified form.
@@ -4402,14 +4402,14 @@ interface fn {
    * current directory (provided the result is still a relative
    * path name) and also keeps a trailing path separator.
    */
-  resolve: (filename: any) => any;
+  resolve: (filename?: any) => any;
   /**
    * Reverse the order of items in {list} in-place.  Returns
    *     {list}.
    *     If you want a list to remain unmodified make a copy first: >
    *       :let revlist = reverse(copy(mylist))
    */
-  reverse: (list: any) => any;
+  reverse: (list?: any) => any;
   /**
    * Round off {expr} to the nearest integral value and return it
    * as a |Float|.  If {expr} lies halfway between two integral
@@ -4423,28 +4423,28 @@ interface fn {
    *   echo round(-4.5)
    *    -5.0
    */
-  round: (expr: any) => any;
+  round: (expr?: any) => any;
   /**
    * Sends {event} to {channel} via |RPC| and returns immediately.
    * If {channel} is 0, the event is broadcast to all channels.
    * Example: >
    *   :au VimLeave call rpcnotify(0, "leaving")
    */
-  rpcnotify: (channel: any, event: any, ...arguments: any[]) => any;
+  rpcnotify: (channel?: any, event?: any, ...arguments: any[]) => any;
   /**
    * Sends a request to {channel} to invoke {method} via
    * |RPC| and blocks until a response is received.
    * Example: >
    *   :let result = rpcrequest(rpc_chan, "func", 1, 2, 3)
    */
-  rpcrequest: (channel: any, method: any, ...arguments: any[]) => any;
+  rpcrequest: (channel?: any, method?: any, ...arguments: any[]) => any;
   /**
    * Deprecated. Replace  >
    *   :let id = rpcstart('prog', ['arg1', 'arg2'])
    *  with >
    *   :let id = jobstart(['prog', 'arg1', 'arg2'], {'rpc': v:true})
    */
-  rpcstart: (prog: any, argv?: any) => any;
+  rpcstart: (prog?: any, argv?: any) => any;
   /**
    * Evaluate Ruby expression {expr} and return its result
    * converted to Vim data structures.
@@ -4456,13 +4456,13 @@ interface fn {
    * "Object#to_s" method.
    * {only available when compiled with the |+ruby| feature}
    */
-  rubyeval: (expr: any) => any;
+  rubyeval: (expr?: any) => any;
   /**
    * Like |screenchar()|, but return the attribute.  This is a rather
    * arbitrary number that can only be used to compare to the
    * attribute at other positions.
    */
-  screenattr: (row: any, col: any) => any;
+  screenattr: (row?: any, col?: any) => any;
   /**
    * The result is a Number, which is the character at position
    * [row, col] on the screen.  This works for every possible
@@ -4473,7 +4473,7 @@ interface fn {
    * This is mainly to be used for testing.
    * Returns -1 when row or col is out of range.
    */
-  screenchar: (row: any, col: any) => any;
+  screenchar: (row?: any, col?: any) => any;
   /**
    * The result is a Number, which is the current screen column of
    * the cursor. The leftmost column has number 1.
@@ -4507,7 +4507,7 @@ interface fn {
    * a Tab it would be the same as "endcol", while for a double
    * width character it would be the same as "col".
    */
-  screenpos: (winid: any, lnum: any, col: any) => any;
+  screenpos: (winid?: any, lnum?: any, col?: any) => any;
   /**
    * The result is a Number, which is the current screen row of the
    * cursor.  The top line has number one.
@@ -4569,7 +4569,7 @@ interface fn {
    * The value must not be negative.  A zero value is like not
    * giving the argument.
    */
-  search: (pattern: any, flags?: any, stopline?: any, timeout?: any) => any;
+  search: (pattern?: any, flags?: any, stopline?: any, timeout?: any) => any;
   /**
    * Get or update the last search count, like what is displayed
    * without the "S" flag in 'shortmess'.  This works even if
@@ -4709,7 +4709,7 @@ interface fn {
    *   endif
    *
    */
-  searchdecl: (name: any, global?: any, thisblock?: any) => any;
+  searchdecl: (name?: any, global?: any, thisblock?: any) => any;
   /**
    * [, {stopline} [, {timeout}]]]])
    * ch for the match of a nested start-end pair.  This can be
@@ -4825,7 +4825,7 @@ interface fn {
    *  In this example "submatch" is 2 when a lowercase letter is
    * found |/\l|, 3 when an uppercase letter is found |/\u|.
    */
-  searchpos: (pattern: any, flags?: any, stopline?: any, timeout?: any) => any;
+  searchpos: (pattern?: any, flags?: any, stopline?: any, timeout?: any) => any;
   /**
    * Send a reply string to {clientid}.  The most recent {clientid}
    * that sent a string can be retrieved with expand("<client>").
@@ -4839,7 +4839,7 @@ interface fn {
    *   :echo server2client(expand("<client>"), "HELLO")
    *
    */
-  server2client: (clientid: any, string: any) => any;
+  server2client: (clientid?: any, string?: any) => any;
   /**
    * Returns a list of server addresses, or empty if all servers
    * were stopped. |serverstart()| |serverstop()|
@@ -4882,7 +4882,7 @@ interface fn {
    * If |v:servername| is stopped it is set to the next available
    * address returned by |serverlist()|.
    */
-  serverstop: (address: any) => any;
+  serverstop: (address?: any) => any;
   /**
    * Set line {lnum} to {text} in buffer {expr}.  This works like
    * |setline()| for the specified buffer.
@@ -4907,7 +4907,7 @@ interface fn {
    * If {expr} is not a valid buffer or {lnum} is not valid, an
    * error message is given.
    */
-  setbufline: (expr: any, lnum: any, text: any) => any;
+  setbufline: (expr?: any, lnum?: any, text?: any) => any;
   /**
    * Set option or local variable {varname} in buffer {expr} to
    * {val}.
@@ -4921,7 +4921,7 @@ interface fn {
    *   :call setbufvar("todo", "myvar", "foobar")
    *  This function is not available in the |sandbox|.
    */
-  setbufvar: (expr: any, varname: any, val: any) => any;
+  setbufvar: (expr?: any, varname?: any, val?: any) => any;
   /**
    * Set the current character search information to {dict},
    * which contains one or more of the following entries:
@@ -4942,7 +4942,7 @@ interface fn {
    *   :call setcharsearch(prevsearch)
    *  Also see |getcharsearch()|.
    */
-  setcharsearch: (dict: any) => any;
+  setcharsearch: (dict?: any) => any;
   /**
    * Set the cursor position in the command line to byte position
    * {pos}.  The first position is 1.
@@ -4958,13 +4958,13 @@ interface fn {
    * Returns FALSE when successful, TRUE when not editing the
    * command line.
    */
-  setcmdpos: (pos: any) => any;
+  setcmdpos: (pos?: any) => any;
   /**
    * Set environment variable {name} to {val}.
    * When {val} is |v:null| the environment variable is deleted.
    * See also |expr-env|.
    */
-  setenv: (name: any, val: any) => any;
+  setenv: (name?: any, val?: any) => any;
   /**
    * Set the file permissions for {fname} to {mode}.
    * {mode} must be a string with 9 characters.  It is of the form
@@ -4982,7 +4982,7 @@ interface fn {
    *
    * To read permissions see |getfperm()|.
    */
-  setfperm: (fname: any, mode: any) => any;
+  setfperm: (fname?: any, mode?: any) => any;
   /**
    * Set line {lnum} of the current buffer to {text}.  To insert
    * lines use |append()|. To set lines in another buffer use
@@ -5008,7 +5008,7 @@ interface fn {
    *
    *  Note: The '[ and '] marks are not set.
    */
-  setline: (lnum: any, text: any) => any;
+  setline: (lnum?: any, text?: any) => any;
   /**
    * Create or replace or add to the location list for window {nr}.
    * {nr} can be the window number or the |window-ID|.
@@ -5025,7 +5025,7 @@ interface fn {
    * only the items listed in {what} are set. Refer to |setqflist()|
    * for the list of supported keys in {what}.
    */
-  setloclist: (nr: any, list: any, action?: any, what?: any) => any;
+  setloclist: (nr?: any, list?: any, action?: any, what?: any) => any;
   /**
    * Restores a list of matches saved by |getmatches() for the
    * current window|.  Returns 0 if successful, otherwise -1.  All
@@ -5034,7 +5034,7 @@ interface fn {
    * If {win} is specified, use the window with this number or
    * window ID instead of the current window.
    */
-  setmatches: (list: any, win?: any) => any;
+  setmatches: (list?: any, win?: any) => any;
   /**
    * Set the position for {expr}.  Possible values:
    *   .  the cursor
@@ -5083,7 +5083,7 @@ interface fn {
    * also set the preferred column.  Also see the "curswant" key in
    * |winrestview()|.
    */
-  setpos: (expr: any, list: any) => any;
+  setpos: (expr?: any, list?: any) => any;
   /**
    * Create or replace or add to the quickfix list.
    *
@@ -5092,7 +5092,7 @@ interface fn {
    * argument is ignored.  See below for the supported items in
    * {what}.
    */
-  setqflist: (list: any, action?: any, what?: any) => any;
+  setqflist: (list?: any, action?: any, what?: any) => any;
   /**
    * Set the register {regname} to {value}.
    *
@@ -5118,7 +5118,7 @@ interface fn {
    * mode is never selected automatically.
    * Returns zero for success, non-zero for failure.
    */
-  setreg: (regname: any, value: any, options?: any) => any;
+  setreg: (regname?: any, value?: any, options?: any) => any;
   /**
    * Note: you may not use |List| containing more than one item to
    *           set search and expression registers. Lists containing no
@@ -5152,7 +5152,7 @@ interface fn {
    * Tabs are numbered starting with one.
    * This function is not available in the |sandbox|.
    */
-  settabvar: (tabnr: any, varname: any, val: any) => any;
+  settabvar: (tabnr?: any, varname?: any, val?: any) => any;
   /**
    * Set option or local variable {varname} in window {winnr} to
    * {val}.
@@ -5169,7 +5169,7 @@ interface fn {
    *   :call settabwinvar(3, 2, "myvar", "foobar")
    *  This function is not available in the |sandbox|.
    */
-  settabwinvar: (tabnr: any, winnr: any, varname: any, val: any) => any;
+  settabwinvar: (tabnr?: any, winnr?: any, varname?: any, val?: any) => any;
   /**
    * Modify the tag stack of the window {nr} using {dict}.
    * {nr} can be the window number or the |window-ID|.
@@ -5178,7 +5178,7 @@ interface fn {
    * |gettagstack()|. "curidx" takes effect before changing the tag
    * stack.
    */
-  settagstack: (nr: any, dict: any, action?: any) => any;
+  settagstack: (nr?: any, dict?: any, action?: any) => any;
   /**
    * How the tag stack is modified depends on the {action}
    *     argument:
@@ -5213,12 +5213,12 @@ interface fn {
    *   :call setwinvar(1, "&list", 0)
    *   :call setwinvar(2, "myvar", "foobar")
    */
-  setwinvar: (nr: any, varname: any, val: any) => any;
+  setwinvar: (nr?: any, varname?: any, val?: any) => any;
   /**
    * Returns a String with 64 hex characters, which is the SHA256
    * checksum of {string}.
    */
-  sha256: (string: any) => any;
+  sha256: (string?: any) => any;
   /**
    * Escape {string} for use as a shell command argument.
    *
@@ -5246,7 +5246,7 @@ interface fn {
    *     :call system("chmod +w -- " . shellescape(expand("%")))
    *  See also |::S|.
    */
-  shellescape: (string: any, special?: any) => any;
+  shellescape: (string?: any, special?: any) => any;
   /**
    * Returns the effective value of 'shiftwidth'. This is the
    * 'shiftwidth' value unless it is zero, in which case it is the
@@ -5288,7 +5288,7 @@ interface fn {
    * directory.  In order to resolve all the involved symbolic
    * links before simplifying the path name, use |resolve()|.
    */
-  simplify: (filename: any) => any;
+  simplify: (filename?: any) => any;
   /**
    * Return the sine of {expr}, measured in radians, as a |Float|.
    * {expr} must evaluate to a |Float| or a |Number|.
@@ -5298,7 +5298,7 @@ interface fn {
    *   :echo sin(-4.01)
    *    0.763301
    */
-  sin: (expr: any) => any;
+  sin: (expr?: any) => any;
   /**
    * Return the hyperbolic sine of {expr} as a |Float| in the range
    * [-inf, inf].
@@ -5309,7 +5309,7 @@ interface fn {
    *   :echo sinh(-0.9)
    *    -1.026517
    */
-  sinh: (expr: any) => any;
+  sinh: (expr?: any) => any;
   /**
    * Connect a socket to an address. If {mode} is "pipe" then
    * {address} should be the path of a named pipe. If {mode} is
@@ -5331,7 +5331,7 @@ interface fn {
    *   - The channel ID on success (greater than zero)
    *   - 0 on invalid arguments or connection failure.
    */
-  sockconnect: (mode: any, address: any, opts: any) => any;
+  sockconnect: (mode?: any, address?: any, opts?: any) => any;
   /**
    * Sort the items in {list} in-place.  Returns {list}.
    *
@@ -5403,7 +5403,7 @@ interface fn {
    *   endfunc
    *
    */
-  sort: (list: any, func?: any, dict?: any) => any;
+  sort: (list?: any, func?: any, dict?: any) => any;
   /**
    * Return the sound-folded equivalent of {word}.  Uses the first
    * language in 'spelllang' for the current window that supports
@@ -5412,7 +5412,7 @@ interface fn {
    * This can be used for making spelling suggestions.  Note that
    * the method can be quite slow.
    */
-  soundfold: (word: any) => any;
+  soundfold: (word?: any) => any;
   /**
    * Without argument: The result is the badly spelled word under
    * or after the cursor.  The cursor is moved to the start of the
@@ -5461,7 +5461,7 @@ interface fn {
    * 'spell' option must be set and the values of 'spelllang' and
    * 'spellsuggest' are used.
    */
-  spellsuggest: (word: any, max?: any, capital?: any) => any;
+  spellsuggest: (word?: any, max?: any, capital?: any) => any;
   /**
    * Make a |List| out of {expr}.  When {pattern} is omitted or
    * empty each white-separated sequence of characters becomes an
@@ -5485,7 +5485,7 @@ interface fn {
    *   :let items = split(line, ':', 1)
    *  The opposite function is |join()|.
    */
-  split: (expr: any, pattern?: any, keepempty?: any) => any;
+  split: (expr?: any, pattern?: any, keepempty?: any) => any;
   /**
    * Return the non-negative square root of Float {expr} as a
    * |Float|.
@@ -5498,7 +5498,7 @@ interface fn {
    *    nan
    * "nan" may be different, it depends on system libraries.
    */
-  sqrt: (expr: any) => any;
+  sqrt: (expr?: any) => any;
   /**
    * With |--headless| this opens stdin and stdout as a |channel|.
    * May be called only once. See |channel-stdio|. stderr is not
@@ -5517,7 +5517,7 @@ interface fn {
    *   - |channel-id| on success (value is always 1)
    *   - 0 on invalid arguments
    */
-  stdioopen: (opts: any) => any;
+  stdioopen: (opts?: any) => any;
   /**
    * Returns |standard-path| locations of various default files and
    * directories.
@@ -5535,7 +5535,7 @@ interface fn {
    * Example: >
    *   :echo stdpath("config")
    */
-  stdpath: (what: any) => any;
+  stdpath: (what?: any) => any;
   /**
    * Convert String {expr} to a Float.  This mostly works the same
    * as when using a floating point number in an expression, see
@@ -5550,7 +5550,7 @@ interface fn {
    * |substitute()|: >
    *   let f = str2float(substitute(text, ',', '', 'g'))
    */
-  str2float: (expr: any) => any;
+  str2float: (expr?: any) => any;
   /**
    * Return a list containing the number values which represent
    * each character in String {expr}.  Examples: >
@@ -5564,7 +5564,7 @@ interface fn {
    * properly: >
    *   str2list("á")    returns [97, 769]
    */
-  str2list: (expr: any, utf8?: any) => any;
+  str2list: (expr?: any, utf8?: any) => any;
   /**
    * Convert string {expr} to a number.
    * {base} is the conversion base, it can be 2, 8, 10 or 16.
@@ -5577,7 +5577,7 @@ interface fn {
    * "0b" or "0B" is ignored.
    * Text after the number is silently ignored.
    */
-  str2nr: (expr: any, base?: any) => any;
+  str2nr: (expr?: any, base?: any) => any;
   /**
    * The result is a Number, which is the number of characters
    * in String {expr}.
@@ -5603,7 +5603,7 @@ interface fn {
    *     endif
    *
    */
-  strchars: (expr: any, skipcc?: any) => any;
+  strchars: (expr?: any, skipcc?: any) => any;
   /**
    * Like |strpart()| but using character index and length instead
    * of byte index and length.  Composing characters are counted
@@ -5613,7 +5613,7 @@ interface fn {
    *   strcharpart('abc', -1, 2)
    *  results in 'a'.
    */
-  strcharpart: (src: any, start: any, len?: any) => any;
+  strcharpart: (src?: any, start?: any, len?: any) => any;
   /**
    * The result is a Number, which is the number of display cells
    * String {expr} occupies on the screen when it starts at {col}
@@ -5627,7 +5627,7 @@ interface fn {
    * Ambiguous, this function's return value depends on 'ambiwidth'.
    * Also see |strlen()|, |strwidth()| and |strchars()|.
    */
-  strdisplaywidth: (expr: any, col?: any) => any;
+  strdisplaywidth: (expr?: any, col?: any) => any;
   /**
    * The result is a String, which is a formatted date and time, as
    * specified by the {format} string.  The given {time} is used,
@@ -5645,14 +5645,14 @@ interface fn {
    *   :echo strftime("%c", getftime("file.c"))
    *            Show mod time of file.c.
    */
-  strftime: (format: any, time?: any) => any;
+  strftime: (format?: any, time?: any) => any;
   /**
    * Get character {index} from {str}.  This uses a character
    * index, not a byte index.  Composing characters are considered
    * separate characters here.
    * Also see |strcharpart()| and |strchars()|.
    */
-  strgetchar: (str: any, index: any) => any;
+  strgetchar: (str?: any, index?: any) => any;
   /**
    * The result is a Number, which gives the byte index in
    * {haystack} of the first occurrence of the String {needle}.
@@ -5669,7 +5669,7 @@ interface fn {
    *   :echo stridx("Starting point", "Start")    0
    *   :echo stridx("Starting point", "start")   -1
    */
-  stridx: (haystack: any, needle: any, start?: any) => any;
+  stridx: (haystack?: any, needle?: any, start?: any) => any;
   /**
    * Return {expr} converted to a String.  If {expr} is a Number,
    *     Float, String or a composition of them, then the result can be
@@ -5693,7 +5693,7 @@ interface fn {
    *     method, use |msgpackdump()| or |json_encode()| if you need to
    *     share data with other application.
    */
-  string: (expr: any) => any;
+  string: (expr?: any) => any;
   /**
    * The result is a Number, which is the length of the String
    *     {expr} in bytes.
@@ -5703,7 +5703,7 @@ interface fn {
    *     |strchars()|.
    *     Also see |len()|, |strdisplaywidth()| and |strwidth()|.
    */
-  strlen: (expr: any) => any;
+  strlen: (expr?: any) => any;
   /**
    * The result is a String, which is part of {src}, starting from
    * byte {start}, with the byte length {len}.
@@ -5728,7 +5728,7 @@ interface fn {
    *   strpart(getline("."), col(".") - 1, 1, v:true)
    *
    */
-  strpart: (src: any, start: any, len?: any, chars?: any) => any;
+  strpart: (src?: any, start?: any, len?: any, chars?: any) => any;
   /**
    * The result is a Number, which is a unix timestamp representing
    * the date and time in {timestring}, which is expected to match
@@ -5753,7 +5753,7 @@ interface fn {
    *   :echo strftime("%c", strptime("%Y%m%d%H%M%S", "19970427115355") + 3600)
    *    Sun Apr 27 12:53:55 1997
    */
-  strptime: (format: any, timestring: any) => any;
+  strptime: (format?: any, timestring?: any) => any;
   /**
    * The result is a Number, which gives the byte index in
    * {haystack} of the last occurrence of the String {needle}.
@@ -5769,7 +5769,7 @@ interface fn {
    * See also |stridx()|.  Examples: >
    *   :echo strridx("an angry armadillo", "an")       3
    */
-  strridx: (haystack: any, needle: any, start?: any) => any;
+  strridx: (haystack?: any, needle?: any, start?: any) => any;
   /**
    * When used with a single character it works similar to the C
    * function strrchr().
@@ -5783,7 +5783,7 @@ interface fn {
    *  This displays a newline in register a as "^@" instead of
    * starting a new line.
    */
-  strtrans: (expr: any) => any;
+  strtrans: (expr?: any) => any;
   /**
    * The result is a Number, which is the number of display cells
    * String {expr} occupies.  A Tab character is counted as one
@@ -5792,7 +5792,7 @@ interface fn {
    * Ambiguous, this function's return value depends on 'ambiwidth'.
    * Also see |strlen()|, |strdisplaywidth()| and |strchars()|.
    */
-  strwidth: (expr: any) => any;
+  strwidth: (expr?: any) => any;
   /**
    * Only for an expression in a |:substitute| command or
    * substitute() function.
@@ -5819,7 +5819,7 @@ interface fn {
    *  This finds the first number in the line and adds one to it.
    * A line break is included as a newline character.
    */
-  submatch: (nr: any, list?: any) => any;
+  submatch: (nr?: any, list?: any) => any;
   /**
    * The result is a String, which is a copy of {expr}, in which
    * the first match of {pat} is replaced with {sub}.
@@ -5861,7 +5861,7 @@ interface fn {
    * |submatch()| returns.  Example: >
    *    :echo substitute(s, '%\(\x\x\)', {m -> '0x' . m[1]}, 'g')
    */
-  substitute: (expr: any, pat: any, sub: any, flags: any) => any;
+  substitute: (expr?: any, pat?: any, sub?: any, flags?: any) => any;
   /**
    * The result is a dictionary, which holds information about the
    * swapfile {fname}. The available fields are:
@@ -5880,7 +5880,7 @@ interface fn {
    *   Not a swap file: does not contain correct block ID
    *   Magic number mismatch: Info in first block is invalid
    */
-  swapinfo: (fname: any) => any;
+  swapinfo: (fname?: any) => any;
   /**
    * The result is the swap file path of the buffer {expr}.
    * For the use of {expr}, see |bufname()| above.
@@ -5888,7 +5888,7 @@ interface fn {
    * |:swapname| (unless there is no swap file).
    * If buffer {expr} has no swap file, returns an empty string.
    */
-  swapname: (expr: any) => any;
+  swapname: (expr?: any) => any;
   /**
    * The result is a Number, which is the syntax ID at the position
    * {lnum} and {col} in the current window.
@@ -5913,7 +5913,7 @@ interface fn {
    *   :echo synIDattr(synID(line("."), col("."), 1), "name")
    *
    */
-  synID: (lnum: any, col: any, trans: any) => any;
+  synID: (lnum?: any, col?: any, trans?: any) => any;
   /**
    * The result is a String, which is the {what} attribute of
    * syntax ID {synID}.  This can be used to obtain information
@@ -5950,14 +5950,14 @@ interface fn {
    * cho synIDattr(synIDtrans(synID(line("."), col("."), 1)), "fg")
    *
    */
-  synIDattr: (synID: any, what: any, mode?: any) => any;
+  synIDattr: (synID?: any, what?: any, mode?: any) => any;
   /**
    * The result is a Number, which is the translated syntax ID of
    * {synID}.  This is the syntax group ID of what is being used to
    * highlight the character.  Highlight links given with
    * ":highlight link" are followed.
    */
-  synIDtrans: (synID: any) => any;
+  synIDtrans: (synID?: any) => any;
   /**
    * The result is a |List| with currently three items:
    * 1. The first item in the list is 0 if the character at the
@@ -5983,7 +5983,7 @@ interface fn {
    *      synconcealed(lnum, 5)   [1, 'X', 2]
    *      synconcealed(lnum, 6)   [0, '', 0]
    */
-  synconcealed: (lnum: any, col: any) => any;
+  synconcealed: (lnum?: any, col?: any) => any;
   /**
    * Return a |List|, which is the stack of syntax items at the
    * position {lnum} and {col} in the current window.  Each item in
@@ -6002,7 +6002,7 @@ interface fn {
    * character in a line and the first column in an empty line are
    * valid positions.
    */
-  synstack: (lnum: any, col: any) => any;
+  synstack: (lnum?: any, col?: any) => any;
   /**
    * Get the output of {cmd} as a |string| (use |systemlist()| to
    * get a |List|). {cmd} is treated exactly as in |jobstart()|.
@@ -6019,7 +6019,7 @@ interface fn {
    * the buffer is written to the file line by line, each line
    * terminated by NL (and NUL where the text has NL).
    */
-  system: (cmd: any, input?: any) => any;
+  system: (cmd?: any, input?: any) => any;
   /**
    * Note: system() cannot write to or read from backgrounded ("&")
    *     shell commands, e.g.: >
@@ -6072,7 +6072,7 @@ interface fn {
    *
    * Returns an empty string on error.
    */
-  systemlist: (cmd: any, input?: any, keepempty?: any) => any;
+  systemlist: (cmd?: any, input?: any, keepempty?: any) => any;
   /**
    * The result is a |List|, where each item is the number of the
    * buffer associated with each window in the current tab page.
@@ -6112,7 +6112,7 @@ interface fn {
    *     tabpagewinnr(4, '$')    " number of windows in tab page 4
    *  When {tabarg} is invalid zero is returned.
    */
-  tabpagewinnr: (tabarg: any, arg?: any) => any;
+  tabpagewinnr: (tabarg?: any, arg?: any) => any;
   /**
    * Returns a |List| with the file names used to search for tags
    *     for the current buffer.  This is the 'tags' option expanded.
@@ -6161,7 +6161,7 @@ interface fn {
    * located by Vim. Refer to |tags-file-format| for the format of
    * the tags file generated by the different ctags tools.
    */
-  taglist: (expr: any, filename?: any) => any;
+  taglist: (expr?: any, filename?: any) => any;
   /**
    * The result is a String, which is the name of a file that
    * doesn't exist.  It can be used for a temporary file.  Example: >
@@ -6188,7 +6188,7 @@ interface fn {
    *
    * _ functions are documented here: |test-functions-details|
    */
-  termopen: (cmd: any, opts?: any) => any;
+  termopen: (cmd?: any, opts?: any) => any;
   /**
    * Return the tangent of {expr}, measured in radians, as a |Float|
    * in the range [-inf, inf].
@@ -6199,7 +6199,7 @@ interface fn {
    *   :echo tan(-4.01)
    *    -1.181502
    */
-  tan: (expr: any) => any;
+  tan: (expr?: any) => any;
   /**
    * Return the hyperbolic tangent of {expr} as a |Float| in the
    * range [-1, 1].
@@ -6210,7 +6210,7 @@ interface fn {
    *   :echo tanh(-1)
    *    -0.761594
    */
-  tanh: (expr: any) => any;
+  tanh: (expr?: any) => any;
   /**
    * Return a list with information about timers.
    * When {id} is given only information about this timer is
@@ -6240,7 +6240,7 @@ interface fn {
    * String, then the timer is paused, otherwise it is unpaused.
    * See |non-zero-arg|.
    */
-  timer_pause: (timer: any, paused: any) => any;
+  timer_pause: (timer?: any, paused?: any) => any;
   /**
    * Create a timer and return the timer ID.
    *
@@ -6267,13 +6267,13 @@ interface fn {
    *     \ {'repeat': 3})
    *  This invokes MyHandler() three times at 500 msec intervals.
    */
-  timer_start: (time: any, callback: any, options?: any) => any;
+  timer_start: (time?: any, callback?: any, options?: any) => any;
   /**
    * Stop a timer.  The timer callback will no longer be invoked.
    * {timer} is an ID returned by timer_start(), thus it must be a
    * Number.  If {timer} does not exist there is no error.
    */
-  timer_stop: (timer: any) => any;
+  timer_stop: (timer?: any) => any;
   /**
    * Stop all timers.  The timer callbacks will no longer be
    * invoked.  Useful if some timers is misbehaving.  If there are
@@ -6285,13 +6285,13 @@ interface fn {
    * characters turned into lowercase (just like applying |gu| to
    * the string).
    */
-  tolower: (expr: any) => any;
+  tolower: (expr?: any) => any;
   /**
    * The result is a copy of the String given, with all lowercase
    * characters turned into uppercase (just like applying |gU| to
    * the string).
    */
-  toupper: (expr: any) => any;
+  toupper: (expr?: any) => any;
   /**
    * The result is a copy of the {src} string with all characters
    * which appear in {fromstr} replaced by the character in that
@@ -6306,7 +6306,7 @@ interface fn {
    *   echo tr("<blob>", "<>", "{}")
    *  returns "{blob}"
    */
-  tr: (src: any, fromstr: any, tostr: any) => any;
+  tr: (src?: any, fromstr?: any, tostr?: any) => any;
   /**
    * Return {text} as a String where any character in {mask} is
    * removed from the beginning and/or end of {text}.
@@ -6330,7 +6330,7 @@ interface fn {
    *   echo trim("  vim  ", " ", 2)
    *  returns "  vim"
    */
-  trim: (text: any, mask?: any, dir?: any) => any;
+  trim: (text?: any, mask?: any, dir?: any) => any;
   /**
    * Return the largest integral value with magnitude less than or
    * equal to {expr} as a |Float| (truncate towards zero).
@@ -6343,7 +6343,7 @@ interface fn {
    *   echo trunc(4.0)
    *    4.0
    */
-  trunc: (expr: any) => any;
+  trunc: (expr?: any) => any;
   /**
    * The result is a Number representing the type of {expr}.
    * Instead of using the number directly, it is better to use the
@@ -6370,7 +6370,7 @@ interface fn {
    *             To check if the v:t_ variables exist use this: >
    *                     :if exists('v:t_number')
    */
-  type: (expr: any) => any;
+  type: (expr?: any) => any;
   /**
    * Return the name of the undo file that would be used for a file
    * with name {name} when writing.  This uses the 'undodir'
@@ -6384,7 +6384,7 @@ interface fn {
    * When compiled without the |+persistent_undo| option this always
    * returns an empty string.
    */
-  undofile: (name: any) => any;
+  undofile: (name?: any) => any;
   /**
    * Return the current state of the undo tree in a dictionary with
    * the following items:
@@ -6437,12 +6437,12 @@ interface fn {
    *  The default compare function uses the string representation of
    * each item.  For the use of {func} and {dict} see |sort()|.
    */
-  uniq: (list: any, func?: any, dict?: any) => any;
+  uniq: (list?: any, func?: any, dict?: any) => any;
   /**
    * Return a |List| with all the values of {dict}.  The |List| is
    * in arbitrary order.
    */
-  values: (dict: any) => any;
+  values: (dict?: any) => any;
   /**
    * The result is a Number, which is the screen column of the file
    * position given with {expr}.  That is, the last screen position
@@ -6480,7 +6480,7 @@ interface fn {
    * all lines: >
    *     echo max(map(range(1, line('$')), "virtcol([v:val, '$'])"))
    */
-  virtcol: (expr: any) => any;
+  virtcol: (expr?: any) => any;
   /**
    * The result is a String, which describes the last Visual mode
    * used in the current buffer.  Initially it returns an empty
@@ -6516,7 +6516,7 @@ interface fn {
    *   -2 if the function was interrupted (by |CTRL-C|)
    *   -3 if an error occurred
    */
-  wait: (timeout: any, condition: any, interval?: any) => any;
+  wait: (timeout?: any, condition?: any, interval?: any) => any;
   /**
    * Returns |TRUE| when the wildmenu is active and |FALSE|
    * otherwise.  See 'wildmenu' and 'wildmode'.
@@ -6536,12 +6536,12 @@ interface fn {
    * Example: >
    *   call win_execute(winid, 'syntax enable')
    */
-  win_execute: (id: any, command: any, silent?: any) => any;
+  win_execute: (id?: any, command?: any, silent?: any) => any;
   /**
    * Returns a |List| with |window-ID|s for windows that contain
    * buffer {bufnr}.  When there is none the list is empty.
    */
-  win_findbuf: (bufnr: any) => any;
+  win_findbuf: (bufnr?: any) => any;
   /**
    * Get the |window-ID| for the specified window.
    * When {win} is missing use the current window.
@@ -6576,7 +6576,7 @@ interface fn {
    * tabpage.
    * Return TRUE if successful, FALSE if the window cannot be found.
    */
-  win_gotoid: (expr: any) => any;
+  win_gotoid: (expr?: any) => any;
   /**
    * Return a list with the tab number and window number of window
    * with ID {expr}: [tabnr, winnr].
@@ -6587,7 +6587,7 @@ interface fn {
    * Return the window number of window with ID {expr}.
    * Return 0 if the window cannot be found in the current tabpage.
    */
-  win_id2win: (expr: any) => any;
+  win_id2win: (expr?: any) => any;
   /**
    * Return the screen position of window {nr} as a list with two
    * numbers: [row, col].  The first window always has position
@@ -6597,7 +6597,7 @@ interface fn {
    * Return [0, 0] if the window cannot be found in the current
    * tabpage.
    */
-  win_screenpos: (nr: any) => any;
+  win_screenpos: (nr?: any) => any;
   /**
    * Move the window {nr} to a new split of the window {target}.
    * This is similar to moving to {target}, creating a new window
@@ -6618,7 +6618,7 @@ interface fn {
    *     present, the values of 'splitbelow' and
    *     'splitright' are used.
    */
-  win_splitmove: (nr: any, target: any, options?: any) => any;
+  win_splitmove: (nr?: any, target?: any, options?: any) => any;
   /**
    * The result is a Number, which is the number of the buffer
    *     associated with window {nr}.  {nr} can be the window number or
@@ -6630,7 +6630,7 @@ interface fn {
    *   :echo "The file in the current window is " . bufname(winbufnr(0))
    * <
    */
-  winbufnr: (nr: any) => any;
+  winbufnr: (nr?: any) => any;
   /**
    * The result is a Number, which is the virtual column of the
    *     cursor in the window.  This is counting screen cells from the
@@ -6655,7 +6655,7 @@ interface fn {
    * cho "The current window has " . winheight(0) . " lines."
    *
    */
-  winheight: (nr: any) => any;
+  winheight: (nr?: any) => any;
   /**
    * The result is a nested List containing the layout of windows
    * in a tabpage.
@@ -6754,7 +6754,7 @@ interface fn {
    * If you have changed the values the result is unpredictable.
    * If the window size changed the result won't be the same.
    */
-  winrestview: (dict: any) => any;
+  winrestview: (dict?: any) => any;
   /**
    * Returns a |Dictionary| that contains information to restore
    *     the view of the current window.  Use |winrestview()| to
@@ -6793,7 +6793,7 @@ interface fn {
    *  For getting the terminal or screen size, see the 'columns'
    * option.
    */
-  winwidth: (nr: any) => any;
+  winwidth: (nr?: any) => any;
   /**
    * The result is a dictionary of byte/chars/word statistics for
    * the current buffer.  This is the same info as provided by
@@ -6847,7 +6847,7 @@ interface fn {
    *   :let fl = readfile("foo", "b")
    *   :call writefile(fl, "foocopy", "b")
    */
-  writefile: (list: any, fname: any, flags?: any) => any;
+  writefile: (list?: any, fname?: any, flags?: any) => any;
   /**
    * Bitwise XOR on the two arguments.  The arguments are converted
    * to a number.  A List, Dict or Float argument causes an error.
@@ -6855,14 +6855,14 @@ interface fn {
    *   :let bits = xor(bits, 0x80)
    *
    */
-  xor: (expr1: any, expr2: any) => any;
+  xor: (expr1?: any, expr2?: any) => any;
   /**
    * Run {cmd} and add an error message to |v:errors| if it does
    * NOT produce a beep or visual bell.
    * Also see |assert_fails()|, |assert_nobeep()| and
    * |assert-return|.
    */
-  assert_beeps: (cmd: any) => any;
+  assert_beeps: (cmd?: any) => any;
   /**
    * When {expected} and {actual} are not equal an error message is
    * added to |v:errors| and 1 is returned.  Otherwise zero is
@@ -6878,7 +6878,7 @@ interface fn {
    *  Will result in a string to be added to |v:errors|:
    * st.vim line 12: Expected 'foo' but got 'bar' ~
    */
-  assert_equal: (expected: any, actual: any, msg?: any) => any;
+  assert_equal: (expected?: any, actual?: any, msg?: any) => any;
   /**
    * When the files {fname-one} and {fname-two} do not contain
    * exactly the same text an error message is added to |v:errors|.
@@ -6886,7 +6886,7 @@ interface fn {
    * When {fname-one} or {fname-two} does not exist the error will
    * mention that.
    */
-  assert_equalfile: (fname_one: any, fname_two: any) => any;
+  assert_equalfile: (fname_one?: any, fname_two?: any) => any;
   /**
    * When v:exception does not contain the string {error} an error
    * message is added to |v:errors|.  Also see |assert-return|.
@@ -6900,7 +6900,7 @@ interface fn {
    *     call assert_exception('E492:')
    *   endtry
    */
-  assert_exception: (error: any, msg?: any) => any;
+  assert_exception: (error?: any, msg?: any) => any;
   /**
    * Run {cmd} and add an error message to |v:errors| if it does
    * NOT produce an error.  Also see |assert-return|.
@@ -6908,7 +6908,7 @@ interface fn {
    * Note that beeping is not considered an error, and some failing
    * commands only beep.  Use |assert_beeps()| for those.
    */
-  assert_fails: (cmd: any, error?: any, msg?: any) => any;
+  assert_fails: (cmd?: any, error?: any, msg?: any) => any;
   /**
    * When {actual} is not false an error message is added to
    * |v:errors|, like with |assert_equal()|.
@@ -6918,7 +6918,7 @@ interface fn {
    * When {msg} is omitted an error in the form
    * "Expected False but got {actual}" is produced.
    */
-  assert_false: (actual: any, msg?: any) => any;
+  assert_false: (actual?: any, msg?: any) => any;
   /**
    * This asserts number and |Float| values.  When {actual}  is lower
    * than {lower} or higher than {upper} an error message is added
@@ -6927,7 +6927,7 @@ interface fn {
    * "Expected range {lower} - {upper}, but got {actual}" is
    * produced.
    */
-  assert_inrange: (lower: any, upper: any, actual: any, msg?: any) => any;
+  assert_inrange: (lower?: any, upper?: any, actual?: any, msg?: any) => any;
   /**
    * When {pattern} does not match {actual} an error message is
    * added to |v:errors|.  Also see |assert-return|.
@@ -6947,30 +6947,30 @@ interface fn {
    *  Will result in a string to be added to |v:errors|:
    * st.vim line 12: Pattern '^f.*o$' does not match 'foobar' ~
    */
-  assert_match: (pattern: any, actual: any, msg?: any) => any;
+  assert_match: (pattern?: any, actual?: any, msg?: any) => any;
   /**
    * Run {cmd} and add an error message to |v:errors| if it
    * produces a beep or visual bell.
    * Also see |assert_beeps()|.
    */
-  assert_nobeep: (cmd: any) => any;
+  assert_nobeep: (cmd?: any) => any;
   /**
    * The opposite of `assert_equal()`: add an error message to
    * |v:errors| when {expected} and {actual} are equal.
    * Also see |assert-return|.
    */
-  assert_notequal: (expected: any, actual: any, msg?: any) => any;
+  assert_notequal: (expected?: any, actual?: any, msg?: any) => any;
   /**
    * The opposite of `assert_match()`: add an error message to
    * |v:errors| when {pattern} matches {actual}.
    * Also see |assert-return|.
    */
-  assert_notmatch: (pattern: any, actual: any, msg?: any) => any;
+  assert_notmatch: (pattern?: any, actual?: any, msg?: any) => any;
   /**
    * Report a test failure directly, using {msg}.
    * Always returns one.
    */
-  assert_report: (msg: any) => any;
+  assert_report: (msg?: any) => any;
   /**
    * When {actual} is not true an error message is added to
    * |v:errors|, like with |assert_equal()|.
@@ -6983,7 +6983,7 @@ interface fn {
    *
    * :tw=78:ts=8:noet:ft=help:norl:
    */
-  assert_true: (actual: any, msg?: any) => any;
+  assert_true: (actual?: any, msg?: any) => any;
   /**
    * Like garbagecollect(), but executed right away.  This must
    * only be called directly to avoid any structure to exist
@@ -7036,7 +7036,7 @@ interface fn {
    *         \ ])
    * <
    */
-  sign_define: (name: any, dict?: any) => any;
+  sign_define: (name?: any, dict?: any) => any;
   /**
    * Get a list of defined signs and their attributes.
    * This is similar to the |:sign-list| command.
@@ -7147,7 +7147,7 @@ interface fn {
    *   call sign_jump(10, '', '')
    *
    */
-  sign_jump: (id: any, group: any, expr: any) => any;
+  sign_jump: (id?: any, group?: any, expr?: any) => any;
   /**
    * Place the sign defined as {name} at line {lnum} in file or
    * buffer {expr} and assign {id} and {group} to sign.  This is
@@ -7197,7 +7197,13 @@ interface fn {
    *       \ {'lnum' : 40, 'priority' : 90})
    *
    */
-  sign_place: (id: any, group: any, name: any, expr: any, dict?: any) => any;
+  sign_place: (
+    id?: any,
+    group?: any,
+    name?: any,
+    expr?: any,
+    dict?: any
+  ) => any;
   /**
    * Place one or more signs.  This is similar to the
    * |sign_place()| function.  The {list} argument specifies the
@@ -7257,7 +7263,7 @@ interface fn {
    *     \ ])
    *
    */
-  sign_placelist: (list: any) => any;
+  sign_placelist: (list?: any) => any;
   /**
    * sign_undefine({list})
    *     Deletes a previously defined sign {name}. This is similar to
@@ -7326,7 +7332,7 @@ interface fn {
    *   call sign_unplace('*')
    *
    */
-  sign_unplace: (group: any, dict?: any) => any;
+  sign_unplace: (group?: any, dict?: any) => any;
   /**
    * Remove previously placed signs from one or more buffers.  This
    * is similar to the |sign_unplace()| function.
@@ -7358,5 +7364,5 @@ interface fn {
    *
    * :tw=78:ts=8:noet:ft=help:norl:
    */
-  sign_unplacelist: (list: any) => any;
+  sign_unplacelist: (list?: any) => any;
 }

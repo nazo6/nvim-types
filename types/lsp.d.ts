@@ -10,7 +10,7 @@ interface lsp {
    * @param bufnr - (number) Buffer handle, or 0 for current
    * @param client_id - (number) Client id
    */
-  buf_attach_client: (bufnr: any, client_id: any) => any;
+  buf_attach_client: (bufnr?: any, client_id?: any) => any;
   /**
    * Gets a map of client_id:client pairs for the given buffer,
    * where each value is a |vim.lsp.client| object.
@@ -18,14 +18,14 @@ interface lsp {
    * @param bufnr - (optional, number): Buffer handle, or 0 for
    *   current
    */
-  buf_get_clients: (bufnr: any) => any;
+  buf_get_clients: (bufnr?: any) => any;
   /**
    * Checks if a buffer is attached for a particular client.
    *
    * @param bufnr - (number) Buffer handle, or 0 for current
    * @param client_id - (number) the client id
    */
-  buf_is_attached: (bufnr: any, client_id: any) => any;
+  buf_is_attached: (bufnr?: any, client_id?: any) => any;
   /**
    * Send a notification to a server
    *
@@ -35,7 +35,7 @@ interface lsp {
    *
    * @returns  true if any client returns true; false otherwise
    */
-  buf_notify: (bufnr: any, method: any, params: any) => any;
+  buf_notify: (bufnr?: any, method?: any, params?: any) => any;
   /**
    * Sends an async request for all active clients attached to the
    * buffer.
@@ -53,7 +53,7 @@ interface lsp {
    *  You could instead iterate all clients and call their
    *  `cancel_request()` methods.
    */
-  buf_request: (bufnr: any, method: any, params: any, handler: any) => any;
+  buf_request: (bufnr?: any, method?: any, params?: any, handler?: any) => any;
   /**
    * Sends an async request for all active clients attached to the
    * buffer. Executes the callback on the combined result.
@@ -70,7 +70,12 @@ interface lsp {
    * @returns  (function) A function that will cancel all requests which
    *  is the same as the one returned from `buf_request` .
    */
-  buf_request_all: (bufnr: any, method: any, params: any, callback: any) => any;
+  buf_request_all: (
+    bufnr?: any,
+    method?: any,
+    params?: any,
+    callback?: any
+  ) => any;
   /**
    * Sends a request to all server and waits for the response of
    * all of them.
@@ -92,10 +97,10 @@ interface lsp {
    *  describing the failure reason.
    */
   buf_request_sync: (
-    bufnr: any,
-    method: any,
-    params: any,
-    timeout_ms: any
+    bufnr?: any,
+    method?: any,
+    params?: any,
+    timeout_ms?: any
   ) => any;
   /**
    * LSP client object. You can get an active client object via
@@ -160,11 +165,11 @@ interface lsp {
    *
    * @returns  true if client is stopped, false otherwise.
    */
-  client_is_stopped: (client_id: any) => any;
+  client_is_stopped: (client_id?: any) => any;
   /**
    * TODO: Documentation
    */
-  flush: (client: any) => any;
+  flush: (client?: any) => any;
   /**
    * Gets all active clients.
    *
@@ -176,7 +181,7 @@ interface lsp {
    *
    * @returns  list of buffer ids
    */
-  get_buffers_by_client_id: (client_id: any) => any;
+  get_buffers_by_client_id: (client_id?: any) => any;
   /**
    * Gets a client by id, or nil if the id is invalid. The returned
    * client may not yet be fully initialized.
@@ -185,7 +190,7 @@ interface lsp {
    *
    * @returns  |vim.lsp.client| object, or nil
    */
-  get_client_by_id: (client_id: any) => any;
+  get_client_by_id: (client_id?: any) => any;
   /**
    * Gets the path of the logfile used by the LSP client.
    *
@@ -201,7 +206,7 @@ interface lsp {
    * use_incremental_sync: bool buffers?: table (bufnr → lines);
    * for incremental sync only timer?: uv_timer
    */
-  init: (client: any, bufnr: any) => any;
+  init: (client?: any, bufnr?: any) => any;
   /**
    * Implements 'omnifunc' compatible LSP completion.
    *
@@ -219,24 +224,24 @@ interface lsp {
    *     |complete-items|
    *     |CompleteDone|
    */
-  omnifunc: (findstart: any, base: any) => any;
+  omnifunc: (findstart?: any, base?: any) => any;
   /**
    * TODO: Documentation
    */
   prepare: (
-    bufnr: any,
-    firstline: any,
-    new_lastline: any,
-    changedtick: any
+    bufnr?: any,
+    firstline?: any,
+    new_lastline?: any,
+    changedtick?: any
   ) => any;
   /**
    * TODO: Documentation
    */
-  reset: (client_id: any) => any;
+  reset: (client_id?: any) => any;
   /**
    * TODO: Documentation
    */
-  reset_buf: (client: any, bufnr: any) => any;
+  reset_buf: (client?: any, bufnr?: any) => any;
   /**
    * Sets the global log level for LSP logging.
    *
@@ -251,7 +256,7 @@ interface lsp {
    * See also: ~
    *     |vim.lsp.log_levels|
    */
-  set_log_level: (level: any) => any;
+  set_log_level: (level?: any) => any;
   /**
    * Starts and initializes a client with the given configuration.
    *
@@ -368,7 +373,7 @@ interface lsp {
    *  not be fully initialized. Use `on_init` to do any actions
    *  once the client has been initialized.
    */
-  start_client: (config: any) => any;
+  start_client: (config?: any) => any;
   /**
    * Stops a client(s).
    *
@@ -387,7 +392,7 @@ interface lsp {
    *   thereof
    * @param force - boolean (optional) shutdown forcefully
    */
-  stop_client: (client_id: any, force: any) => any;
+  stop_client: (client_id?: any, force?: any) => any;
   /**
    * Function to manage overriding defaults for LSP handlers.
    *
@@ -395,7 +400,7 @@ interface lsp {
    * @param override_config - (table) Table containing the keys to
    * @param handler -
    */
-  with: (handler: any, override_config: any) => any;
+  with: (handler?: any, override_config?: any) => any;
   /** @noSelf **/
   buf: {
     /**
@@ -403,7 +408,7 @@ interface lsp {
      * not provided, the user will be prompted for a path using
      * |input()|.
      */
-    add_workspace_folder: (workspace_folder: any) => any;
+    add_workspace_folder: (workspace_folder?: any) => any;
     /**
      * Removes document highlights from current buffer.
      */
@@ -418,7 +423,7 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_codeAction
      */
-    code_action: (context: any) => any;
+    code_action: (context?: any) => any;
     /**
      * Retrieves the completion items at the current cursor position.
      * Can only be called in Insert mode.
@@ -432,7 +437,7 @@ interface lsp {
      * See also: ~
      *     |vim.lsp.protocol.constants.CompletionTriggerKind|
      */
-    completion: (context: any) => any;
+    completion: (context?: any) => any;
     /**
      * Jumps to the declaration of the symbol under the cursor.
      * Note:
@@ -474,7 +479,7 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand
      */
-    execute_command: (command: any) => any;
+    execute_command: (command?: any) => any;
     /**
      * Formats the current buffer.
      *
@@ -486,7 +491,7 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specification#textDocument_formatting
      */
-    formatting: (options: any) => any;
+    formatting: (options?: any) => any;
     /**
      * Performs |vim.lsp.buf.formatting()| synchronously.
      *
@@ -501,7 +506,7 @@ interface lsp {
      * @param options - Table with valid `FormattingOptions` entries
      * @param timeout_ms - (number) Request timeout
      */
-    formatting_sync: (options: any, timeout_ms: any) => any;
+    formatting_sync: (options?: any, timeout_ms?: any) => any;
     /**
      * Displays hover information about the symbol under the cursor
      * in a floating window. Calling the function twice will jump
@@ -541,7 +546,7 @@ interface lsp {
      *   position. Defaults to the end of the last
      *   visual selection.
      */
-    range_code_action: (context: any, start_pos: any, end_pos: any) => any;
+    range_code_action: (context?: any, start_pos?: any, end_pos?: any) => any;
     /**
      * Formats a given range.
      *
@@ -553,7 +558,7 @@ interface lsp {
      *   position. Defaults to the end of the last
      *   visual selection.
      */
-    range_formatting: (options: any, start_pos: any, end_pos: any) => any;
+    range_formatting: (options?: any, start_pos?: any, end_pos?: any) => any;
     /**
      * Lists all the references to the symbol under the cursor in the
      * quickfix window.
@@ -563,20 +568,20 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_references
      */
-    references: (context: any) => any;
+    references: (context?: any) => any;
     /**
      * Remove the folder at path from the workspace folders. If
      * {path} is not provided, the user will be prompted for a path
      * using |input()|.
      */
-    remove_workspace_folder: (workspace_folder: any) => any;
+    remove_workspace_folder: (workspace_folder?: any) => any;
     /**
      * Renames all references to the symbol under the cursor.
      *
      * @param new_name - (string) If not provided, the user will be
      *   prompted for a new name using |input()|.
      */
-    rename: (new_name: any) => any;
+    rename: (new_name?: any) => any;
     /**
      * Checks whether the language servers attached to the current
      * buffer are ready.
@@ -605,7 +610,7 @@ interface lsp {
      *
      * @param query - (string, optional)
      */
-    workspace_symbol: (query: any) => any;
+    workspace_symbol: (query?: any) => any;
   };
 
   /** @noSelf **/
@@ -620,10 +625,10 @@ interface lsp {
      * @param sign_ns - number|nil Associated sign namespace
      */
     clear: (
-      bufnr: any,
-      client_id: any,
-      diagnostic_ns: any,
-      sign_ns: any
+      bufnr?: any,
+      client_id?: any,
+      diagnostic_ns?: any,
+      sign_ns?: any
     ) => any;
     /**
      * Return associated diagnostics for bufnr
@@ -633,7 +638,7 @@ interface lsp {
      *   diagnostics. Else, return just the
      *   diagnostics associated with the client_id.
      */
-    get: (bufnr: any, client_id: any) => any;
+    get: (bufnr?: any, client_id?: any) => any;
     /**
      * Get all diagnostics for all clients
      *
@@ -665,7 +670,7 @@ interface lsp {
      * @param severity - DiagnosticSeverity
      * @param client_id - number the client id
      */
-    get_count: (bufnr: any, severity: any, client_id: any) => any;
+    get_count: (bufnr?: any, severity?: any, client_id?: any) => any;
     /**
      * Get the diagnostics by line
      *
@@ -686,10 +691,10 @@ interface lsp {
      *  diagnostics.
      */
     get_line_diagnostics: (
-      bufnr: any,
-      line_nr: any,
-      opts: any,
-      client_id: any
+      bufnr?: any,
+      line_nr?: any,
+      opts?: any,
+      client_id?: any
     ) => any;
     /**
      * Get the next diagnostic closest to the cursor_position
@@ -698,7 +703,7 @@ interface lsp {
      *
      * @returns  table Next diagnostic
      */
-    get_next: (opts: any) => any;
+    get_next: (opts?: any) => any;
     /**
      * Return the pos, {row, col}, for the next diagnostic in the
      * current buffer.
@@ -707,7 +712,7 @@ interface lsp {
      *
      * @returns  table Next diagnostic position
      */
-    get_next_pos: (opts: any) => any;
+    get_next_pos: (opts?: any) => any;
     /**
      * Get the previous diagnostic closest to the cursor_position
      *
@@ -715,7 +720,7 @@ interface lsp {
      *
      * @returns  table Previous diagnostic
      */
-    get_prev: (opts: any) => any;
+    get_prev: (opts?: any) => any;
     /**
      * Return the pos, {row, col}, for the prev diagnostic in the
      * current buffer.
@@ -724,7 +729,7 @@ interface lsp {
      *
      * @returns  table Previous diagnostic position
      */
-    get_prev_pos: (opts: any) => any;
+    get_prev_pos: (opts?: any) => any;
     /**
      * Default function to get text chunks to display using `nvim_buf_set_virtual_text` .
      *
@@ -739,10 +744,10 @@ interface lsp {
      * @returns  table chunks, as defined by |nvim_buf_set_virtual_text()|
      */
     get_virtual_text_chunks_for_line: (
-      bufnr: any,
-      line: any,
-      line_diags: any,
-      opts: any
+      bufnr?: any,
+      line?: any,
+      line_diags?: any,
+      opts?: any
     ) => any;
     /**
      * Move to the next diagnostic
@@ -781,13 +786,13 @@ interface lsp {
      *             • {win_id}: (number, default 0)
      *               • Window ID
      */
-    goto_next: (opts: any) => any;
+    goto_next: (opts?: any) => any;
     /**
      * Move to the previous diagnostic
      *
      * @param opts - table See |vim.lsp.diagnostic.goto_next()|
      */
-    goto_prev: (opts: any) => any;
+    goto_prev: (opts?: any) => any;
     /**
      * |lsp-handler| for the method "textDocument/publishDiagnostics"
      *
@@ -840,12 +845,12 @@ interface lsp {
      *                   text)
      */
     on_publish_diagnostics: (
-      arg__1: any,
-      arg__2: any,
-      params: any,
-      client_id: any,
-      arg__3: any,
-      config: any
+      arg__1?: any,
+      arg__2?: any,
+      params?: any,
+      client_id?: any,
+      arg__3?: any,
+      config?: any
     ) => any;
     /**
      * Clear diagnotics and diagnostic cache
@@ -857,7 +862,7 @@ interface lsp {
      * @param buffer_client_map - table map of buffers to active
      *   clients
      */
-    reset: (client_id: any, buffer_client_map: any) => any;
+    reset: (client_id?: any, buffer_client_map?: any) => any;
     /**
      * Save diagnostics to the current buffer.
      *
@@ -868,7 +873,7 @@ interface lsp {
      * @param bufnr - number
      * @param client_id - number
      */
-    save: (diagnostics: any, bufnr: any, client_id: any) => any;
+    save: (diagnostics?: any, bufnr?: any, client_id?: any) => any;
     /**
      * Sets the location list
      *
@@ -889,7 +894,7 @@ interface lsp {
      *                 "Warning" means { "Error", "Warning" } will be
      *                 valid.
      */
-    set_loclist: (opts: any) => any;
+    set_loclist: (opts?: any) => any;
     /**
      * Set signs for given diagnostics
      *
@@ -914,11 +919,11 @@ interface lsp {
      *   "Warning" } will be valid.
      */
     set_signs: (
-      diagnostics: any,
-      bufnr: any,
-      client_id: any,
-      sign_ns: any,
-      opts: any
+      diagnostics?: any,
+      bufnr?: any,
+      client_id?: any,
+      sign_ns?: any,
+      opts?: any
     ) => any;
     /**
      * Set underline for given diagnostics
@@ -944,11 +949,11 @@ interface lsp {
      *   "Warning" } will be valid.
      */
     set_underline: (
-      diagnostics: any,
-      bufnr: any,
-      client_id: any,
-      diagnostic_ns: any,
-      opts: any
+      diagnostics?: any,
+      bufnr?: any,
+      client_id?: any,
+      diagnostic_ns?: any,
+      opts?: any
     ) => any;
     /**
      * Set virtual text given diagnostics
@@ -979,11 +984,11 @@ interface lsp {
      *   "Warning" } will be valid.
      */
     set_virtual_text: (
-      diagnostics: any,
-      bufnr: any,
-      client_id: any,
-      diagnostic_ns: any,
-      opts: any
+      diagnostics?: any,
+      bufnr?: any,
+      client_id?: any,
+      diagnostic_ns?: any,
+      opts?: any
     ) => any;
     /**
      * Open a floating window with the diagnostics from {line_nr}
@@ -1007,10 +1012,10 @@ interface lsp {
      * @returns  table {popup_bufnr, win_id}
      */
     show_line_diagnostics: (
-      opts: any,
-      bufnr: any,
-      line_nr: any,
-      client_id: any
+      opts?: any,
+      bufnr?: any,
+      line_nr?: any,
+      client_id?: any
     ) => any;
   };
 
@@ -1021,10 +1026,10 @@ interface lsp {
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand
      */
     progress_handler: (
-      arg__1: any,
-      arg__2: any,
-      params: any,
-      client_id: any
+      arg__1?: any,
+      arg__2?: any,
+      params?: any,
+      client_id?: any
     ) => any;
     /**
      * @param config - table Configuration table.
@@ -1044,12 +1049,12 @@ interface lsp {
      *
      */
     signature_help: (
-      arg__1: any,
-      method: any,
-      result: any,
-      arg__2: any,
-      bufnr: any,
-      config: any
+      arg__1?: any,
+      method?: any,
+      result?: any,
+      arg__2?: any,
+      bufnr?: any,
+      config?: any
     ) => any;
   };
 
@@ -1066,7 +1071,7 @@ interface lsp {
      *
      * @param level - (string or number) One of `vim.lsp.log.levels`
      */
-    set_level: (level: any) => any;
+    set_level: (level?: any) => any;
     /**
      * Checks whether the level is sufficient for logging.
      *
@@ -1074,7 +1079,7 @@ interface lsp {
      *
      * @returns  (bool) true if would log, false if not
      */
-    should_log: (level: any) => any;
+    should_log: (level?: any) => any;
   };
 
   /** @noSelf **/
@@ -1097,7 +1102,7 @@ interface lsp {
      *
      * ft=help:norl:
      */
-    resolve_capabilities: (server_capabilities: any) => any;
+    resolve_capabilities: (server_capabilities?: any) => any;
   };
 
   /** @noSelf **/
@@ -1109,7 +1114,7 @@ interface lsp {
      *
      * @returns  (string) The formatted error message
      */
-    format_rpc_error: (err: any) => any;
+    format_rpc_error: (err?: any) => any;
     /**
      * Sends a notification to the LSP server.
      *
@@ -1119,7 +1124,7 @@ interface lsp {
      * @returns  (bool) `true` if notification could be sent, `false` if
      *  not
      */
-    notify: (method: any, params: any) => any;
+    notify: (method?: any, params?: any) => any;
     /**
      * Sends a request to the LSP server and runs {callback} upon
      * response.
@@ -1131,7 +1136,7 @@ interface lsp {
      * @returns  (bool, number) `(true, message_id)` if request could be
      *  sent, `false` if not
      */
-    request: (method: any, params: any, callback: any) => any;
+    request: (method?: any, params?: any, callback?: any) => any;
     /**
      * Creates an RPC response object/table.
      *
@@ -1140,7 +1145,7 @@ interface lsp {
      * @param message - (optional) arbitrary message to send to server
      * @param data - (optional) arbitrary data to send to server
      */
-    rpc_response_error: (code: any, message: any, data: any) => any;
+    rpc_response_error: (code?: any, message?: any, data?: any) => any;
     /**
      * Starts an LSP server process and create an LSP RPC client
      * object to interact with it.
@@ -1176,10 +1181,10 @@ interface lsp {
      *       server process |vim.loop|.
      */
     start: (
-      cmd: any,
-      cmd_args: any,
-      dispatchers: any,
-      extra_spawn_params: any
+      cmd?: any,
+      cmd_args?: any,
+      dispatchers?: any,
+      extra_spawn_params?: any
     ) => any;
   };
 
@@ -1197,26 +1202,26 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocumentEdit
      */
-    apply_text_document_edit: (text_document_edit: any, index: any) => any;
+    apply_text_document_edit: (text_document_edit?: any, index?: any) => any;
     /**
      * Applies a list of text edits to a buffer.
      *
      * @param text_edits - (table) list of `TextEdit` objects
      * @param buf_nr - (number) Buffer id
      */
-    apply_text_edits: (text_edits: any, bufnr: any) => any;
+    apply_text_edits: (text_edits?: any, bufnr?: any) => any;
     /**
      * Applies a `WorkspaceEdit` .
      *
      * @param workspace_edit - (table) `WorkspaceEdit`
      */
-    apply_workspace_edit: (workspace_edit: any) => any;
+    apply_workspace_edit: (workspace_edit?: any) => any;
     /**
      * Removes document highlights from a buffer.
      *
      * @param bufnr - buffer id
      */
-    buf_clear_references: (bufnr: any) => any;
+    buf_clear_references: (bufnr?: any) => any;
     /**
      * Shows a list of document highlights for a certain buffer.
      *
@@ -1224,7 +1229,7 @@ interface lsp {
      * @param references - List of `DocumentHighlight` objects to
      *   highlight
      */
-    buf_highlight_references: (bufnr: any, references: any) => any;
+    buf_highlight_references: (bufnr?: any, references?: any) => any;
     /**
      * Returns the UTF-32 and UTF-16 offsets for a position in a
      * certain buffer.
@@ -1236,7 +1241,7 @@ interface lsp {
      * @returns  (number, number) UTF-32 and UTF-16 index of the character
      *  in line {row} column {col} in buffer {buf}
      */
-    character_offset: (buf: any, row: any, col: any) => any;
+    character_offset: (buf?: any, row?: any, col?: any) => any;
     /**
      * Creates autocommands to close a preview window when events
      * happen.
@@ -1247,7 +1252,7 @@ interface lsp {
      * See also: ~
      *     |autocmd-events|
      */
-    close_preview_autocmd: (events: any, winnr: any) => any;
+    close_preview_autocmd: (events?: any, winnr?: any) => any;
     /**
      * {offset_encoding})
      *    Returns the range table for the difference between old and new
@@ -1284,7 +1289,7 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover
      */
-    convert_input_to_markdown_lines: (input: any, contents: any) => any;
+    convert_input_to_markdown_lines: (input?: any, contents?: any) => any;
     /**
      * Converts `textDocument/SignatureHelp` response to markdown
      * lines.
@@ -1296,15 +1301,15 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_signatureHelp
      */
-    convert_signature_help_to_markdown_lines: (signature_help: any) => any;
+    convert_signature_help_to_markdown_lines: (signature_help?: any) => any;
     /**
      * TODO: Documentation
      */
-    create_file: (change: any) => any;
+    create_file: (change?: any) => any;
     /**
      * TODO: Documentation
      */
-    delete_file: (change: any) => any;
+    delete_file: (change?: any) => any;
     /**
      * Can be used to extract the completion items from a `textDocument/completion` request, which may return one of `CompletionItem[]` , `CompletionList` or null.
      *
@@ -1316,7 +1321,7 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specification#textDocument_completion
      */
-    extract_completion_items: (result: any) => any;
+    extract_completion_items: (result?: any) => any;
     /**
      * Converts markdown into syntax highlighted regions by stripping
      * the code blocks and converting them into highlighted code.
@@ -1344,7 +1349,7 @@ interface lsp {
      *
      * @returns  width,height size of float
      */
-    fancy_floating_markdown: (contents: any, opts: any) => any;
+    fancy_floating_markdown: (contents?: any, opts?: any) => any;
     /**
      * @param unique_name - (string) Window variable
      * @param fn - (function) should return create a new
@@ -1358,7 +1363,7 @@ interface lsp {
      * @returns  (pbufnr, pwinnr) if `fn()` has created a new window; nil
      *  otherwise
      */
-    focusable_float: (unique_name: any, fn: any) => any;
+    focusable_float: (unique_name?: any, fn?: any) => any;
     /**
      * Focuses/unfocuses the floating preview window associated with
      * the current buffer via the window variable `unique_name` . If
@@ -1371,7 +1376,7 @@ interface lsp {
      *   the case that a new floating window should
      *   be created
      */
-    focusable_preview: (unique_name: any, fn: any) => any;
+    focusable_preview: (unique_name?: any, fn?: any) => any;
     /**
      * Returns visual width of tabstop.
      *
@@ -1383,7 +1388,7 @@ interface lsp {
      * See also: ~
      *     |softtabstop|
      */
-    get_effective_tabstop: (bufnr: any) => any;
+    get_effective_tabstop: (bufnr?: any) => any;
     /**
      * TODO: Documentation
      */
@@ -1395,7 +1400,7 @@ interface lsp {
      *
      * @returns  `true` if the jump succeeded
      */
-    jump_to_location: (location: any) => any;
+    jump_to_location: (location?: any) => any;
     /**
      * Returns the items with the byte position calculated correctly
      * and in sorted order, for display in quickfix and location
@@ -1406,7 +1411,7 @@ interface lsp {
      *
      * @returns  (table) list of items
      */
-    locations_to_items: (locations: any) => any;
+    locations_to_items: (locations?: any) => any;
     /**
      * Helper function to return nested values in language server
      * settings
@@ -1418,7 +1423,7 @@ interface lsp {
      * @returns  (table or string) The value of settings accessed via
      *  section
      */
-    lookup_section: (settings: any, section: any) => any;
+    lookup_section: (settings?: any, section?: any) => any;
     /**
      * Creates a table with sensible default options for a floating
      * window. The table can be passed to |nvim_open_win()|.
@@ -1429,7 +1434,7 @@ interface lsp {
      *
      * @returns  (table) Options
      */
-    make_floating_popup_options: (width: any, height: any, opts: any) => any;
+    make_floating_popup_options: (width?: any, height?: any, opts?: any) => any;
     /**
      * Creates a `FormattingOptions` object for the current buffer
      * and cursor position.
@@ -1441,7 +1446,7 @@ interface lsp {
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_formatting
      */
-    make_formatting_params: (options: any) => any;
+    make_formatting_params: (options?: any) => any;
     /**
      * Using the given range in the current buffer, creates an object
      * that is similar to |vim.lsp.util.make_range_params()|.
@@ -1456,7 +1461,7 @@ interface lsp {
      * @returns  { textDocument = { uri = `current_file_uri` }, range = {
      *  start = `start_position` , end = `end_position` } }
      */
-    make_given_range_params: (start_pos: any, end_pos: any) => any;
+    make_given_range_params: (start_pos?: any, end_pos?: any) => any;
     /**
      * Creates a `TextDocumentPositionParams` object for the current
      * buffer and cursor position.
@@ -1494,7 +1499,7 @@ interface lsp {
      * @param added -
      * @param removed -
      */
-    make_workspace_params: (added: any, removed: any) => any;
+    make_workspace_params: (added?: any, removed?: any) => any;
     /**
      * Shows contents in a floating window.
      *
@@ -1505,7 +1510,7 @@ interface lsp {
      * @returns  bufnr,winnr buffer and window number of the newly created
      *  floating preview window
      */
-    open_floating_preview: (contents: any, syntax: any, opts: any) => any;
+    open_floating_preview: (contents?: any, syntax?: any, opts?: any) => any;
     /**
      * Parses snippets in a completion entry.
      *
@@ -1513,7 +1518,7 @@ interface lsp {
      *
      * @returns  (string) parsed snippet
      */
-    parse_snippet: (input: any) => any;
+    parse_snippet: (input?: any) => any;
     /**
      * Previews a location in a floating window
      *
@@ -1527,11 +1532,11 @@ interface lsp {
      * @returns  (bufnr,winnr) buffer and window number of floating window
      *  or nil
      */
-    preview_location: (location: any) => any;
+    preview_location: (location?: any) => any;
     /**
      * @param opts - (table)
      */
-    rename: (old_fname: any, new_fname: any, opts: any) => any;
+    rename: (old_fname?: any, new_fname?: any, opts?: any) => any;
     /**
      * Replaces text in a range with new text.
      *
@@ -1546,27 +1551,27 @@ interface lsp {
      *
      * @returns  (table) The modified {lines} object
      */
-    set_lines: (lines: any, A: any, B: any, new_lines: any) => any;
+    set_lines: (lines?: any, A?: any, B?: any, new_lines?: any) => any;
     /**
      * Fills current window's location list with given list of items.
      * Can be obtained with e.g. |vim.lsp.util.locations_to_items()|.
      *
      * @param items - (table) list of items
      */
-    set_loclist: (items: any) => any;
+    set_loclist: (items?: any) => any;
     /**
      * Fills quickfix list with given list of items. Can be obtained
      * with e.g. |vim.lsp.util.locations_to_items()|.
      *
      * @param items - (table) list of items
      */
-    set_qflist: (items: any) => any;
+    set_qflist: (items?: any) => any;
     /**
      * Converts symbols to quickfix list items.
      *
      * @param symbols - DocumentSymbol[] or SymbolInformation[]
      */
-    symbols_to_items: (symbols: any, bufnr: any) => any;
+    symbols_to_items: (symbols?: any, bufnr?: any) => any;
     /**
      * Turns the result of a `textDocument/completion` request into
      * vim-compatible |complete-items|.
@@ -1584,8 +1589,8 @@ interface lsp {
      *     |complete-items|
      */
     text_document_completion_list_to_complete_items: (
-      result: any,
-      prefix: any
+      result?: any,
+      prefix?: any
     ) => any;
     /**
      * Removes empty lines from the beginning and end.
@@ -1594,7 +1599,7 @@ interface lsp {
      *
      * @returns  (table) trimmed list of lines
      */
-    trim_empty_lines: (lines: any) => any;
+    trim_empty_lines: (lines?: any) => any;
     /**
      * Accepts markdown lines and tries to reduce them to a filetype
      * if they comprise just a single code block.
@@ -1605,6 +1610,6 @@ interface lsp {
      *
      * @returns  (string) filetype or 'markdown' if it was unchanged.
      */
-    try_trim_markdown_code_blocks: (lines: any) => any;
+    try_trim_markdown_code_blocks: (lines?: any) => any;
   };
 }
