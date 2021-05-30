@@ -4069,7 +4069,7 @@ interface fn {
    *
    * The conversion specifiers and their meanings are:
    */
-  printf: (fmt: any, arguments: any[]) => any;
+  printf: (fmt: any, ...arguments: any[]) => any;
   /**
    * Set prompt callback for buffer {buf} to {expr}.  When {expr}
    * is an empty string the callback is removed.  This has only
@@ -4478,14 +4478,14 @@ interface fn {
    * Example: >
    *   :au VimLeave call rpcnotify(0, "leaving")
    */
-  rpcnotify: (channel: any, event: any, arguments?: any[]) => any;
+  rpcnotify: (channel: any, event: any, ...arguments: any[]) => any;
   /**
    * Sends a request to {channel} to invoke {method} via
    * |RPC| and blocks until a response is received.
    * Example: >
    *   :let result = rpcrequest(rpc_chan, "func", 1, 2, 3)
    */
-  rpcrequest: (channel: any, method: any, arguments?: any[]) => any;
+  rpcrequest: (channel: any, method: any, ...arguments: any[]) => any;
   /**
    * Deprecated. Replace  >
    *   :let id = rpcstart('prog', ['arg1', 'arg2'])

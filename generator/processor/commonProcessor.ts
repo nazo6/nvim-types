@@ -17,7 +17,7 @@ const normalizeArg = (arg: string): { name: string; type: string } | null => {
     .replace(/-|\s/g, "_");
   if (replacedArg !== "") {
     if (replacedArg.includes("...")) {
-      return { name: `arguments`, type: "any[]" };
+      return { name: `...arguments`, type: "any[]" };
     } else {
       return {
         //予約語か英字で始まらない
@@ -81,9 +81,8 @@ const getArgs = (argsStr: string) => {
 export const commonNamespaceChildProcessor = (data: SectionDataType) => {
   let text = "";
   data.data.forEach((propertyData) => {
-    const propName = propertyData.name.split(".")[
-      propertyData.name.split(".").length - 1
-    ];
+    const propName =
+      propertyData.name.split(".")[propertyData.name.split(".").length - 1];
     if (variableNameMatcher.test(propName)) {
       if (propertyData.type === "func") {
         text += createJsdoc(normalizeCommentStr(propertyData.description));
@@ -102,9 +101,8 @@ export const commonNamespaceChildProcessor = (data: SectionDataType) => {
 export const commonInterfaceChildProcessor = (data: SectionDataType) => {
   let text = "";
   data.data.forEach((propertyData) => {
-    const propName = propertyData.name.split(".")[
-      propertyData.name.split(".").length - 1
-    ];
+    const propName =
+      propertyData.name.split(".")[propertyData.name.split(".").length - 1];
     if (variableNameMatcher.test(propName)) {
       if (propertyData.type === "func") {
         text += createJsdoc(normalizeCommentStr(propertyData.description));

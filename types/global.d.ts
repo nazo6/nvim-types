@@ -208,7 +208,7 @@ declare namespace vim {
    * See also: ~
    *     |tbl_extend()|
    */
-  function tbl_deep_extend(behavior: any, arguments: any[]): any;
+  function tbl_deep_extend(behavior: any, ...arguments: any[]): any;
   /**
    * Merges two or more map-like tables.
    *
@@ -222,7 +222,7 @@ declare namespace vim {
    * See also: ~
    *     |extend()|
    */
-  function tbl_extend(behavior: any, arguments: any[]): any;
+  function tbl_extend(behavior: any, ...arguments: any[]): any;
   /**
    * Filter a table using a predicate function
    *
@@ -360,7 +360,7 @@ declare namespace vim {
    * Equivalent to: >
    *     vim.fn[func]({...})
    */
-  function call(func: any, arguments: any[]): any;
+  function call(func: any, ...arguments: any[]): any;
   /**
    * Invokes an Ex command (the ":" commands, Vimscript statements).
    * See also |ex-cmd-index|.
@@ -539,7 +539,7 @@ declare namespace vim {
    *
    * This function also works in a fast callback |lua-loop-callbacks|.
    */
-  function rpcnotify(channel: any, method: any, arguments?: any[]): any;
+  function rpcnotify(channel: any, method: any, ...arguments: any[]): any;
   /**
    * Sends a request to {channel} to invoke {method} via
    * |RPC| and blocks until a response is received.
@@ -547,7 +547,7 @@ declare namespace vim {
    * Note: NIL values as part of the return value is represented as
    * |vim.NIL| special value
    */
-  function rpcrequest(channel: any, method: any, arguments?: any[]): any;
+  function rpcrequest(channel: any, method: any, ...arguments: any[]): any;
   /**
    * Compares strings case-insensitively.  Returns 0, 1 or -1 if strings
    * are equal, {a} is greater than {b} or {a} is lesser than {b},
