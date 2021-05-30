@@ -2,6 +2,7 @@
 /// <reference path="types/api.d.ts" />
 /// <reference path="types/global.d.ts" />
 /// <reference path="types/highlight.d.ts" />
+/// <reference path="types/lsp.d.ts" />
 
 /** @noSelf **/
 declare namespace vim {
@@ -43,4 +44,14 @@ declare namespace vim {
    *  Examples:  https://github.com/luvit/luv/tree/master/examples
    */
   const loop: any;
+  /** Nvim supports the Language Server Protocol (LSP), which means it acts as
+   *  a client to LSP servers and includes a Lua framework `vim.lsp` for building
+   *  enhanced LSP tools.
+   *
+   *  https://microsoft.github.io/language-server-protocol/
+   *
+   *  LSP facilitates features like go-to-definition, find-references, hover,
+   *  completion, rename, format, refactor, etc., using semantic whole-project
+   *  analysis (unlike |ctags|). */
+  const lsp: lsp;
 }
