@@ -1,0 +1,14 @@
+{
+ "leftTitle": "2. Test functions",
+ "rightTitle": "test-functions-details",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "test_garbagecollect_now",
+   "description": "\t\tLike garbagecollect(), but executed right away.  This must\n\t\tonly be called directly to avoid any structure to exist\n\t\tinternally, and |v:testing| must have been set before calling\n\t\tany function.",
+   "argsStr": "",
+   "returnType": "any"
+  }
+ ]
+}

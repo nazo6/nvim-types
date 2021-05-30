@@ -64,6 +64,21 @@ interface api {
    */
   nvim__screenshot: (path: any) => any;
   /**
+   * Set active namespace for highlights.
+   *
+   * NB: this function can be called from async contexts, but the
+   * semantics are not yet well-defined. To start with
+   * |nvim_set_decoration_provider| on_win and on_line callbacks
+   * are explicitly allowed to change the namespace during a redraw
+   * cycle.
+   *
+   * Attributes: ~
+   *     {fast}
+   *
+   * @param ns_id - the namespace to activate
+   */
+  nvim__set_hl_ns: (ns_id: any) => any;
+  /**
    * Gets internal stats.
    *
    * @returns  Map of various internal stats.
@@ -120,6 +135,22 @@ interface api {
    * @returns  Result of the function call
    */
   nvim_call_function: (fn: any, args: any) => any;
+  /**
+   * Send data to channel `id` . For a job, it writes it to the
+   * stdin of the process. For the stdio channel |channel-stdio|,
+   * it writes to Nvim's stdout. For an internal terminal instance
+   * (|nvim_open_term()|) it writes directly to terimal output. See
+   * |channel-bytes| for more information.
+   *
+   * This function writes raw data, not RPC messages. If the
+   * channel was created with `rpc=true` then the channel expects
+   * RPC messages, use |vim.rpcnotify()| and |vim.rpcrequest()|
+   * instead.
+   *
+   * @param chan - id of the channel
+   * @param data - data to write. 8-bit clean: can contain NUL bytes.
+   */
+  nvim_chan_send: (chan: any, data: any) => any;
   /**
    * Executes an ex-command.
    *
@@ -674,6 +705,29 @@ interface api {
    */
   nvim_notify: (msg: any, log_level: any, opts: any) => any;
   /**
+   * Open a terminal instance in a buffer
+   *
+   * By default (and currently the only option) the terminal will
+   * not be connected to an external process. Instead, input send
+   * on the channel will be echoed directly by the terminal. This
+   * is useful to disply ANSI terminal sequences returned as part
+   * of a rpc message, or similar.
+   *
+   * Note: to directly initiate the terminal using the right size,
+   * display the buffer in a configured window before calling this.
+   * For instance, for a floating display, first create an empty
+   * buffer using |nvim_create_buf()|, then display it using
+   * |nvim_open_win()|, and then call this function. Then
+   * |nvim_chan_send()| cal be called immediately to process
+   * sequences in a virtual terminal having the intended size.
+   *
+   * @param buffer - the buffer to use (expected to be empty)
+   * @param opts - Optional parameters. Reserved for future use.
+   *
+   * @returns  Channel id, or 0 on error
+   */
+  nvim_open_term: (buffer: any, opts: any) => any;
+  /**
    * Open a new window.
    *
    * Currently this is used to open floating and external windows.
@@ -770,6 +824,34 @@ interface api {
    *                   `eob` flag of 'fillchars' to a space char,
    *                   and clearing the |EndOfBuffer| region in
    *                   'winhighlight'.
+   *
+   *               • `border`: style of (optional) window border. This can
+   *                 either be a string or an array. the string
+   *                 values are:
+   *                 • "none" No border. This is the default
+   *                 • "single" a single line box
+   *                 • "double" a double line box
+   *                 • "shadow" a drop shadow effect by blending
+   *                   with the background. If it is an array it
+   *                   should be an array of eight items or any
+   *                   divisor of eight. The array will specifify
+   *                   the eight chars building up the border in a
+   *                   clockwise fashion starting with the top-left
+   *                   corner. As, an example, the double box style
+   *                   could be specified as: [ "╔", "═" ,"╗", "║",
+   *                   "╝", "═", "╚", "║" ] if the number of chars
+   *                   are less than eight, they will be repeated.
+   *                   Thus an ASCII border could be specified as:
+   *                   [ "/", "-", "\\", "|" ] or all chars the
+   *                   same as: [ "x" ] An empty string can be used
+   *                   to turn off a specific border, for instance:
+   *                   [ "", "", "", ">", "", "", "", "<" ] will
+   *                   only make vertical borders but not
+   *                   horizontal ones. By default `FloatBorder`
+   *                   highlight is used which links to `VertSplit`
+   *                   when not defined. It could also be specified
+   *                   by character: [ {"+", "MyCorner"}, {"x",
+   *                   "MyBorder"} ]
    *
    * @returns  Window handle, or 0 on error
    */
@@ -923,8 +1005,8 @@ interface api {
    *   • "c" |charwise| mode
    *   • "l" |linewise| mode
    *   • "" guess by contents, see |setreg()|
-   * @param after - If true insert after cursor (like |p|), or before (like
-   *   |P|).
+   * @param after - If true insert after cursor (like |p|), or
+   *   before (like |P|).
    * @param follow - If true place cursor at end of inserted text.
    */
   nvim_put: (lines: any, type: any, after: any, follow: any) => any;
@@ -1144,21 +1226,6 @@ interface api {
    *   override existing definition, like `hi default`
    */
   nvim_set_hl: (ns_id: any, name: any, val: any) => any;
-  /**
-   * Set active namespace for highlights.
-   *
-   * NB: this function can be called from async contexts, but the
-   * semantics are not yet well-defined. To start with
-   * |nvim_set_decoration_provider| on_win and on_line callbacks
-   * are explicitly allowed to change the namespace during a redraw
-   * cycle.
-   *
-   * Attributes: ~
-   *     {fast}
-   *
-   * @param ns_id - the namespace to activate
-   */
-  nvim_set_hl_ns: (ns_id: any) => any;
   /**
    * Sets a global |mapping| for the given mode.
    *
@@ -1700,6 +1767,23 @@ interface api {
    *   column, without shifting the underlying
    *   text.
    *
+   *               • virt_text_hide : hide the virtual text when
+   *                 the background text is selected or hidden due
+   *                 to horizontal scroll 'nowrap'
+   *               • hl_mode : control how highlights are combined
+   *                 with the highlights of the text. Currently
+   *                 only affects virt_text highlights, but might
+   *                 affect`hl_group`in later versions.
+   *                 • "replace": only show the virt_text color.
+   *                   This is the default
+   *                 • "combine": combine with background text
+   *                   color
+   *                 • "blend": blend with background text color.
+   *
+   *               • hl_eol : when true, for a multiline highlight
+   *                 covering the EOL of a line, continue the
+   *                 highlight for the rest of the screen line
+   *                 (just like for diff and cursorline highlight).
    *               • ephemeral : for use with
    *                 |nvim_set_decoration_provider| callbacks. The
    *                 mark will only be used for the current redraw
@@ -1714,6 +1798,9 @@ interface api {
    *                 exists) will be shifted in when new text is
    *                 inserted (true for right, false for left).
    *                 Defaults to false.
+   *               • priority: a priority value for the highlight
+   *                 group. For example treesitter highlighting
+   *                 uses a value of 100.
    *
    * @returns  Id of the created/updated extmark
    */
@@ -2099,6 +2186,21 @@ interface api {
    * @returns  Width as a count of columns
    */
   nvim_win_get_width: (window: any) => any;
+  /**
+   * Closes the window and hide the buffer it contains (like
+   * |:hide| with a |window-ID|).
+   *
+   * Like |:hide| the buffer becomes hidden unless another window
+   * is editing it, or 'bufhidden' is `unload` , `delete` or `wipe`
+   * as opposed to |:close| or |nvim_win_close|, which will close
+   * the buffer.
+   *
+   * Attributes: ~
+   *     not allowed when |textlock| is active
+   *
+   * @param window - Window handle, or 0 for current window
+   */
+  nvim_win_hide: (window: any) => any;
   /**
    * Checks if a window is valid
    *

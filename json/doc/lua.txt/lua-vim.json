@@ -82,6 +82,13 @@
   },
   {
    "type": "func",
+   "name": "list_slice",
+   "description": "                Creates a copy of a table containing only elements from start\n                to end (inclusive)\n\n                Parameters: ~\n                    {list}    table table\n                    {start}   integer Start range of slice\n                    {finish}  integer End range of slice\n\n                Return: ~\n                    Copy of table sliced from start to finish (inclusive)",
+   "argsStr": "{list}, {start}, {finish}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
    "name": "pesc",
    "description": "                Escapes magic chars in a Lua pattern.\n\n                Parameters: ~\n                    {s}  String to escape\n\n                Return: ~\n                    %-escaped pattern string\n\n                See also: ~\n                    https://github.com/rxi/lume",
    "argsStr": "{s}",

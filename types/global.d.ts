@@ -124,6 +124,17 @@ declare namespace vim {
    */
   function list_extend(dst: any, src: any, start: any, finish: any): any;
   /**
+   * Creates a copy of a table containing only elements from start
+   * to end (inclusive)
+   *
+   * @param list - table table
+   * @param start - integer Start range of slice
+   * @param finish - integer End range of slice
+   *
+   * @returns  Copy of table sliced from start to finish (inclusive)
+   */
+  function list_slice(list: any, start: any, finish: any): any;
+  /**
    * Escapes magic chars in a Lua pattern.
    *
    * @param s - String to escape
@@ -362,10 +373,18 @@ declare namespace vim {
    */
   function call(func: any, ...arguments: any[]): any;
   /**
-   * Invokes an Ex command (the ":" commands, Vimscript statements).
+   * Executes multiple lines of Vimscript at once. It is an alias to
+   * |nvim_exec()|, where `output` is set to false. Thus it works identical
+   * to |:source|.
    * See also |ex-cmd-index|.
    * Example: >
    *     vim.cmd('echo 42')
+   *     vim.cmd([[
+   *       augroup My_group
+   *         autocmd!
+   *         autocmd FileType c setlocal cindent
+   *       augroup END
+   *     ]])
    */
   function cmd(cmd: any): any;
   /**
@@ -404,6 +423,14 @@ declare namespace vim {
    */
   let env: any;
   /**
+   * |vim.opt| returns an Option object.
+   *
+   * For example: `local listchar_object = vim.opt.listchar`
+   *
+   * An `Option` has the following methods:
+   */
+  let opt: any;
+  /**
    * Get or set editor options, like |:set|. Invalid key is an error.
    * Example: >
    *     vim.o.cmdheight = 4
@@ -411,7 +438,25 @@ declare namespace vim {
    */
   let o: any;
   /**
+   * Get or set an |option|. Invalid key is an error.
+   *
+   * This is a wrapper around |nvim_set_option()| and |nvim_get_option()|.
+   *
+   * NOTE: This is different than |vim.o| because this ONLY sets the global
+   * option, which generally produces confusing behavior for options with
+   * |global-local| values.
+   *
+   * Example: >
+   *     vim.go.cmdheight = 4
+   *
+   */
+  let go: any;
+  /**
    * Get or set buffer-scoped |local-options|. Invalid key is an error.
+   *
+   * This is a wrapper around |nvim_buf_set_option()| and
+   * |nvim_buf_get_option()|.
+   *
    * Example: >
    *     vim.bo.buflisted = true
    *     print(vim.bo.comments)
@@ -419,6 +464,10 @@ declare namespace vim {
   let bo: any;
   /**
    * Get or set window-scoped |local-options|. Invalid key is an error.
+   *
+   * This is a wrapper around |nvim_win_set_option()| and
+   * |nvim_win_get_option()|.
+   *
    * Example: >
    *     vim.wo.cursorcolumn = true
    *     print(vim.wo.foldmarker)

@@ -5,6 +5,12 @@
  "data": [
   {
    "type": "value",
+   "name": "variable-scope",
+   "description": "specified by what is prepended:\n\n\t\t(nothing) In a function: local to a function; otherwise: global\n|buffer-variable|    b:\t  Local to the current buffer.\n|window-variable|    w:\t  Local to the current window.\n|tabpage-variable|   t:\t  Local to the current tab page.\n|global-variable|    g:\t  Global.\n|local-variable|     l:\t  Local to a function.\n|script-variable|    s:\t  Local to a |:source|'ed Vim script.\n|function-argument|  a:\t  Function argument (only inside a function).\n|vim-variable|       v:\t  Global, predefined by Vim.\n\nThe scope name by itself can be used as a |Dictionary|.  For example, to\ndelete all script-local variables: >\n\t:for k in keys(s:)\n\t:    unlet s:[k]\n\t:endfor\n<",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
    "name": "buffer-variable* *b:var* *b:",
    "description": "Thus you can have several \"b:foo\" variables, one for each buffer.\nThis kind of variable is deleted when the buffer is wiped out or deleted with\n|:bdelete|.\n\nOne local buffer variable is predefined:",
    "valuetype": "any"
@@ -125,6 +131,12 @@
   },
   {
    "type": "value",
+   "name": "v:collate* *collate-variable",
+   "description": "The current locale setting for collation order of the runtime\n\t\tenvironment.  This allows Vim scripts to be aware of the\n\t\tcurrent locale encoding.  Technical: it's the value of\n\t\tLC_COLLATE.  When not using a locale the value is \"C\".\n\t\tThis variable can not be set directly, use the |:language|\n\t\tcommand.\n\t\tSee |multi-lang|.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
    "name": "v:cmdbang* *cmdbang-variable",
    "description": "Set like v:cmdarg for a file read/write command.  When a \"!\"\n\t\twas used the value is 1, otherwise it is 0.  Note that this\n\t\tcan only be used in autocommands.  For user commands |<bang>|\n\t\tcan be used.",
    "valuetype": "any"
@@ -211,6 +223,12 @@
    "type": "value",
    "name": "v:fcs_choice* *fcs_choice-variable",
    "description": "What should happen after a |FileChangedShell| event was\n\t\ttriggered.  Can be used in an autocommand to tell Vim what to\n\t\tdo with the affected buffer:\n\t\t\treload\t\tReload the buffer (does not work if\n\t\t\t\t\tthe file was deleted).\n\t\t\task\t\tAsk the user what to do, as if there\n\t\t\t\t\twas no autocommand.  Except that when\n\t\t\t\t\tonly the timestamp changed nothing\n\t\t\t\t\twill happen.\n\t\t\t<empty>\t\tNothing, the autocommand should do\n\t\t\t\t\teverything that needs to be done.\n\t\tThe default is empty.  If another (invalid) value is used then\n\t\tVim behaves like it is empty, there is no warning message.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "v:fname* *fname-variable",
+   "description": "The file name set by 'includeexpr'.  Empty otherwise.",
    "valuetype": "any"
   },
   {
@@ -337,6 +355,24 @@
    "type": "value",
    "name": "v:null* *null-variable",
    "description": "Special value used to put \"null\" in JSON and NIL in msgpack.\n\t\tSee |json_encode()|.  This value is converted to \"v:null\" when\n\t\tused as a String (e.g. in |expr5| with string concatenation\n\t\toperator) and to zero when used as a Number (e.g. in |expr5|\n\t\tor |expr7| when used with numeric operators). Read-only.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "v:numbermax* *numbermax-variable",
+   "description": "Maximum value of a number.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "v:numbermin* *numbermin-variable",
+   "description": "Minimum value of a number (negative)",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "v:numbersize* *numbersize-variable",
+   "description": "Number of bits in a Number.  This is normally 64, but on some\n\t\tsystems it may be 32.",
    "valuetype": "any"
   },
   {

@@ -1,0 +1,21 @@
+{
+ "leftTitle": "Lua module: vim.lsp.handlers",
+ "rightTitle": "lsp-handlers",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "progress_handler",
+   "description": "                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand",
+   "argsStr": "{_}, {_}, {params}, {client_id}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "signature_help",
+   "description": "                Parameters: ~\n                    {config}  table Configuration table.\n                              • border: (default=nil)\n                                • Add borders to the floating window\n                                • See |vim.api.nvim_open_win()|\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_declaration@seehttps://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_definition@seehttps://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_typeDefinition@seehttps://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_implementation|lsp-handler| for the method \"textDocument/signatureHelp\">\n\n                 vim.lsp.handlers[\"textDocument/signatureHelp\"] = vim.lsp.with(\n                   vim.lsp.handlers.signature_help, {\n                     -- Use a sharp border with `FloatBorder` highlights\n                     border = \"single\"\n                   }\n                 )\n<",
+   "argsStr": "{_}, {method}, {result}, {_}, {bufnr}, {config}",
+   "returnType": "any"
+  }
+ ]
+}

@@ -43,6 +43,11 @@ const generateJsons = async () => {
     "internal-variables* *E461",
     "vim-function* *functions",
   ]);
+  await generateJson("sign.txt", ["sign-functions-details"]);
+  await generateJson("testing.txt", [
+    "test-functions-details",
+    "assert-functions-details",
+  ]);
   await generateJson("api.txt", [
     "api-global-events",
     "api-buffer-updates",
@@ -51,6 +56,16 @@ const generateJsons = async () => {
     "api-window",
     "api-tabpage",
     "api-ui",
+  ]);
+  await generateJson("lsp.txt", [
+    "lsp-core",
+    "lsp-buf",
+    "lsp-diagnostic",
+    "lsp-handlers",
+    "lsp-util",
+    "lsp-log",
+    "lsp-rpc",
+    "lsp-protocol",
   ]);
 };
 

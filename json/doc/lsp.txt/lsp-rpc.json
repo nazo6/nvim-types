@@ -1,0 +1,42 @@
+{
+ "leftTitle": "Lua module: vim.lsp.rpc",
+ "rightTitle": "lsp-rpc",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "format_rpc_error",
+   "description": "                Constructs an error message from an LSP error object.\n\n                Parameters: ~\n                    {err}  (table) The error object\n\n                Return: ~\n                    (string) The formatted error message",
+   "argsStr": "{err}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "notify",
+   "description": "                Sends a notification to the LSP server.\n\n                Parameters: ~\n                    {method}  (string) The invoked LSP method\n                    {params}  (table): Parameters for the invoked LSP method\n\n                Return: ~\n                    (bool) `true` if notification could be sent, `false` if\n                    not",
+   "argsStr": "{method}, {params}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "request",
+   "description": "                Sends a request to the LSP server and runs {callback} upon\n                response.\n\n                Parameters: ~\n                    {method}    (string) The invoked LSP method\n                    {params}    (table) Parameters for the invoked LSP method\n                    {callback}  (function) Callback to invoke\n\n                Return: ~\n                    (bool, number) `(true, message_id)` if request could be\n                    sent, `false` if not",
+   "argsStr": "{method}, {params}, {callback}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "rpc_response_error",
+   "description": "                Creates an RPC response object/table.\n\n                Parameters: ~\n                    {code}     RPC error code defined in\n                               `vim.lsp.protocol.ErrorCodes`\n                    {message}  (optional) arbitrary message to send to server\n                    {data}     (optional) arbitrary data to send to server",
+   "argsStr": "{code}, {message}, {data}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "start",
+   "description": "                Starts an LSP server process and create an LSP RPC client\n                object to interact with it.\n\n                Parameters: ~\n                    {cmd}                 (string) Command to start the LSP\n                                          server.\n                    {cmd_args}            (table) List of additional string\n                                          arguments to pass to {cmd}.\n                    {dispatchers}         (table, optional) Dispatchers for\n                                          LSP message types. Valid dispatcher\n                                          names are:\n                                          • `\"notification\"`\n                                          • `\"server_request\"`\n                                          • `\"on_error\"`\n                                          • `\"on_exit\"`\n                    {extra_spawn_params}  (table, optional) Additional context\n                                          for the LSP server process. May\n                                          contain:\n                                          • {cwd} (string) Working directory\n                                            for the LSP server process\n                                          • {env} (table) Additional\n                                            environment variables for LSP\n                                            server process\n\n                Return: ~\n                    Client RPC object.\n                    Methods:\n                    • `notify()` |vim.lsp.rpc.notify()|\n                    • `request()` |vim.lsp.rpc.request()|\n\n                    Members:\n                    • {pid} (number) The LSP server's PID.\n                    • {handle} A handle for low-level interaction with the LSP\n                      server process |vim.loop|.",
+   "argsStr": "{cmd}, {cmd_args}, {dispatchers}, {extra_spawn_params}",
+   "returnType": "any"
+  }
+ ]
+}

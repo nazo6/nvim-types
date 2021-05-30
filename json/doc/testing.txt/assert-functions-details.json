@@ -1,0 +1,98 @@
+{
+ "leftTitle": "3. Assert functions",
+ "rightTitle": "assert-functions-details",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "assert_beeps",
+   "description": "\t\tRun {cmd} and add an error message to |v:errors| if it does\n\t\tNOT produce a beep or visual bell.\n\t\tAlso see |assert_fails()|, |assert_nobeep()| and\n\t\t|assert-return|.",
+   "argsStr": "{cmd}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_equal",
+   "description": "\t\tWhen {expected} and {actual} are not equal an error message is\n\t\tadded to |v:errors| and 1 is returned.  Otherwise zero is\n\t\treturned |assert-return|.\n\t\tThere is no automatic conversion, the String \"4\" is different\n\t\tfrom the Number 4.  And the number 4 is different from the\n\t\tFloat 4.0.  The value of 'ignorecase' is not used here, case\n\t\talways matters.\n\t\tWhen {msg} is omitted an error in the form \"Expected\n\t\t{expected} but got {actual}\" is produced.\n\t\tExample: >\n\tassert_equal('foo', 'bar')\n<\t\tWill result in a string to be added to |v:errors|:\n\ttest.vim line 12: Expected 'foo' but got 'bar' ~",
+   "argsStr": "{expected}, {actual} [, {msg}]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_equalfile",
+   "description": "\t\tWhen the files {fname-one} and {fname-two} do not contain\n\t\texactly the same text an error message is added to |v:errors|.\n\t\tAlso see |assert-return|.\n\t\tWhen {fname-one} or {fname-two} does not exist the error will\n\t\tmention that.",
+   "argsStr": "{fname-one}, {fname-two}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_exception",
+   "description": "\t\tWhen v:exception does not contain the string {error} an error\n\t\tmessage is added to |v:errors|.  Also see |assert-return|.\n\t\tThis can be used to assert that a command throws an exception.\n\t\tUsing the error number, followed by a colon, avoids problems\n\t\twith translations: >\n\t\t\ttry\n\t\t\t  commandthatfails\n\t\t\t  call assert_false(1, 'command should have failed')\n\t\t\tcatch\n\t\t\t  call assert_exception('E492:')\n\t\t\tendtry",
+   "argsStr": "{error} [, {msg}]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_fails",
+   "description": "\t\tRun {cmd} and add an error message to |v:errors| if it does\n\t\tNOT produce an error.  Also see |assert-return|.\n\t\tWhen {error} is given it must match in |v:errmsg|.\n\t\tNote that beeping is not considered an error, and some failing\n\t\tcommands only beep.  Use |assert_beeps()| for those.",
+   "argsStr": "{cmd} [, {error} [, {msg}]]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_false",
+   "description": "\t\tWhen {actual} is not false an error message is added to\n\t\t|v:errors|, like with |assert_equal()|.\n\t\tAlso see |assert-return|.\n\t\tA value is false when it is zero. When {actual} is not a\n\t\tnumber the assert fails.\n\t\tWhen {msg} is omitted an error in the form\n\t\t\"Expected False but got {actual}\" is produced.",
+   "argsStr": "{actual} [, {msg}]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_inrange",
+   "description": "\t\tThis asserts number and |Float| values.  When {actual}  is lower\n\t\tthan {lower} or higher than {upper} an error message is added\n\t\tto |v:errors|.  Also see |assert-return|.\n\t\tWhen {msg} is omitted an error in the form\n\t\t\"Expected range {lower} - {upper}, but got {actual}\" is\n\t\tproduced.",
+   "argsStr": "{lower}, {upper}, {actual} [, {msg}]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_match",
+   "description": "\t\tWhen {pattern} does not match {actual} an error message is\n\t\tadded to |v:errors|.  Also see |assert-return|.\n\n\t\t{pattern} is used as with |=~|: The matching is always done\n\t\tlike 'magic' was set and 'cpoptions' is empty, no matter what\n\t\tthe actual value of 'magic' or 'cpoptions' is.\n\n\t\t{actual} is used as a string, automatic conversion applies.\n\t\tUse \"^\" and \"$\" to match with the start and end of the text.\n\t\tUse both to match the whole text.\n\n\t\tWhen {msg} is omitted an error in the form\n\t\t\"Pattern {pattern} does not match {actual}\" is produced.\n\t\tExample: >\n\tassert_match('^f.*o$', 'foobar')\n<\t\tWill result in a string to be added to |v:errors|:\n\ttest.vim line 12: Pattern '^f.*o$' does not match 'foobar' ~",
+   "argsStr": "{pattern}, {actual} [, {msg}]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_nobeep",
+   "description": "\t\tRun {cmd} and add an error message to |v:errors| if it\n\t\tproduces a beep or visual bell.\n\t\tAlso see |assert_beeps()|.",
+   "argsStr": "{cmd}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_notequal",
+   "description": "\t\tThe opposite of `assert_equal()`: add an error message to\n\t\t|v:errors| when {expected} and {actual} are equal.\n\t\tAlso see |assert-return|.",
+   "argsStr": "{expected}, {actual} [, {msg}]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_notmatch",
+   "description": "\t\tThe opposite of `assert_match()`: add an error message to\n\t\t|v:errors| when {pattern} matches {actual}.\n\t\tAlso see |assert-return|.",
+   "argsStr": "{pattern}, {actual} [, {msg}]",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_report",
+   "description": "\t\tReport a test failure directly, using {msg}.\n\t\tAlways returns one.",
+   "argsStr": "{msg}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "assert_true",
+   "description": "\t\tWhen {actual} is not true an error message is added to\n\t\t|v:errors|, like with |assert_equal()|.\n\t\tAlso see |assert-return|.\n\t\tA value is |TRUE| when it is a non-zero number or |v:true|.\n\t\tWhen {actual} is not a number or |v:true| the assert fails.\n\t\tWhen {msg} is omitted an error in the form \"Expected True but\n\t\tgot {actual}\" is produced.\n\n\n vim:tw=78:ts=8:noet:ft=help:norl:",
+   "argsStr": "{actual} [, {msg}]",
+   "returnType": "any"
+  }
+ ]
+}

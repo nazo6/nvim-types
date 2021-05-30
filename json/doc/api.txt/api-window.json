@@ -89,6 +89,13 @@
   },
   {
    "type": "func",
+   "name": "nvim_win_hide",
+   "description": "                Closes the window and hide the buffer it contains (like\n                |:hide| with a |window-ID|).\n\n                Like |:hide| the buffer becomes hidden unless another window\n                is editing it, or 'bufhidden' is `unload` , `delete` or `wipe`\n                as opposed to |:close| or |nvim_win_close|, which will close\n                the buffer.\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {window}  Window handle, or 0 for current window",
+   "argsStr": "{window}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
    "name": "nvim_win_is_valid",
    "description": "                Checks if a window is valid\n\n                Parameters: ~\n                    {window}  Window handle, or 0 for current window\n\n                Return: ~\n                    true if the window is valid, false otherwise",
    "argsStr": "{window}",

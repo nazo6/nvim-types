@@ -20,10 +20,7 @@ export const writeType = async (fileName: string, data: string) => {
   await fs.writeFile(path.join(dirname, "types", fileName), data);
 };
 
-export const loadJson = async (
-  filePath: "api.txt" | "eval.txt" | "lua.txt",
-  fileName: string
-) => {
+export const loadJson = async (filePath: string, fileName: string) => {
   let editJson: EditJsonType;
   let docJson = JSON.parse(
     await fs.readFile(`${dirname}/json/doc/${filePath}/${fileName}`, {

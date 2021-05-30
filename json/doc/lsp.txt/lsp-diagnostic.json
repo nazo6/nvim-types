@@ -1,0 +1,147 @@
+{
+ "leftTitle": "Lua module: vim.lsp.diagnostic",
+ "rightTitle": "lsp-diagnostic",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "clear",
+   "description": "                Clears the currently displayed diagnostics\n\n                Parameters: ~\n                    {bufnr}          number The buffer number\n                    {client_id}      number the client id\n                    {diagnostic_ns}  number|nil Associated diagnostic\n                                     namespace\n                    {sign_ns}        number|nil Associated sign namespace",
+   "argsStr": "{bufnr}, {client_id}, {diagnostic_ns}, {sign_ns}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get",
+   "description": "                Return associated diagnostics for bufnr\n\n                Parameters: ~\n                    {bufnr}      number\n                    {client_id}  number|nil If nil, then return all of the\n                                 diagnostics. Else, return just the\n                                 diagnostics associated with the client_id.",
+   "argsStr": "{bufnr}, {client_id}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_all",
+   "description": "                Get all diagnostics for all clients\n\n                Return: ~\n                    {bufnr:Diagnostic[]}",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_count",
+   "description": "                Get the counts for a particular severity\n\n                Useful for showing diagnostic counts in statusline. eg:\n>\n\n    function! LspStatus() abort\n      let sl = ''\n      if luaeval('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')\n        let sl.='%#MyStatuslineLSP#E:'\n        let sl.='%#MyStatuslineLSPErrors#%{luaeval(\"vim.lsp.diagnostic.get_count(0, [[Error]])\")}'\n        let sl.='%#MyStatuslineLSP# W:'\n        let sl.='%#MyStatuslineLSPWarnings#%{luaeval(\"vim.lsp.diagnostic.get_count(0, [[Warning]])\")}'\n      else\n          let sl.='%#MyStatuslineLSPErrors#off'\n      endif\n      return sl\n    endfunction\n    let &l:statusline = '%#MyStatuslineLSP#LSP '.LspStatus()\n<\n\n                Parameters: ~\n                    {bufnr}      number The buffer number\n                    {severity}   DiagnosticSeverity\n                    {client_id}  number the client id",
+   "argsStr": "{bufnr}, {severity}, {client_id}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_line_diagnostics",
+   "description": "                Get the diagnostics by line\n\n                Parameters: ~\n                    {bufnr}      number The buffer number\n                    {line_nr}    number The line number\n                    {opts}       table|nil Configuration keys\n                                 • severity: (DiagnosticSeverity, default nil)\n                                   • Only return diagnostics with this\n                                     severity. Overrides severity_limit\n\n                                 • severity_limit: (DiagnosticSeverity, default nil)\n                                   • Limit severity of diagnostics found. E.g.\n                                     \"Warning\" means { \"Error\", \"Warning\" }\n                                     will be valid.\n                    {client_id}  number the client id\n\n                Return: ~\n                    table Table with map of line number to list of\n                    diagnostics.",
+   "argsStr": "{bufnr}, {line_nr}, {opts}, {client_id}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_next",
+   "description": "                Get the next diagnostic closest to the cursor_position\n\n                Parameters: ~\n                    {opts}  table See |vim.lsp.diagnostic.goto_next()|\n\n                Return: ~\n                    table Next diagnostic",
+   "argsStr": "{opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_next_pos",
+   "description": "                Return the pos, {row, col}, for the next diagnostic in the\n                current buffer.\n\n                Parameters: ~\n                    {opts}  table See |vim.lsp.diagnostic.goto_next()|\n\n                Return: ~\n                    table Next diagnostic position",
+   "argsStr": "{opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_prev",
+   "description": "                Get the previous diagnostic closest to the cursor_position\n\n                Parameters: ~\n                    {opts}  table See |vim.lsp.diagnostic.goto_next()|\n\n                Return: ~\n                    table Previous diagnostic",
+   "argsStr": "{opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_prev_pos",
+   "description": "                Return the pos, {row, col}, for the prev diagnostic in the\n                current buffer.\n\n                Parameters: ~\n                    {opts}  table See |vim.lsp.diagnostic.goto_next()|\n\n                Return: ~\n                    table Previous diagnostic position",
+   "argsStr": "{opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_virtual_text_chunks_for_line",
+   "description": "                Default function to get text chunks to display using `nvim_buf_set_virtual_text` .\n\n                Parameters: ~\n                    {bufnr}       number The buffer to display the virtual\n                                  text in\n                    {line}        number The line number to display the\n                                  virtual text on\n                    {line_diags}  Diagnostic [] The diagnostics associated with the line\n                    {opts}        table See {opts} from\n                                  |vim.lsp.diagnostic.set_virtual_text()|\n\n                Return: ~\n                    table chunks, as defined by |nvim_buf_set_virtual_text()|",
+   "argsStr": "{bufnr}, {line}, {line_diags}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "goto_next",
+   "description": "                Move to the next diagnostic\n\n                Parameters: ~\n                    {opts}  table|nil Configuration table. Keys:\n                            • {client_id}: (number)\n                              • If nil, will consider all clients attached to\n                                buffer.\n\n                            • {cursor_position}: (Position, default current\n                              position)\n                              • See |nvim_win_get_cursor()|\n\n                            • {wrap}: (boolean, default true)\n                              • Whether to loop around file or not. Similar to\n                                'wrapscan'\n\n                            • {severity}: (DiagnosticSeverity)\n                              • Exclusive severity to consider. Overrides\n                                {severity_limit}\n\n                            • {severity_limit}: (DiagnosticSeverity)\n                              • Limit severity of diagnostics found. E.g.\n                                \"Warning\" means { \"Error\", \"Warning\" } will be\n                                valid.\n\n                            • {enable_popup}: (boolean, default true)\n                              • Call\n                                |vim.lsp.diagnostic.show_line_diagnostics()|\n                                on jump\n\n                            • {popup_opts}: (table)\n                              • Table to pass as {opts} parameter to\n                                |vim.lsp.diagnostic.show_line_diagnostics()|\n\n                            • {win_id}: (number, default 0)\n                              • Window ID",
+   "argsStr": "{opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "goto_prev",
+   "description": "                Move to the previous diagnostic\n\n                Parameters: ~\n                    {opts}  table See |vim.lsp.diagnostic.goto_next()|",
+   "argsStr": "{opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "on_publish_diagnostics",
+   "description": "                |lsp-handler| for the method \"textDocument/publishDiagnostics\"\n\n                Note:\n                    Each of the configuration options accepts:\n                    • `false` : Disable this feature\n                    • `true` : Enable this feature, use default settings.\n                    • `table` : Enable this feature, use overrides.\n                    • `function`: Function with signature (bufnr, client_id) that\n                      returns any of the above.>\n\n                 vim.lsp.handlers[\"textDocument/publishDiagnostics\"] = vim.lsp.with(\n                   vim.lsp.diagnostic.on_publish_diagnostics, {\n                     -- Enable underline, use default values\n                     underline = true,\n                     -- Enable virtual text, override spacing to 4\n                     virtual_text = {\n                       spacing = 4,\n                     },\n                     -- Use a function to dynamically turn signs off\n                     -- and on, using buffer local variables\n                     signs = function(bufnr, client_id)\n                       return vim.bo[bufnr].show_signs == false\n                     end,\n                     -- Disable a feature\n                     update_in_insert = false,\n                   }\n                 )\n<\n\n                Parameters: ~\n                    {config}  table Configuration table.\n                              • underline: (default=true)\n                                • Apply underlines to diagnostics.\n                                • See |vim.lsp.diagnostic.set_underline()|\n\n                              • virtual_text: (default=true)\n                                • Apply virtual text to line endings.\n                                • See |vim.lsp.diagnostic.set_virtual_text()|\n\n                              • signs: (default=true)\n                                • Apply signs for diagnostics.\n                                • See |vim.lsp.diagnostic.set_signs()|\n\n                              • update_in_insert: (default=false)\n                                • Update diagnostics in InsertMode or wait\n                                  until InsertLeave\n\n                              • severity_sort: (default=false)\n                                • Sort diagnostics (and thus signs and virtual\n                                  text)",
+   "argsStr": "{_}, {_}, {params}, {client_id}, {_}, {config}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "reset",
+   "description": "                Clear diagnotics and diagnostic cache\n\n                Handles saving diagnostics from multiple clients in the same\n                buffer.\n\n                Parameters: ~\n                    {client_id}          number\n                    {buffer_client_map}  table map of buffers to active\n                                         clients",
+   "argsStr": "{client_id}, {buffer_client_map}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "save",
+   "description": "                Save diagnostics to the current buffer.\n\n                Handles saving diagnostics from multiple clients in the same\n                buffer.\n\n                Parameters: ~\n                    {diagnostics}  Diagnostic []\n                    {bufnr}        number\n                    {client_id}    number",
+   "argsStr": "{diagnostics}, {bufnr}, {client_id}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "set_loclist",
+   "description": "                Sets the location list\n\n                Parameters: ~\n                    {opts}  table|nil Configuration table. Keys:\n                            • {open_loclist}: (boolean, default true)\n                              • Open loclist after set\n\n                            • {client_id}: (number)\n                              • If nil, will consider all clients attached to\n                                buffer.\n\n                            • {severity}: (DiagnosticSeverity)\n                              • Exclusive severity to consider. Overrides\n                                {severity_limit}\n\n                            • {severity_limit}: (DiagnosticSeverity)\n                              • Limit severity of diagnostics found. E.g.\n                                \"Warning\" means { \"Error\", \"Warning\" } will be\n                                valid.",
+   "argsStr": "{opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "set_signs",
+   "description": "                Set signs for given diagnostics\n\n                Sign characters can be customized with the following commands:\n>\n\n    sign define LspDiagnosticsSignError text=E texthl=LspDiagnosticsSignError linehl= numhl=\n    sign define LspDiagnosticsSignWarning text=W texthl=LspDiagnosticsSignWarning linehl= numhl=\n    sign define LspDiagnosticsSignInformation text=I texthl=LspDiagnosticsSignInformation linehl= numhl=\n    sign define LspDiagnosticsSignHint text=H texthl=LspDiagnosticsSignHint linehl= numhl=\n<\n\n                Parameters: ~\n                    {diagnostics}  Diagnostic []\n                    {bufnr}        number The buffer number\n                    {client_id}    number the client id\n                    {sign_ns}      number|nil\n                    {opts}         table Configuration for signs. Keys:\n                                   • priority: Set the priority of the signs.\n                                   • severity_limit (DiagnosticSeverity):\n                                     • Limit severity of diagnostics found.\n                                       E.g. \"Warning\" means { \"Error\",\n                                       \"Warning\" } will be valid.",
+   "argsStr": "{diagnostics}, {bufnr}, {client_id}, {sign_ns}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "set_underline",
+   "description": "                Set underline for given diagnostics\n\n                Underline highlights can be customized by changing the\n                following |:highlight| groups.\n>\n\n    LspDiagnosticsUnderlineError\n    LspDiagnosticsUnderlineWarning\n    LspDiagnosticsUnderlineInformation\n    LspDiagnosticsUnderlineHint\n<\n\n                Parameters: ~\n                    {diagnostics}    Diagnostic []\n                    {bufnr}          number: The buffer number\n                    {client_id}      number: The client id\n                    {diagnostic_ns}  number|nil: The namespace\n                    {opts}           table: Configuration table:\n                                     • severity_limit (DiagnosticSeverity):\n                                       • Limit severity of diagnostics found.\n                                         E.g. \"Warning\" means { \"Error\",\n                                         \"Warning\" } will be valid.",
+   "argsStr": "{diagnostics}, {bufnr}, {client_id}, {diagnostic_ns}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "set_virtual_text",
+   "description": "                Set virtual text given diagnostics\n\n                Virtual text highlights can be customized by changing the\n                following |:highlight| groups.\n>\n\n    LspDiagnosticsVirtualTextError\n    LspDiagnosticsVirtualTextWarning\n    LspDiagnosticsVirtualTextInformation\n    LspDiagnosticsVirtualTextHint\n<\n\n                Parameters: ~\n                    {diagnostics}    Diagnostic []\n                    {bufnr}          number\n                    {client_id}      number\n                    {diagnostic_ns}  number\n                    {opts}           table Options on how to display virtual\n                                     text. Keys:\n                                     • prefix (string): Prefix to display\n                                       before virtual text on line\n                                     • spacing (number): Number of spaces to\n                                       insert before virtual text\n                                     • severity_limit (DiagnosticSeverity):\n                                       • Limit severity of diagnostics found.\n                                         E.g. \"Warning\" means { \"Error\",\n                                         \"Warning\" } will be valid.",
+   "argsStr": "{diagnostics}, {bufnr}, {client_id}, {diagnostic_ns}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "show_line_diagnostics",
+   "description": "                Open a floating window with the diagnostics from {line_nr}\n\n                The floating window can be customized with the following\n                highlight groups: >\n\n                 LspDiagnosticsFloatingError\n                 LspDiagnosticsFloatingWarning\n                 LspDiagnosticsFloatingInformation\n                 LspDiagnosticsFloatingHint\n<\n\n                Parameters: ~\n                    {opts}       table Configuration table\n                                 • show_header (boolean, default true): Show\n                                   \"Diagnostics:\" header.\n                    {bufnr}      number The buffer number\n                    {line_nr}    number The line number\n                    {client_id}  number|nil the client id\n\n                Return: ~\n                    table {popup_bufnr, win_id}",
+   "argsStr": "{opts}, {bufnr}, {line_nr}, {client_id}",
+   "returnType": "any"
+  }
+ ]
+}

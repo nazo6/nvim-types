@@ -65,6 +65,9 @@ interface fn {
   /**
    * Like |append()| but append the text in buffer {expr}.
    *
+   * This function works only for loaded buffers. First call
+   * |bufload()| if needed.
+   *
    * For the use of {expr}, see |bufname()|.
    *
    * {lnum} is used like with |append()|.  Note that using |line()|
@@ -125,124 +128,6 @@ interface fn {
    */
   argv: (nr?: any, winid?: any) => any;
   /**
-   * Run {cmd} and add an error message to |v:errors| if it does
-   * NOT produce a beep or visual bell.
-   * Also see |assert_fails()| and |assert-return|.
-   */
-  assert_beeps: (cmd: any) => any;
-  /**
-   * When {expected} and {actual} are not equal an error message is
-   * added to |v:errors| and 1 is returned.  Otherwise zero is
-   * returned |assert-return|.
-   * There is no automatic conversion, the String "4" is different
-   * from the Number 4.  And the number 4 is different from the
-   * Float 4.0.  The value of 'ignorecase' is not used here, case
-   * always matters.
-   * When {msg} is omitted an error in the form "Expected
-   * {expected} but got {actual}" is produced.
-   * Example: >
-   * sert_equal('foo', 'bar')
-   *  Will result in a string to be added to |v:errors|:
-   * st.vim line 12: Expected 'foo' but got 'bar' ~
-   */
-  assert_equal: (expected: any, actual: any, msg?: any) => any;
-  /**
-   * When the files {fname-one} and {fname-two} do not contain
-   * exactly the same text an error message is added to |v:errors|.
-   * Also see |assert-return|.
-   * When {fname-one} or {fname-two} does not exist the error will
-   * mention that.
-   */
-  assert_equalfile: (fname_one: any, fname_two: any, msg?: any) => any;
-  /**
-   * When v:exception does not contain the string {error} an error
-   * message is added to |v:errors|.  Also see |assert-return|.
-   * This can be used to assert that a command throws an exception.
-   * Using the error number, followed by a colon, avoids problems
-   * with translations: >
-   *   try
-   *     commandthatfails
-   *     call assert_false(1, 'command should have failed')
-   *   catch
-   *     call assert_exception('E492:')
-   *   endtry
-   */
-  assert_exception: (error: any, msg?: any) => any;
-  /**
-   * Run {cmd} and add an error message to |v:errors| if it does
-   * NOT produce an error.  Also see |assert-return|.
-   * When {error} is given it must match in |v:errmsg|.
-   * Note that beeping is not considered an error, and some failing
-   * commands only beep.  Use |assert_beeps()| for those.
-   */
-  assert_fails: (cmd: any, error?: any, msg?: any) => any;
-  /**
-   * When {actual} is not false an error message is added to
-   * |v:errors|, like with |assert_equal()|.
-   * Also see |assert-return|.
-   * A value is false when it is zero or |v:false|. When "{actual}"
-   * is not a number or |v:false| the assert fails.
-   * When {msg} is omitted an error in the form
-   * "Expected False but got {actual}" is produced.
-   */
-  assert_false: (actual: any, msg?: any) => any;
-  /**
-   * This asserts number and |Float| values.  When {actual}  is lower
-   * than {lower} or higher than {upper} an error message is added
-   * to |v:errors|.  Also see |assert-return|.
-   * When {msg} is omitted an error in the form
-   * "Expected range {lower} - {upper}, but got {actual}" is
-   * produced.
-   */
-  assert_inrange: (lower: any, upper: any, actual: any, msg?: any) => any;
-  /**
-   * When {pattern} does not match {actual} an error message is
-   * added to |v:errors|.  Also see |assert-return|.
-   *
-   * {pattern} is used as with |=~|: The matching is always done
-   * like 'magic' was set and 'cpoptions' is empty, no matter what
-   * the actual value of 'magic' or 'cpoptions' is.
-   *
-   * {actual} is used as a string, automatic conversion applies.
-   * Use "^" and "$" to match with the start and end of the text.
-   * Use both to match the whole text.
-   *
-   * When {msg} is omitted an error in the form
-   * "Pattern {pattern} does not match {actual}" is produced.
-   * Example: >
-   * sert_match('^f.*o$', 'foobar')
-   *  Will result in a string to be added to |v:errors|:
-   * st.vim line 12: Pattern '^f.*o$' does not match 'foobar' ~
-   */
-  assert_match: (pattern: any, actual: any, msg?: any) => any;
-  /**
-   * The opposite of `assert_equal()`: add an error message to
-   * |v:errors| when {expected} and {actual} are equal.
-   * Also see |assert-return|.
-   */
-  assert_notequal: (expected: any, actual: any, msg?: any) => any;
-  /**
-   * The opposite of `assert_match()`: add an error message to
-   * |v:errors| when {pattern} matches {actual}.
-   * Also see |assert-return|.
-   */
-  assert_notmatch: (pattern: any, actual: any, msg?: any) => any;
-  /**
-   * Report a test failure directly, using {msg}.
-   * Always returns one.
-   */
-  assert_report: (msg: any) => any;
-  /**
-   * When {actual} is not true an error message is added to
-   * |v:errors|, like with |assert_equal()|.
-   * Also see |assert-return|.
-   * A value is |TRUE| when it is a non-zero number or |v:true|.
-   * When {actual} is not a number or |v:true| the assert fails.
-   * When {msg} is omitted an error in the form "Expected True but
-   * got {actual}" is produced.
-   */
-  assert_true: (actual: any, msg?: any) => any;
-  /**
    * Return the arc sine of {expr} measured in radians, as a |Float|
    * in the range of [-pi/2, pi/2].
    * {expr} must evaluate to a |Float| or a |Number| in the range
@@ -252,6 +137,9 @@ interface fn {
    *    0.927295 >
    *   :echo asin(-0.5)
    *    -0.523599
+   *
+   *
+   * rt_ functions are documented here: |assert-functions-details|
    */
   asin: (expr: any) => any;
   /**
@@ -390,7 +278,7 @@ interface fn {
    * the ":ls" command.  For the use of {expr}, see |bufname()|
    * above.
    * If the buffer doesn't exist, -1 is returned.  Or, if the
-   * {create} argument is present and not zero, a new, unlisted,
+   * {create} argument is present and TRUE, a new, unlisted,
    * buffer is created and its number is returned.
    * bufnr("$") is the last buffer: >
    *   :let last_buffer = bufnr("$")
@@ -437,8 +325,8 @@ interface fn {
    * Return byte index of the {nr}'th character in the string
    * {expr}.  Use zero for the first character, it then returns
    * zero.
-   * This function is only useful when there are multibyte
-   * characters, otherwise the returned value is equal to {nr}.
+   * If there are no multibyte characters the returned value is
+   * equal to {nr}.
    * Composing characters are not counted separately, their byte
    * length is added to the preceding base character.  See
    * |byteidxcomp()| below for counting composing characters
@@ -466,6 +354,8 @@ interface fn {
    *  The first and third echo result in 3 ('e' plus composing
    * character is 3 bytes), the second echo results in 1 ('e' is
    * one byte).
+   * Only works differently from byteidx() when 'encoding' is set to
+   * a Unicode encoding.
    */
   byteidxcomp: (expr: any, nr: any) => any;
   /**
@@ -670,7 +560,7 @@ interface fn {
    */
   complete_check: () => any;
   /**
-   * Returns a Dictionary with information about Insert mode
+   * Returns a |Dictionary| with information about Insert mode
    * completion.  See |ins-completion|.
    * The items are:
    *    mode    Current completion mode name string.
@@ -703,7 +593,7 @@ interface fn {
    *        "function"       User defined completion |i_CTRL-X_CTRL-U|
    *        "omni"       Omni completion |i_CTRL-X_CTRL-O|
    *        "spell"       Spelling suggestions |i_CTRL-X_s|
-   *        "eval"            |complete()| completion
+   *        "eval"       |complete()| completion
    *        "unknown"       Other internal modes
    *
    *     If the optional {what} list argument is supplied, then only
@@ -743,7 +633,7 @@ interface fn {
    * not need to be the first letter: >
    *   confirm("file has been modified", "&Save\nSave &All")
    *  For the console, the first letter of each choice is used as
-   * the default shortcut key.
+   * the default shortcut key.  Case is ignored.
    *
    * The optional {default} argument is the number of the choice
    * that is made if the user hits <CR>.  Use 1 to make the first
@@ -932,6 +822,7 @@ interface fn {
    * copy, and vice versa.  When an item is a |List|, a copy for it
    * is made, recursively.  Thus changing an item in the copy does
    * not change the contents of the original |List|.
+   *
    * When {noref} is omitted or zero a contained |List| or
    * |Dictionary| is only copied once.  All references point to
    * this single copy.  With {noref} set to 1 every occurrence of a
@@ -959,14 +850,18 @@ interface fn {
    * Note: on MS-Windows it is not possible to delete a directory
    * that is being used.
    *
-   * The result is a Number, which is 0 if the delete operation was
-   * successful and -1 when the deletion failed or partly failed.
+   * The result is a Number, which is 0/false if the delete
+   * operation was successful and -1/true when the deletion failed
+   * or partly failed.
    */
   delete: (fname: any, flags?: any) => any;
   /**
    * Delete lines {first} to {last} (inclusive) from buffer {expr}.
    * If {last} is omitted then delete line {first} only.
    * On success 0 is returned, on failure 1 is returned.
+   *
+   * This function works only for loaded buffers. First call
+   * |bufload()| if needed.
    *
    * For the use of {expr}, see |bufname()| above.
    *
@@ -1058,6 +953,13 @@ interface fn {
    */
   diff_hlID: (lnum: any, col: any) => any;
   /**
+   * Return the Number 1 if {expr} is empty, zero otherwise.
+   * A |List| or |Dictionary| is empty when it does not have any
+   * items.  A Number is empty when its value is zero.  Special
+   * variable is empty when it is |v:false| or |v:null|.
+   */
+  empty: (expr: any) => any;
+  /**
    * Return all of environment variables as dictionary. You can
    * check if an environment variable exists like this: >
    *   :echo has_key(environ(), 'HOME')
@@ -1066,13 +968,6 @@ interface fn {
    *   :echo index(keys(environ()), 'HOME', 0, 1) != -1
    */
   environ: () => any;
-  /**
-   * Return the Number 1 if {expr} is empty, zero otherwise.
-   * A |List| or |Dictionary| is empty when it does not have any
-   * items.  A Number is empty when its value is zero.  Special
-   * variable is empty when it is |v:false| or |v:null|.
-   */
-  empty: (expr: any) => any;
   /**
    * Escape the characters in {chars} that occur in {string} with a
    * backslash.  Example: >
@@ -1105,16 +1000,15 @@ interface fn {
    */
   executable: (expr: any) => any;
   /**
-   * On Windows the ".exe", ".bat", etc. can
-   * optionally be included.  Then the extensions in $PATHEXT are
-   * tried.  Thus if "foo.exe" does not exist, "foo.exe.bat" can be
-   * found.  If $PATHEXT is not set then ".exe;.com;.bat;.cmd" is
-   * used.  A dot by itself can be used in $PATHEXT to try using
-   * the name without an extension.  When 'shell' looks like a
-   * Unix shell, then the name is also tried without adding an
-   * extension.
-   * On Windows it only checks if the file exists and
-   * is not a directory, not if it's really executable.
+   * On MS-Windows the ".exe", ".bat", etc. can optionally be
+   * included.  Then the extensions in $PATHEXT are tried.  Thus if
+   * "foo.exe" does not exist, "foo.exe.bat" can be found.  If
+   * $PATHEXT is not set then ".exe;.com;.bat;.cmd" is used.  A dot
+   * by itself can be used in $PATHEXT to try using the name
+   * without an extension.  When 'shell' looks like a Unix shell,
+   * then the name is also tried without adding an extension.
+   * On MS-Windows it only checks if the file exists and is not a
+   * directory, not if it's really executable.
    * On Windows an executable in the same directory as Vim is
    * always found (it is added to $PATH at |startup|).
    * The result is a Number:
@@ -1148,6 +1042,8 @@ interface fn {
    * Note: If nested, an outer execute() will not observe output of
    * the inner calls.
    * Note: Text attributes (highlights) are not captured.
+   * To execute a command in another window than the current one
+   * use `win_execute()`.
    */
   execute: (command: any, silent?: any) => any;
   /**
@@ -1348,8 +1244,8 @@ interface fn {
    * Expand special items in {expr} like what is done for an Ex
    * command such as `:edit`.  This expands special keywords, like
    * with |expand()|, and environment variables, anywhere in
-   * {expr}.  Returns the expanded string.
-   * Example: >
+   * {expr}.  "~user" and "~/path" are only expanded at the start.
+   * Returns the expanded string.  Example: >
    *   :echo expandcmd('make %<.o')
    *
    */
@@ -1359,10 +1255,10 @@ interface fn {
    * |Dictionaries|.
    *
    * If they are |Lists|: Append {expr2} to {expr1}.
-   * If {expr3} is given insert the items of {expr2} before item
-   * {expr3} in {expr1}.  When {expr3} is zero insert before the
-   * first item.  When {expr3} is equal to len({expr1}) then
-   * {expr2} is appended.
+   * If {expr3} is given insert the items of {expr2} before the
+   * item with index {expr3} in {expr1}.  When {expr3} is zero
+   * insert before the first item.  When {expr3} is equal to
+   * len({expr1}) then {expr2} is appended.
    * Examples: >
    *   :echo sort(extend(mylist, [7, 5]))
    *   :call extend(mylist, [2, 3], 1)
@@ -1547,7 +1443,7 @@ interface fn {
    *       :echo flatten([1, [2, [3, 4]], 5], 1)
    * <      [1, 2, [3, 4], 5]
    */
-  E964: any;
+  E900: any;
   /**
    * Convert {expr} to a Number by omitting the part after the
    * decimal point.
@@ -1622,7 +1518,8 @@ interface fn {
    *   :echo fnamemodify("main.c", ":p:h")
    *  results in: >
    *   /home/mool/vim/vim/src
-   *  Note: Environment variables don't work in {fname}, use
+   *  If {mods} is empty then {fname} is returned.
+   * Note: Environment variables don't work in {fname}, use
    * |expand()| first then.
    */
   fnamemodify: (fname: any, mods: any) => any;
@@ -1793,7 +1690,7 @@ interface fn {
    *     Without an argument information about all the buffers is
    *     returned.
    *
-   *     When the argument is a Dictionary only the buffers matching
+   *     When the argument is a |Dictionary| only the buffers matching
    *     the specified criteria are returned.  The following keys can
    *     be specified in {dict}:
    *       buflisted  include only listed buffers.
@@ -1807,28 +1704,36 @@ interface fn {
    *
    *     Each returned List item is a dictionary with the following
    *     entries:
-   *       bufnr    buffer number.
+   *       bufnr    Buffer number.
    *       changed    TRUE if the buffer is modified.
-   *       changedtick  number of changes made to the buffer.
+   *       changedtick  Number of changes made to the buffer.
    *       hidden    TRUE if the buffer is hidden.
-   *       lastused  timestamp in seconds, like
+   *       lastused  Timestamp in seconds, like
    *           |localtime()|, when the buffer was
    *           last used.
    *       listed    TRUE if the buffer is listed.
-   *       lnum    current line number in buffer.
-   *       linecount  number of lines in the buffer (only
+   *       lnum    Line number used for the buffer when
+   *           opened in the current window.
+   *           Only valid if the buffer has been
+   *           displayed in the window in the past.
+   *           If you want the line number of the
+   *           last known cursor position in a given
+   *           window, use |line()|: >
+   *             :echo line('.', {winid})
+   * <
+   *       linecount  Number of lines in the buffer (only
    *           valid when loaded)
    *       loaded    TRUE if the buffer is loaded.
-   *       name    full path to the file in the buffer.
-   *       signs    list of signs placed in the buffer.
+   *       name    Full path to the file in the buffer.
+   *       signs    List of signs placed in the buffer.
    *           Each list item is a dictionary with
    *           the following fields:
    *               id    sign identifier
    *               lnum  line number
    *               name  sign name
-   *       variables  a reference to the dictionary with
+   *       variables  A reference to the dictionary with
    *           buffer-local variables.
-   *       windows    list of |window-ID|s that display this
+   *       windows    List of |window-ID|s that display this
    *           buffer
    *
    *     Examples: >
@@ -1876,9 +1781,9 @@ interface fn {
    * The result is the value of option or local buffer variable
    * {varname} in buffer {expr}.  Note that the name without "b:"
    * must be used.
-   * When {varname} is empty returns a dictionary with all the
+   * When {varname} is empty returns a |Dictionary| with all the
    * buffer-local variables.
-   * When {varname} is equal to "&" returns a dictionary with all
+   * When {varname} is equal to "&" returns a |Dictionary| with all
    * the buffer-local options.
    * Otherwise, when {varname} starts with "&" returns the value of
    * a buffer-local option.
@@ -1941,8 +1846,9 @@ interface fn {
    *
    * When the user clicks a mouse button, the mouse event will be
    * returned.  The position can then be found in |v:mouse_col|,
-   * |v:mouse_lnum|, |v:mouse_winid| and |v:mouse_win|.  This
-   * example positions the mouse as it would normally happen: >
+   * |v:mouse_lnum|, |v:mouse_winid| and |v:mouse_win|.
+   * Mouse move events will be ignored.
+   * This example positions the mouse as it would normally happen: >
    *   let c = getchar()
    *   if c == "\<LeftMouse>" && v:mouse_win > 0
    *     exe v:mouse_win . "wincmd w"
@@ -1951,7 +1857,9 @@ interface fn {
    *   endif
    *
    * There is no prompt, you will somehow have to make clear to the
-   * user that a character has to be typed.
+   * user that a character has to be typed.  The screen is not
+   * redrawn, e.g. when resizing the window.
+   *
    * There is no mapping for the character.
    * Key codes are replaced, thus when the user presses the <Del>
    * key you get the code for the <Del> key, not the raw character
@@ -2079,7 +1987,7 @@ interface fn {
    * highlight  highlight groups
    * history    :history suboptions
    * locale    locale names (as output of locale -a)
-   * mapclear        buffer argument
+   * mapclear  buffer argument
    * mapping    mapping name
    * menu    menus
    * messages  |:messages| suboptions
@@ -2113,10 +2021,11 @@ interface fn {
   getcompletion: (pat: any, type: any, filtered?: any) => any;
   /**
    * Get the position of the cursor.  This is like getpos('.'), but
-   *     includes an extra item in the list:
-   *         [bufnum, lnum, col, off, curswant] ~
-   *      The "curswant" number is the preferred column when moving the
+   *     includes an extra "curswant" in the list:
+   *         [0, lnum, col, off, curswant] ~
+   *     The "curswant" number is the preferred column when moving the
    *     cursor vertically.  Also see |getpos()|.
+   *     The first "bufnum" item is always zero.
    *
    *      This can be used to save and restore the cursor position: >
    *        let save_cursor = getcurpos()
@@ -2262,7 +2171,7 @@ interface fn {
    */
   getline: (lnum: any, end?: any) => any;
   /**
-   * Returns a list with all the entries in the location list for
+   * Returns a |List| with all the entries in the location list for
    * window {nr}.  {nr} can be the window number or the |window-ID|.
    * When {nr} is zero the current window is used.
    *
@@ -2277,6 +2186,14 @@ interface fn {
    * window used to display files from the location list. This
    * field is applicable only when called from a location list
    * window. See |location-list-file-window| for more details.
+   *
+   * Returns a |Dictionary| with default values if there is no
+   * location list for the window {nr}.
+   * Returns an empty Dictionary if window {nr} does not exist.
+   *
+   * Examples (See also |getqflist-examples|): >
+   *   :echo getloclist(3, {'all': 0})
+   *   :echo getloclist(5, {'filewinid': 0})
    */
   getloclist: (nr: any, what?: any) => any;
   /**
@@ -2287,7 +2204,7 @@ interface fn {
    * local marks defined in buffer {expr}.  For the use of {expr},
    * see |bufname()|.
    *
-   * Each item in the retuned List is a |Dict| with the following:
+   * Each item in the returned List is a |Dict| with the following:
    *     name - name of the mark prefixed by "'"
    *     pos - a |List| with the position of the mark:
    *     [bufnum, lnum, col, off]
@@ -2297,7 +2214,7 @@ interface fn {
    * Refer to |getpos()| for getting information about a specific
    * mark.
    */
-  getmarklist: () => any;
+  getmarklist: (expr?: any) => any;
   /**
    * Returns a |List| with all matches previously defined for the
    * current window by |matchadd()| and the |:match| commands.
@@ -2344,6 +2261,10 @@ interface fn {
    *     Note that for '< and '> Visual mode matters: when it is "V"
    *     (visual line mode) the column of '< is zero and the column of
    *     '> is a large number.
+   *     The column number in the returned List is the byte position
+   *     within the line.
+   *     The column number can be very large, e.g. 2147483647, in which
+   *     case it means "after the end of the line".
    *     This can be used to save and restore the position of a mark: >
    *       let save_a_mark = getpos("'a")
    *       ...
@@ -2352,7 +2273,7 @@ interface fn {
    */
   getpos: (expr: any) => any;
   /**
-   * Returns a list with all the current quickfix errors.  Each
+   * Returns a |List| with all the current quickfix errors.  Each
    * list item is a dictionary with these entries:
    *   bufnr  number of buffer that has the file name, use
    *     bufname() to get the name
@@ -2390,8 +2311,9 @@ interface fn {
    *   id  get information for the quickfix list with
    *     |quickfix-ID|; zero means the id for the
    *     current list or the list specified by "nr"
-   *   idx  index of the current entry in the quickfix
-   *     list specified by 'id' or 'nr'.
+   *   idx  get information for the quickfix entry at this
+   *     index in the list specified by 'id' or 'nr'.
+   *     If set to zero, then uses the current entry.
    *     See |quickfix-index|
    *   items  quickfix list entries
    *   lines  parse a list of lines using 'efm' and return
@@ -2424,7 +2346,7 @@ interface fn {
    *     If not present, set to "".
    *   id  quickfix list ID |quickfix-ID|. If not
    *     present, set to 0.
-   *   idx  index of the current entry in the list. If not
+   *   idx  index of the quickfix entry in the list. If not
    *     present, set to 0.
    *   items  quickfix list entries. If not present, set to
    *     an empty list.
@@ -2477,12 +2399,12 @@ interface fn {
   getregtype: (regname?: any) => any;
   /**
    * If {arg} is not specified, then information about all the tab
-   * pages is returned as a List. Each List item is a Dictionary.
+   * pages is returned as a |List|. Each List item is a |Dictionary|.
    * Otherwise, {arg} specifies the tab page number and information
    * about that one is returned.  If the tab page does not exist an
    * empty List is returned.
    *
-   * Each List item is a Dictionary with the following entries:
+   * Each List item is a |Dictionary| with the following entries:
    *   tabnr    tab page number.
    *   variables  a reference to the dictionary with
    *       tabpage-local variables
@@ -2506,7 +2428,7 @@ interface fn {
    * When {varname} is empty a dictionary with all window-local
    * variables is returned.
    * When {varname} is equal to "&" get the values of all
-   * window-local options in a Dictionary.
+   * window-local options in a |Dictionary|.
    * Otherwise, when {varname} starts with "&" get the value of a
    * window-local option.
    * Note that {varname} must be the name without "w:".
@@ -2557,17 +2479,17 @@ interface fn {
    */
   gettagstack: (nr?: any) => any;
   /**
-   * Returns information about windows as a List with Dictionaries.
+   * Returns information about windows as a |List| with Dictionaries.
    *
    * If {winid} is given Information about the window with that ID
-   * is returned.  If the window does not exist the result is an
-   * empty list.
+   * is returned, as a |List| with one item.  If the window does not
+   * exist the result is an empty list.
    *
    * Without {winid} information about all the windows in all the
    * tab pages is returned.
    *
-   * Each List item is a Dictionary with the following entries:
-   *   botline    last displayed buffer line
+   * Each List item is a |Dictionary| with the following entries:
+   *   botline    last complete displayed buffer line
    *   bufnr    number of buffer in the window
    *   height    window height (excluding winbar)
    *   loclist    1 if showing a location list
@@ -2580,15 +2502,17 @@ interface fn {
    *   width    window width
    *   winbar    1 if the window has a toolbar, 0
    *       otherwise
-   *   wincol    leftmost screen column of the window
+   *   wincol    leftmost screen column of the window;
+   *       "col" from |win_screenpos()|
    *   winid    |window-ID|
    *   winnr    window number
-   *   winrow    topmost screen column of the window
+   *   winrow    topmost screen line of the window;
+   *       "row" from |win_screenpos()|
    */
   getwininfo: (winid?: any) => any;
   /**
-   * The result is a list with two numbers, the result of
-   * getwinposx() and getwinposy() combined:
+   * The result is a |List| with two numbers, the result of
+   * |getwinposx()| and |getwinposy()| combined:
    *   [x-pos, y-pos]
    * {timeout} can be used to specify how long to wait in msec for
    * a response from the terminal.  When omitted 100 msec is used.
@@ -2640,7 +2564,7 @@ interface fn {
    * 'suffixes' affect the ordering of matches.
    * 'wildignorecase' always applies.
    *
-   * When {list} is present and it is |TRUE| the result is a List
+   * When {list} is present and it is |TRUE| the result is a |List|
    * with all matching files. The advantage of using a List is,
    * you also get filenames containing newlines correctly.
    * Otherwise the result is a String and when there are several
@@ -2699,7 +2623,7 @@ interface fn {
    * one of the patterns in 'wildignore' will be skipped and
    * 'suffixes' affect the ordering of matches.
    *
-   * When {list} is present and it is |TRUE| the result is a List
+   * When {list} is present and it is |TRUE| the result is a |List|
    * with all matching files. The advantage of using a List is, you
    * also get filenames containing newlines correctly. Otherwise
    * the result is a String and when there are several matches,
@@ -2727,6 +2651,16 @@ interface fn {
    *     {feature} argument is a feature name like "nvim-0.2.1" or
    *     "win32", see below.  See also |exists()|.
    *
+   *     If the code has a syntax error, then Nvim may skip the rest
+   *     of the line and miss |:endif|. >
+   *   if has('feature') | let x = this->breaks->without->the->feature | endif
+   * <
+   *     Put |:if| and |:endif| on separate lines to avoid the
+   *     syntax error. >
+   *   if has('feature')
+   *     let x = this->breaks->without->the->feature
+   *   endif
+   * <
    *     Vim's compile-time feature-names (prefixed with "+") are not
    *     recognized because Nvim is always compiled with all possible
    *     features. |feature-compile|
@@ -2742,8 +2676,8 @@ interface fn {
    */
   has: (feature: any) => any;
   /**
-   * The result is a Number, which is 1 if |Dictionary| {dict} has
-   * an entry with key {key}.  Zero otherwise.
+   * The result is a Number, which is TRUE if |Dictionary| {dict}
+   * has an entry with key {key}.  FALSE otherwise.
    */
   has_key: (dict: any, key: any) => any;
   /**
@@ -2763,16 +2697,16 @@ interface fn {
    */
   haslocaldir: (winnr?: any, tabnr?: any) => any;
   /**
-   * The result is a Number, which is 1 if there is a mapping that
-   * contains {what} in somewhere in the rhs (what it is mapped to)
-   * and this mapping exists in one of the modes indicated by
-   * {mode}.
+   * The result is a Number, which is TRUE if there is a mapping
+   * that contains {what} in somewhere in the rhs (what it is
+   * mapped to) and this mapping exists in one of the modes
+   * indicated by {mode}.
    * When {abbr} is there and it is |TRUE| use abbreviations
    * instead of mappings.  Don't forget to specify Insert and/or
    * Command-line mode.
    * Both the global mappings and the mappings local to the current
    * buffer are checked for a match.
-   * If no matching mapping is found 0 is returned.
+   * If no matching mapping is found FALSE is returned.
    * The following characters are recognized in {mode}:
    *   n  Normal mode
    *   v  Visual mode
@@ -2807,8 +2741,8 @@ interface fn {
    * an index, see |:history-indexing|.  The respective entry will
    * be removed if it exists.
    *
-   * The result is a Number: 1 for a successful operation,
-   * otherwise 0 is returned.
+   * The result is TRUE for a successful operation, otherwise FALSE
+   * is returned.
    *
    * Examples:
    * Clear expression register history: >
@@ -2856,7 +2790,7 @@ interface fn {
    */
   histnr: (history: any) => any;
   /**
-   * The result is a Number, which is non-zero if a highlight group
+   * The result is a Number, which is TRUE if a highlight group
    * called {name} exists.  This is when the group has been
    * defined in some way.  Not necessarily when highlighting has
    * been defined for it, it may also have been used for a syntax
@@ -2933,9 +2867,8 @@ interface fn {
    *     prompt        ""       Same as {prompt} in the first form.
    *     default       ""       Same as {text} in the first form.
    *     completion    nothing  Same as {completion} in the first form.
-   *     cancelreturn  ""       Same as {cancelreturn} from
-   *                            |inputdialog()|. Also works with
-   *                            input().
+   *     cancelreturn  ""       The value returned when the dialog is
+   *                            cancelled.
    *     highlight     nothing  Highlight handler: |Funcref|.
    *
    *     The highlighting set with |:echohl| is used for the prompt.
@@ -2966,10 +2899,11 @@ interface fn {
    * displayed, one string per line.  The user will be prompted to
    * enter a number, which is returned.
    * The user can also select an item by clicking on it with the
-   * mouse.  For the first string 0 is returned.  When clicking
-   * above the first item a negative number is returned.  When
-   * clicking on the prompt one more than the length of {textlist}
-   * is returned.
+   * mouse, if the mouse is enabled in the command line ('mouse' is
+   * "a" or includes "c").  For the first string 0 is returned.
+   * When clicking above the first item a negative number is
+   * returned.  When clicking on the prompt one more than the
+   * length of {textlist} is returned.
    * Make sure {textlist} has less than 'lines' entries, otherwise
    * it won't work.  It's a good idea to put the entry number at
    * the start of the string.  And put a prompt in the first item.
@@ -2982,7 +2916,7 @@ interface fn {
    * Restore typeahead that was saved with a previous |inputsave()|.
    * Should be called the same number of times inputsave() is
    * called.  Calling it more often is harmless though.
-   * Returns 1 when there is nothing to restore, 0 otherwise.
+   * Returns TRUE when there is nothing to restore, FALSE otherwise.
    */
   inputrestore: () => any;
   /**
@@ -2991,7 +2925,7 @@ interface fn {
    * followed by a matching inputrestore() after the prompt.  Can
    * be used several times, in which case there must be just as
    * many inputrestore() calls.
-   * Returns 1 when out of memory, 0 otherwise.
+   * Returns TRUE when out of memory, FALSE otherwise.
    */
   inputsave: () => any;
   /**
@@ -3075,13 +3009,14 @@ interface fn {
    * Returns a |String| which is a unique identifier of the
    * container type (|List|, |Dict| and |Partial|). It is
    * guaranteed that for the mentioned types `id(v1) ==# id(v2)`
-   * returns true iff `type(v1) == type(v2) && v1 is v2` (note:
-   * |v:_null_list| and |v:_null_dict| have the same `id()` with
-   * different types because they are internally represented as
-   * a NULL pointers). Currently `id()` returns a hexadecimal
-   * representanion of the pointers to the containers (i.e. like
-   * `0x994a40`), same as `printf("%p", {expr})`, but it is advised
-   * against counting on exact format of return value.
+   * returns true iff `type(v1) == type(v2) && v1 is v2`.
+   * Note that |v:_null_string|, |v:_null_list|, and |v:_null_dict|
+   * have the same `id()` with different types because they are
+   * internally represented as a NULL pointers.  `id()` returns a
+   * hexadecimal representanion of the pointers to the containers
+   * (i.e. like `0x994a40`), same as `printf("%p", {expr})`,
+   * but it is advised against counting on the exact format of
+   * return value.
    *
    * It is not guaranteed that `id(no_longer_existing_container)`
    * will not be equal to some other `id()`: new containers may
@@ -3352,7 +3287,7 @@ interface fn {
   list2str: (list: any, utf8?: any) => any;
   /**
    * Return the current time, measured as seconds since 1st Jan
-   * 1970.  See also |strftime()| and |getftime()|.
+   * 1970.  See also |strftime()|, |strptime()| and |getftime()|.
    */
   localtime: () => any;
   /**
@@ -3578,6 +3513,10 @@ interface fn {
    * The 'ignorecase' option is used to set the ignore-caseness of
    * the pattern.  'smartcase' is NOT used.  The matching is always
    * done like 'magic' is set and 'cpoptions' is empty.
+   * Note that a match at the start is preferred, thus when the
+   * pattern is using "*" (any number of matches) it tends to find
+   * zero matches at the start instead of a number of matches
+   * further down in the text.
    */
   strcasestr: () => any;
   /**
@@ -3731,9 +3670,9 @@ interface fn {
   matchstrpos: (expr: any, pat: any, start?: any, count?: any) => any;
   /**
    * Return the maximum value of all items in {expr}.
-   *     {expr} can be a list or a dictionary.  For a dictionary,
-   *     it returns the maximum of all values in the dictionary.
-   *     If {expr} is neither a list nor a dictionary, or one of the
+   *     {expr} can be a |List| or a |Dictionary|.  For a Dictionary,
+   *     it returns the maximum of all values in the Dictionary.
+   *     If {expr} is neither a List nor a Dictionary, or one of the
    *     items in {expr} cannot be used as a Number this results in
    *                 an error.  An empty |List| or |Dictionary| results in zero.
    */
@@ -3787,9 +3726,9 @@ interface fn {
   menu_get: (path: any, modes: any) => any;
   /**
    * Return the minimum value of all items in {expr}.
-   *     {expr} can be a list or a dictionary.  For a dictionary,
-   *     it returns the minimum of all values in the dictionary.
-   *     If {expr} is neither a list nor a dictionary, or one of the
+   *     {expr} can be a |List| or a |Dictionary|.  For a Dictionary,
+   *     it returns the minimum of all values in the Dictionary.
+   *     If {expr} is neither a List nor a Dictionary, or one of the
    *     items in {expr} cannot be used as a Number this results in
    *     an error.  An empty |List| or |Dictionary| results in zero.
    */
@@ -3810,6 +3749,10 @@ interface fn {
    *
    * If you try to create an existing directory with {path} set to
    * "p" mkdir() will silently exit.
+   *
+   * The function result is a Number, which is TRUE if the call was
+   * successful or FALSE if the directory creation failed or partly
+   * failed.
    */
   mkdir: (name: any, path?: any, prot?: any) => any;
   /**
@@ -4071,6 +4014,14 @@ interface fn {
    */
   printf: (fmt: any, ...arguments: any[]) => any;
   /**
+   * Returns the effective prompt text for buffer {buf}.  {buf} can
+   * be a buffer name or number.  See |prompt-buffer|.
+   *
+   * If the buffer doesn't exist or isn't a prompt buffer, an empty
+   * string is returned.
+   */
+  prompt_getprompt: (buf: any) => any;
+  /**
    * Set prompt callback for buffer {buf} to {expr}.  When {expr}
    * is an empty string the callback is removed.  This has only
    * effect if {buf} has 'buftype' set to "prompt".
@@ -4127,9 +4078,9 @@ interface fn {
    *   row    top screen row (0 first row)
    *   col    leftmost screen column (0 first col)
    *   size    total nr of items
-   *   scrollbar  |TRUE| if visible
+   *   scrollbar  |TRUE| if scrollbar is visible
    *
-   *  The values are the same as in |v:event| during |CompleteChanged|.
+   *   The values are the same as in |v:event| during |CompleteChanged|.
    */
   pum_getpos: () => any;
   /**
@@ -4260,10 +4211,10 @@ interface fn {
    */
   reg_recording: () => any;
   /**
-   * Return an item that represents a time value.  The format of
-   * the item depends on the system.  It can be passed to
-   * |reltimestr()| to convert it to a string or |reltimefloat()|
-   * to convert to a float.
+   * Return an item that represents a time value.  The item is a
+   * list with items that depend on the system.
+   * The item can be passed to |reltimestr()| to convert it to a
+   * string or |reltimefloat()| to convert to a Float.
    *
    * Without an argument it returns the current "relative time", an
    * implementation-defined value meaningful only when used as an
@@ -4273,6 +4224,7 @@ interface fn {
    * specified in the argument.
    * With two arguments it returns the time passed between {start}
    * and {end}.
+   *
    * The {start} and {end} arguments must be values returned by
    * reltime().
    *
@@ -4401,7 +4353,7 @@ interface fn {
    * Without {end}: Remove the item at {idx} from |List| {list} and
    * return the item.
    * With {end}: Remove items from {idx} to {end} (inclusive) and
-   * return a List with these items.  When {idx} points to the same
+   * return a |List| with these items.  When {idx} points to the same
    * item as {end} a list with one item is returned.  When {end}
    * points to an item before {idx} this is an error.
    * See |list-index| for possible values of {idx} and {end}.
@@ -4591,11 +4543,16 @@ interface fn {
    *
    * 'ignorecase', 'smartcase' and 'magic' are used.
    *
-   * When the 'z' flag is not given, searching always starts in
-   * column zero and then matches before the cursor are skipped.
-   * When the 'c' flag is present in 'cpo' the next search starts
-   * after the match.  Without the 'c' flag the next search starts
-   * one column further.
+   * When the 'z' flag is not given, forward searching always
+   * starts in column zero and then matches before the cursor are
+   * skipped.  When the 'c' flag is present in 'cpo' the next
+   * search starts after the match.  Without the 'c' flag the next
+   * search starts one column further.  This matters for
+   * overlapping matches.
+   * When searching backwards and the 'z' flag is given then the
+   * search starts in column zero, thus no match in the current
+   * line will be found (unless wrapping around the end of the
+   * file).
    *
    * When the {stopline} argument is given then the search stops
    * after searching this line.  This is useful to restrict the
@@ -4613,6 +4570,126 @@ interface fn {
    * giving the argument.
    */
   search: (pattern: any, flags?: any, stopline?: any, timeout?: any) => any;
+  /**
+   * Get or update the last search count, like what is displayed
+   * without the "S" flag in 'shortmess'.  This works even if
+   * 'shortmess' does contain the "S" flag.
+   *
+   * This returns a Dictionary. The dictionary is empty if the
+   * previous pattern was not set and "pattern" was not specified.
+   *
+   *   key    type    meaning ~
+   *   current  |Number|  current position of match;
+   *         0 if the cursor position is
+   *         before the first match
+   *   exact_match  |Boolean|  1 if "current" is matched on
+   *         "pos", otherwise 0
+   *   total    |Number|  total count of matches found
+   *   incomplete  |Number|  0: search was fully completed
+   *         1: recomputing was timed out
+   *         2: max count exceeded
+   *
+   * For {options} see further down.
+   *
+   * To get the last search count when |n| or |N| was pressed, call
+   * this function with `recompute: 0` . This sometimes returns
+   * wrong information because |n| and |N|'s maximum count is 99.
+   * If it exceeded 99 the result must be max count + 1 (100). If
+   * you want to get correct information, specify `recompute: 1`: >
+   *
+   *   " result == maxcount + 1 (100) when many matches
+   *   let result = searchcount(#{recompute: 0})
+   *
+   *   " Below returns correct result (recompute defaults
+   *   " to 1)
+   *   let result = searchcount()
+   *
+   * The function is useful to add the count to |statusline|: >
+   *   function! LastSearchCount() abort
+   *     let result = searchcount(#{recompute: 0})
+   *     if empty(result)
+   *       return ''
+   *     endif
+   *     if result.incomplete ==# 1     " timed out
+   *       return printf(' /%s [?/??]', @/)
+   *     elseif result.incomplete ==# 2 " max count exceeded
+   *       if result.total > result.maxcount &&
+   *       \  result.current > result.maxcount
+   *         return printf(' /%s [>%d/>%d]', @/,
+   *         \             result.current, result.total)
+   *       elseif result.total > result.maxcount
+   *         return printf(' /%s [%d/>%d]', @/,
+   *         \             result.current, result.total)
+   *       endif
+   *     endif
+   *     return printf(' /%s [%d/%d]', @/,
+   *     \             result.current, result.total)
+   *   endfunction
+   *   let &statusline .= '%{LastSearchCount()}'
+   *
+   *   " Or if you want to show the count only when
+   *   " 'hlsearch' was on
+   *   " let &statusline .=
+   *   " \   '%{v:hlsearch ? LastSearchCount() : ""}'
+   *
+   * You can also update the search count, which can be useful in a
+   * |CursorMoved| or |CursorMovedI| autocommand: >
+   *
+   *   autocmd CursorMoved,CursorMovedI *
+   *     \ let s:searchcount_timer = timer_start(
+   *     \   200, function('s:update_searchcount'))
+   *   function! s:update_searchcount(timer) abort
+   *     if a:timer ==# s:searchcount_timer
+   *       call searchcount(#{
+   *       \ recompute: 1, maxcount: 0, timeout: 100})
+   *       redrawstatus
+   *     endif
+   *   endfunction
+   *
+   * This can also be used to count matched texts with specified
+   * pattern in the current buffer using "pattern":  >
+   *
+   *   " Count '\<foo\>' in this buffer
+   *   " (Note that it also updates search count)
+   *   let result = searchcount(#{pattern: '\<foo\>'})
+   *
+   *   " To restore old search count by old pattern,
+   *   " search again
+   *   call searchcount()
+   *
+   * {options} must be a Dictionary. It can contain:
+   *   key    type    meaning ~
+   *   recompute  |Boolean|  if |TRUE|, recompute the count
+   *         like |n| or |N| was executed.
+   *         otherwise returns the last
+   *         result by |n|, |N|, or this
+   *         function is returned.
+   *         (default: |TRUE|)
+   *   pattern  |String|  recompute if this was given
+   *         and different with |@/|.
+   *         this works as same as the
+   *         below command is executed
+   *         before calling this function >
+   *           let @/ = pattern
+   *          (default: |@/|)
+   *   timeout  |Number|  0 or negative number is no
+   *         timeout. timeout milliseconds
+   *         for recomputing the result
+   *         (default: 0)
+   *   maxcount  |Number|  0 or negative number is no
+   *         limit. max count of matched
+   *         text while recomputing the
+   *         result.  if search exceeded
+   *         total count, "total" value
+   *         becomes `maxcount + 1`
+   *         (default: 0)
+   *   pos    |List|    `[lnum, col, off]` value
+   *         when recomputing the result.
+   *         this changes "current" result
+   *         value. see |cursor()|, |getpos()
+   *         (default: cursor's position)
+   */
+  searchcount: (options?: any) => any;
   /**
    * Search for the declaration of {name}.
    *
@@ -4753,6 +4830,7 @@ interface fn {
    * Send a reply string to {clientid}.  The most recent {clientid}
    * that sent a string can be retrieved with expand("<client>").
    * Note:
+   * Returns zero for success, -1 for failure.
    * This id has to be stored before the next command can be
    * received.  I.e. before returning from the received command and
    * before calling any commands that waits for input.
@@ -4806,13 +4884,24 @@ interface fn {
    */
   serverstop: (address: any) => any;
   /**
-   * Set line {lnum} to {text} in buffer {expr}.  To insert
-   * lines use |append()|.
+   * Set line {lnum} to {text} in buffer {expr}.  This works like
+   * |setline()| for the specified buffer.
+   *
+   * This function works only for loaded buffers. First call
+   * |bufload()| if needed.
+   *
+   * To insert lines use |appendbufline()|.
+   * Any text properties in {lnum} are cleared.
+   *
+   * {text} can be a string to set one line, or a list of strings
+   * to set multiple lines.  If the list extends below the last
+   * line then those lines are added.
    *
    * For the use of {expr}, see |bufname()| above.
    *
    * {lnum} is used like with |setline()|.
-   * This works like |setline()| for the specified buffer.
+   * When {lnum} is just below the last line the {text} will be
+   * added below the last line.
    * On success 0 is returned, on failure 1 is returned.
    *
    * If {expr} is not a valid buffer or {lnum} is not valid, an
@@ -4866,8 +4955,8 @@ interface fn {
    * before inserting the resulting text.
    * When the number is too big the cursor is put at the end of the
    * line.  A number smaller than one has undefined results.
-   * Returns 0 when successful, 1 when not editing the command
-   * line.
+   * Returns FALSE when successful, TRUE when not editing the
+   * command line.
    */
   setcmdpos: (pos: any) => any;
   /**
@@ -4901,10 +4990,10 @@ interface fn {
    *
    * {lnum} is used like with |getline()|.
    * When {lnum} is just below the last line the {text} will be
-   * added as a new line.
+   * added below the last line.
    *
-   * If this succeeds, 0 is returned.  If this fails (most likely
-   * because {lnum} is invalid) 1 is returned.
+   * If this succeeds, FALSE is returned.  If this fails (most likely
+   * because {lnum} is invalid) TRUE is returned.
    *
    * Example: >
    *   :call setline(5, strftime("%c"))
@@ -4929,6 +5018,8 @@ interface fn {
    * modified.  For an invalid window number {nr}, -1 is returned.
    * Otherwise, same as |setqflist()|.
    * Also see |location-list|.
+   *
+   * For {action} see |setqflist-action|.
    *
    * If the optional {what} dictionary argument is supplied, then
    * only the items listed in {what} are set. Refer to |setqflist()|
@@ -4996,112 +5087,20 @@ interface fn {
   /**
    * Create or replace or add to the quickfix list.
    *
-   * When {what} is not present, use the items in {list}.  Each
-   * item must be a dictionary.  Non-dictionary items in {list} are
-   * ignored.  Each dictionary item can contain the following
-   * entries:
-   *
-   *     bufnr  buffer number; must be the number of a valid
-   *     buffer
-   *     filename  name of a file; only used when "bufnr" is not
-   *     present or it is invalid.
-   *     module  name of a module; if given it will be used in
-   *     quickfix error window instead of the filename
-   *     lnum  line number in the file
-   *     pattern  search pattern used to locate the error
-   *     col    column number
-   *     vcol  when non-zero: "col" is visual column
-   *     when zero: "col" is byte index
-   *     nr    error number
-   *     text  description of the error
-   *     type  single-character error type, 'E', 'W', etc.
-   *     valid  recognized error message
-   *
-   * The "col", "vcol", "nr", "type" and "text" entries are
-   * optional.  Either "lnum" or "pattern" entry can be used to
-   * locate a matching error line.
-   * If the "filename" and "bufnr" entries are not present or
-   * neither the "lnum" or "pattern" entries are present, then the
-   * item will not be handled as an error line.
-   * If both "pattern" and "lnum" are present then "pattern" will
-   * be used.
-   * If the "valid" entry is not supplied, then the valid flag is
-   * set when "bufnr" is a valid buffer or "filename" exists.
-   * If you supply an empty {list}, the quickfix list will be
-   * cleared.
-   * Note that the list is not exactly the same as what
-   * |getqflist()| returns.
+   * If the optional {what} dictionary argument is supplied, then
+   * only the items listed in {what} are set. The first {list}
+   * argument is ignored.  See below for the supported items in
+   * {what}.
    */
   setqflist: (list: any, action?: any, what?: any) => any;
   /**
-   * 'a'  The items from {list} are added to the existing
-   *   quickfix list. If there is no existing list, then a
-   *   new list is created.
-   *
-   * 'r'  The items from the current quickfix list are replaced
-   *   with the items from {list}.  This can also be used to
-   *   clear the list: >
-   *     :call setqflist([], 'r')
-   *
-   * 'f'  All the quickfix lists in the quickfix stack are
-   *   freed.
-   *
-   * If {action} is not present or is set to ' ', then a new list
-   * is created. The new quickfix list is added after the current
-   * quickfix list in the stack and all the following lists are
-   * freed. To add a new quickfix list at the end of the stack,
-   * set "nr" in {what} to "$".
-   *
-   * If the optional {what} dictionary argument is supplied, then
-   * only the items listed in {what} are set. The first {list}
-   * argument is ignored.  The following items can be specified in
-   * {what}:
-   *     context  quickfix list context. See |quickfix-context|
-   *     efm    errorformat to use when parsing text from
-   *     "lines". If this is not present, then the
-   *     'errorformat' option value is used.
-   *     See |quickfix-parse|
-   *     id    quickfix list identifier |quickfix-ID|
-   *     idx    index of the current entry in the quickfix
-   *     list specified by 'id' or 'nr'. If set to '$',
-   *     then the last entry in the list is set as the
-   *     current entry.  See |quickfix-index|
-   *     items  list of quickfix entries. Same as the {list}
-   *     argument.
-   *     lines  use 'errorformat' to parse a list of lines and
-   *     add the resulting entries to the quickfix list
-   *     {nr} or {id}.  Only a |List| value is supported.
-   *     See |quickfix-parse|
-   *     nr    list number in the quickfix stack; zero
-   *     means the current quickfix list and "$" means
-   *     the last quickfix list.
-   *     title  quickfix list title text. See |quickfix-title|
-   * Unsupported keys in {what} are ignored.
-   * If the "nr" item is not present, then the current quickfix list
-   * is modified. When creating a new quickfix list, "nr" can be
-   * set to a value one greater than the quickfix stack size.
-   * When modifying a quickfix list, to guarantee that the correct
-   * list is modified, "id" should be used instead of "nr" to
-   * specify the list.
-   *
-   * Examples (See also |setqflist-examples|): >
-   *    :call setqflist([], 'r', {'title': 'My search'})
-   *    :call setqflist([], 'r', {'nr': 2, 'title': 'Errors'})
-   *    :call setqflist([], 'a', {'id':qfid, 'lines':["F1:10:L10"]})
-   *
-   * Returns zero for success, -1 for failure.
-   *
-   * This function can be used to create a quickfix list
-   * independent of the 'errorformat' setting.  Use a command like
-   * `:cc 1` to jump to the first position.
-   */
-  E927: any;
-  /**
    * Set the register {regname} to {value}.
+   *
    * {value} may be any value returned by |getreg()|, including
    * a |List|.
    * If {options} contains "a" or {regname} is upper case,
    * then the value is appended.
+   *
    * {options} can also contain a register type specification:
    *     "c" or "v"        |charwise| mode
    *     "l" or "V"        |linewise| mode
@@ -5196,17 +5195,9 @@ interface fn {
    *
    *     Returns zero for success, -1 for failure.
    *
-   *     Examples:
-   *         Set current index of the tag stack to 4: >
-   *       call settagstack(1005, {'curidx' : 4})
-   *
-   * <        Empty the tag stack of window 3: >
+   *     Examples (for more examples see |tagstack-examples|):
+   *         Empty the tag stack of window 3: >
    *       call settagstack(3, {'items' : []})
-   *
-   * <        Push a new item onto the tag stack: >
-   *       let pos = [bufnr('myfile.txt'), 10, 1, 0]
-   *       let newtag = [{'tagname' : 'mytag', 'from' : pos}]
-   *       call settagstack(2, {'items' : newtag}, 'a')
    *
    * <        Save and restore the tag stack: >
    *       let stack = gettagstack(1003)
@@ -5271,267 +5262,24 @@ interface fn {
    *     endfunc
    *   endif
    *  And then use s:sw() instead of &sw.
+   *
+   * When there is one argument {col} this is used as column number
+   * for which to return the 'shiftwidth' value. This matters for the
+   * 'vartabstop' feature. If no {col} argument is given, column 1
+   * will be assumed.
+   *
+   * _ functions are documented here: |sign-functions-details|
    */
-  shiftwidth: () => any;
-  /**
-   * Define a new sign named {name} or modify the attributes of an
-   * existing sign.  This is similar to the |:sign-define| command.
-   *
-   * Prefix {name} with a unique text to avoid name collisions.
-   * There is no {group} like with placing signs.
-   *
-   * The {name} can be a String or a Number.  The optional {dict}
-   * argument specifies the sign attributes.  The following values
-   * are supported:
-   *     icon  full path to the bitmap file for the sign.
-   *     linehl  highlight group used for the whole line the
-   *     sign is placed in.
-   *     text  text that is displayed when there is no icon
-   *     or the GUI is not being used.
-   *     texthl  highlight group used for the text item
-   *     numhl  highlight group used for 'number' column at the
-   *     associated line. Overrides |hl-LineNr|,
-   *     |hl-CursorLineNr|.
-   *
-   * If the sign named {name} already exists, then the attributes
-   * of the sign are updated.
-   *
-   * Returns 0 on success and -1 on failure.
-   *
-   * Examples: >
-   *   call sign_define("mySign", {"text" : "=>", "texthl" :
-   *       \ "Error", "linehl" : "Search"})
-   *
-   */
-  sign_define: (name: any, dict?: any) => any;
-  /**
-   * Get a list of defined signs and their attributes.
-   * This is similar to the |:sign-list| command.
-   *
-   * If the {name} is not supplied, then a list of all the defined
-   * signs is returned. Otherwise the attribute of the specified
-   * sign is returned.
-   *
-   * Each list item in the returned value is a dictionary with the
-   * following entries:
-   *   icon  full path to the bitmap file of the sign
-   *   linehl  highlight group used for the whole line the
-   *     sign is placed in.
-   *   name  name of the sign
-   *   text  text that is displayed when there is no icon
-   *     or the GUI is not being used.
-   *   texthl  highlight group used for the text item
-   *   numhl  highlight group used for 'number' column at the
-   *     associated line. Overrides |hl-LineNr|,
-   *     |hl-CursorLineNr|.
-   *
-   * Returns an empty List if there are no signs and when {name} is
-   * not found.
-   *
-   * Examples: >
-   *   " Get a list of all the defined signs
-   *   echo sign_getdefined()
-   *
-   *   " Get the attribute of the sign named mySign
-   *   echo sign_getdefined("mySign")
-   *
-   */
-  sign_getdefined: (name?: any) => any;
-  /**
-   * Return a list of signs placed in a buffer or all the buffers.
-   * This is similar to the |:sign-place-list| command.
-   *
-   * If the optional buffer name {expr} is specified, then only the
-   * list of signs placed in that buffer is returned.  For the use
-   * of {expr}, see |bufname()|. The optional {dict} can contain
-   * the following entries:
-   *    group  select only signs in this group
-   *    id    select sign with this identifier
-   *    lnum    select signs placed in this line. For the use
-   *     of {lnum}, see |line()|.
-   * If {group} is '*', then signs in all the groups including the
-   * global group are returned. If {group} is not supplied or is an
-   * empty string, then only signs in the global group are
-   * returned.  If no arguments are supplied, then signs in the
-   * global group placed in all the buffers are returned.
-   * See |sign-group|.
-   *
-   * Each list item in the returned value is a dictionary with the
-   * following entries:
-   *   bufnr  number of the buffer with the sign
-   *   signs  list of signs placed in {bufnr}. Each list
-   *     item is a dictionary with the below listed
-   *     entries
-   *
-   * The dictionary for each sign contains the following entries:
-   *   group  sign group. Set to '' for the global group.
-   *   id  identifier of the sign
-   *   lnum  line number where the sign is placed
-   *   name  name of the defined sign
-   *   priority  sign priority
-   *
-   * The returned signs in a buffer are ordered by their line
-   * number and priority.
-   *
-   * Returns an empty list on failure or if there are no placed
-   * signs.
-   *
-   * Examples: >
-   *   " Get a List of signs placed in eval.c in the
-   *   " global group
-   *   echo sign_getplaced("eval.c")
-   *
-   *   " Get a List of signs in group 'g1' placed in eval.c
-   *   echo sign_getplaced("eval.c", {'group' : 'g1'})
-   *
-   *   " Get a List of signs placed at line 10 in eval.c
-   *   echo sign_getplaced("eval.c", {'lnum' : 10})
-   *
-   *   " Get sign with identifier 10 placed in a.py
-   *   echo sign_getplaced("a.py", {'id' : 10})
-   *
-   *   " Get sign with id 20 in group 'g1' placed in a.py
-   *   echo sign_getplaced("a.py", {'group' : 'g1',
-   *           \  'id' : 20})
-   *
-   *   " Get a List of all the placed signs
-   *   echo sign_getplaced()
-   *
-   */
-  sign_getplaced: (expr?: any, dict?: any) => any;
-  /**
-   * Open the buffer {expr} or jump to the window that contains
-   * {expr} and position the cursor at sign {id} in group {group}.
-   * This is similar to the |:sign-jump| command.
-   *
-   * For the use of {expr}, see |bufname()|.
-   *
-   * Returns the line number of the sign. Returns -1 if the
-   * arguments are invalid.
-   *
-   * Example: >
-   *   " Jump to sign 10 in the current buffer
-   *   call sign_jump(10, '', '')
-   *
-   */
-  sign_jump: (id: any, group: any, expr: any) => any;
-  /**
-   * Place the sign defined as {name} at line {lnum} in file {expr}
-   * and assign {id} and {group} to sign.  This is similar to the
-   * |:sign-place| command.
-   *
-   * If the sign identifier {id} is zero, then a new identifier is
-   * allocated.  Otherwise the specified number is used. {group} is
-   * the sign group name. To use the global sign group, use an
-   * empty string.  {group} functions as a namespace for {id}, thus
-   * two groups can use the same IDs. Refer to |sign-identifier|
-   * for more information.
-   *
-   * {name} refers to a defined sign.
-   * {expr} refers to a buffer name or number. For the accepted
-   * values, see |bufname()|.
-   *
-   * The optional {dict} argument supports the following entries:
-   *   lnum    line number in the buffer {expr} where
-   *       the sign is to be placed. For the
-   *       accepted values, see |line()|.
-   *   priority  priority of the sign. See
-   *       |sign-priority| for more information.
-   *
-   * If the optional {dict} is not specified, then it modifies the
-   * placed sign {id} in group {group} to use the defined sign
-   * {name}.
-   *
-   * Returns the sign identifier on success and -1 on failure.
-   *
-   * Examples: >
-   *   " Place a sign named sign1 with id 5 at line 20 in
-   *   " buffer json.c
-   *   call sign_place(5, '', 'sign1', 'json.c',
-   *           \ {'lnum' : 20})
-   *
-   *   " Updates sign 5 in buffer json.c to use sign2
-   *   call sign_place(5, '', 'sign2', 'json.c')
-   *
-   *   " Place a sign named sign3 at line 30 in
-   *   " buffer json.c with a new identifier
-   *   let id = sign_place(0, '', 'sign3', 'json.c',
-   *           \ {'lnum' : 30})
-   *
-   *   " Place a sign named sign4 with id 10 in group 'g3'
-   *   " at line 40 in buffer json.c with priority 90
-   *   call sign_place(10, 'g3', 'sign4', 'json.c',
-   *       \ {'lnum' : 40, 'priority' : 90})
-   *
-   */
-  sign_place: (id: any, group: any, name: any, expr: any, dict?: any) => any;
-  /**
-   * Deletes a previously defined sign {name}. This is similar to
-   * the |:sign-undefine| command. If {name} is not supplied, then
-   * deletes all the defined signs.
-   *
-   * Returns 0 on success and -1 on failure.
-   *
-   * Examples: >
-   *   " Delete a sign named mySign
-   *   call sign_undefine("mySign")
-   *
-   *   " Delete all the signs
-   *   call sign_undefine()
-   *
-   */
-  sign_undefine: (name?: any) => any;
-  /**
-   * Remove a previously placed sign in one or more buffers.  This
-   * is similar to the |:sign-unplace| command.
-   *
-   * {group} is the sign group name. To use the global sign group,
-   * use an empty string.  If {group} is set to '*', then all the
-   * groups including the global group are used.
-   * The signs in {group} are selected based on the entries in
-   * {dict}.  The following optional entries in {dict} are
-   * supported:
-   *   buffer  buffer name or number. See |bufname()|.
-   *   id  sign identifier
-   * If {dict} is not supplied, then all the signs in {group} are
-   * removed.
-   *
-   * Returns 0 on success and -1 on failure.
-   *
-   * Examples: >
-   *   " Remove sign 10 from buffer a.vim
-   *   call sign_unplace('', {'buffer' : "a.vim", 'id' : 10})
-   *
-   *   " Remove sign 20 in group 'g1' from buffer 3
-   *   call sign_unplace('g1', {'buffer' : 3, 'id' : 20})
-   *
-   *   " Remove all the signs in group 'g2' from buffer 10
-   *   call sign_unplace('g2', {'buffer' : 10})
-   *
-   *   " Remove sign 30 in group 'g3' from all the buffers
-   *   call sign_unplace('g3', {'id' : 30})
-   *
-   *   " Remove all the signs placed in buffer 5
-   *   call sign_unplace('*', {'buffer' : 5})
-   *
-   *   " Remove the signs in group 'g4' from all the buffers
-   *   call sign_unplace('g4')
-   *
-   *   " Remove sign 40 from all the buffers
-   *   call sign_unplace('*', {'id' : 40})
-   *
-   *   " Remove all the placed signs from all the buffers
-   *   call sign_unplace('*')
-   *
-   */
-  sign_unplace: (group: any, dict?: any) => any;
+  shiftwidth: (col?: any) => any;
   /**
    * Simplify the file name as much as possible without changing
    * the meaning.  Shortcuts (on MS-Windows) or symbolic links (on
    * Unix) are not resolved.  If the first path component in
    * {filename} designates the current directory, this will be
    * valid for the result as well.  A trailing path separator is
-   * not removed either.
+   * not removed either. On Unix "//path" is unchanged, but
+   * "///path" is simplified to "/path" (this follows the Posix
+   * standard).
    * Example: >
    *   simplify("./dir/.././/file/") == "./file/"
    *  Note: The combination "dir/.." is only removed if "dir" is
@@ -5598,8 +5346,25 @@ interface fn {
    * When {func} is given and it is '1' or 'i' then case is
    * ignored.
    *
+   * When {func} is given and it is 'l' then the current collation
+   * locale is used for ordering. Implementation details: strcoll()
+   * is used to compare strings. See |:language| check or set the
+   * collation locale. |v:collate| can also be used to check the
+   * current locale. Sorting using the locale typically ignores
+   * case. Example: >
+   *   " ö is sorted similarly to o with English locale.
+   *   :language collate en_US.UTF8
+   *   :echo sort(['n', 'o', 'O', 'ö', 'p', 'z'], 'l')
+   *    ['n', 'o', 'O', 'ö', 'p', 'z'] ~
+   *
+   *   " ö is sorted after z with Swedish locale.
+   *   :language collate sv_SE.UTF8
+   *   :echo sort(['n', 'o', 'O', 'ö', 'p', 'z'], 'l')
+   *    ['n', 'o', 'O', 'p', 'z', 'ö'] ~
+   * This does not work properly on Mac.
+   *
    * When {func} is given and it is 'n' then all items will be
-   * sorted numerical (Implementation detail: This uses the
+   * sorted numerical (Implementation detail: this uses the
    * strtod() function to parse numbers, Strings, Lists, Dicts and
    * Funcrefs will be considered as being 0).
    *
@@ -5794,7 +5559,7 @@ interface fn {
    *  |list2str()| does the opposite.
    *
    * When {utf8} is omitted or zero, the current 'encoding' is used.
-   * With {utf8} set to 1, always treat the String as utf-8
+   * With {utf8} set to TRUE, always treat the String as utf-8
    * characters.  With utf-8 composing characters are handled
    * properly: >
    *   str2list("á")    returns [97, 769]
@@ -5841,7 +5606,8 @@ interface fn {
   strchars: (expr: any, skipcc?: any) => any;
   /**
    * Like |strpart()| but using character index and length instead
-   * of byte index and length.
+   * of byte index and length.  Composing characters are counted
+   * separately.
    * When a character index is used where a character does not
    * exist it is assumed to be one character.  For example: >
    *   strcharpart('abc', -1, 2)
@@ -5869,7 +5635,7 @@ interface fn {
    * {format} depends on your system, thus this is not portable!
    * See the manual page of the C function strftime() for the
    * format.  The maximum length of the result is 80 characters.
-   * See also |localtime()| and |getftime()|.
+   * See also |localtime()|, |getftime()| and |strptime()|.
    * The language can be changed with the |:language| command.
    * Examples: >
    *   :echo strftime("%c")       Sun Apr 27 11:49:23 1997
@@ -5963,6 +5729,31 @@ interface fn {
    *
    */
   strpart: (src: any, start: any, len?: any, chars?: any) => any;
+  /**
+   * The result is a Number, which is a unix timestamp representing
+   * the date and time in {timestring}, which is expected to match
+   * the format specified in {format}.
+   *
+   * The accepted {format} depends on your system, thus this is not
+   * portable!  See the manual page of the C function strptime()
+   * for the format.  Especially avoid "%c".  The value of $TZ also
+   * matters.
+   *
+   * If the {timestring} cannot be parsed with {format} zero is
+   * returned.  If you do not know the format of {timestring} you
+   * can try different {format} values until you get a non-zero
+   * result.
+   *
+   * See also |strftime()|.
+   * Examples: >
+   *   :echo strptime("%Y %b %d %X", "1997 Apr 27 11:49:23")
+   *    862156163 >
+   *   :echo strftime("%c", strptime("%y%m%d %T", "970427 11:53:55"))
+   *    Sun Apr 27 11:53:55 1997 >
+   *   :echo strftime("%c", strptime("%Y%m%d%H%M%S", "19970427115355") + 3600)
+   *    Sun Apr 27 12:53:55 1997
+   */
+  strptime: (format: any, timestring: any) => any;
   /**
    * The result is a Number, which gives the byte index in
    * {haystack} of the last occurrence of the String {needle}.
@@ -6094,7 +5885,7 @@ interface fn {
    * The result is the swap file path of the buffer {expr}.
    * For the use of {expr}, see |bufname()| above.
    * If buffer {expr} is the current buffer, the result is equal to
-   * |:swapname| (unless no swap file).
+   * |:swapname| (unless there is no swap file).
    * If buffer {expr} has no swap file, returns an empty string.
    */
   swapname: (expr: any) => any;
@@ -6168,7 +5959,7 @@ interface fn {
    */
   synIDtrans: (synID: any) => any;
   /**
-   * The result is a List with currently three items:
+   * The result is a |List| with currently three items:
    * 1. The first item in the list is 0 if the character at the
    *    position {lnum} and {col} is not part of a concealable
    *    region, 1 if it is.
@@ -6275,6 +6066,10 @@ interface fn {
    * unless {keepempty} is non-zero.
    * Note that on MS-Windows you may get trailing CR characters.
    *
+   * To see the difference between "echo hello" and "echo -n hello"
+   * use |system()| and |split()|: >
+   *   echo split(system('echo hello'), '\n', 1)
+   *
    * Returns an empty string on error.
    */
   systemlist: (cmd: any, input?: any, keepempty?: any) => any;
@@ -6324,7 +6119,7 @@ interface fn {
    */
   tagfiles: () => any;
   /**
-   * Returns a list of tags matching the regular expression {expr}.
+   * Returns a |List| of tags matching the regular expression {expr}.
    *
    * If {filename} is passed it is used to prioritize the results
    * in the same way that |:tselect| does. See |tag-priority|.
@@ -6390,15 +6185,10 @@ interface fn {
    * Returns the same values as |jobstart()|.
    *
    * See |terminal| for more information.
+   *
+   * _ functions are documented here: |test-functions-details|
    */
   termopen: (cmd: any, opts?: any) => any;
-  /**
-   * Like |garbagecollect()|, but executed right away.  This must
-   * only be called directly to avoid any structure to exist
-   * internally, and |v:testing| must have been set before calling
-   * any function.
-   */
-  test_garbagecollect_now: () => any;
   /**
    * Return the tangent of {expr}, measured in radians, as a |Float|
    * in the range [-inf, inf].
@@ -6428,7 +6218,7 @@ interface fn {
    * returned.
    * When {id} is omitted information about all timers is returned.
    *
-   * For each timer the information is stored in a Dictionary with
+   * For each timer the information is stored in a |Dictionary| with
    * these items:
    *     "id"      the timer ID
    *     "time"      time the timer was started with
@@ -6616,7 +6406,7 @@ interface fn {
    *     undo blocks.
    *
    * The first item in the "entries" list is the oldest undo item.
-   * Each List item is a Dictionary with these items:
+   * Each List item is a |Dictionary| with these items:
    *   "seq"    Undo sequence number.  Same as what appears in
    *     |:undolist|.
    *   "time"  Timestamp when the change happened.  Use
@@ -6740,7 +6530,15 @@ interface fn {
    */
   wildmenumode: () => any;
   /**
-   * Returns a list with |window-ID|s for windows that contain
+   * Like `execute()` but in the context of window {id}.
+   * The window will temporarily be made the current window,
+   * without triggering autocommands.
+   * Example: >
+   *   call win_execute(winid, 'syntax enable')
+   */
+  win_execute: (id: any, command: any, silent?: any) => any;
+  /**
+   * Returns a |List| with |window-ID|s for windows that contain
    * buffer {bufnr}.  When there is none the list is empty.
    */
   win_findbuf: (bufnr: any) => any;
@@ -6776,7 +6574,7 @@ interface fn {
   /**
    * Go to window with ID {expr}.  This may also change the current
    * tabpage.
-   * Return 1 if successful, 0 if the window cannot be found.
+   * Return TRUE if successful, FALSE if the window cannot be found.
    */
   win_gotoid: (expr: any) => any;
   /**
@@ -6794,11 +6592,33 @@ interface fn {
    * Return the screen position of window {nr} as a list with two
    * numbers: [row, col].  The first window always has position
    * [1, 1], unless there is a tabline, then it is [2, 1].
-   * {nr} can be the window number or the |window-ID|.
+   * {nr} can be the window number or the |window-ID|.  Use zero
+   * for the current window.
    * Return [0, 0] if the window cannot be found in the current
    * tabpage.
    */
   win_screenpos: (nr: any) => any;
+  /**
+   * Move the window {nr} to a new split of the window {target}.
+   * This is similar to moving to {target}, creating a new window
+   * using |:split| but having the same contents as window {nr}, and
+   * then closing {nr}.
+   *
+   * Both {nr} and {target} can be window numbers or |window-ID|s.
+   * Both must be in the current tab page.
+   *
+   * Returns zero for success, non-zero for failure.
+   *
+   * {options} is a |Dictionary| with the following optional entries:
+   *   "vertical"  When TRUE, the split is created vertically,
+   *     like with |:vsplit|.
+   *   "rightbelow"  When TRUE, the split is made below or to the
+   *     right (if vertical).  When FALSE, it is done
+   *     above or to the left (if vertical).  When not
+   *     present, the values of 'splitbelow' and
+   *     'splitright' are used.
+   */
+  win_splitmove: (nr: any, target: any, options?: any) => any;
   /**
    * The result is a Number, which is the number of the buffer
    *     associated with window {nr}.  {nr} can be the window number or
@@ -6859,11 +6679,12 @@ interface fn {
    *   " Two horizontally split windows
    *   :echo winlayout()
    *   ['col', [['leaf', 1000], ['leaf', 1001]]]
-   *   " Three horizontally split windows, with two
-   *   " vertically split windows in the middle window
+   *   " The second tab page, with three horizontally split
+   *   " windows, with two vertically split windows in the
+   *   " middle window
    *   :echo winlayout(2)
-   *   ['col', [['leaf', 1002], ['row', ['leaf', 1003],
-   *            ['leaf', 1001]]], ['leaf', 1000]]
+   *   ['col', [['leaf', 1002], ['row', [['leaf', 1003],
+   *           ['leaf', 1001]]], ['leaf', 1000]]]
    *
    */
   winlayout: (tabnr?: any) => any;
@@ -6878,6 +6699,7 @@ interface fn {
   /**
    * The result is a Number, which is the number of the current
    *     window.  The top window has number 1.
+   *     Returns zero for a popup window.
    *
    *     The optional argument {arg} supports the following values:
    *       $  the number of the last window (the window
@@ -6951,7 +6773,8 @@ interface fn {
    *       curswant  column for vertical movement
    *       topline    first line in the window
    *       topfill    filler lines, only in diff mode
-   *       leftcol    first column displayed
+   *       leftcol    first column displayed; only used when
+   *           'wrap' is off
    *       skipcol    columns skipped
    *     Note that no option values are saved.
    */
@@ -7033,4 +6856,507 @@ interface fn {
    *
    */
   xor: (expr1: any, expr2: any) => any;
+  /**
+   * Run {cmd} and add an error message to |v:errors| if it does
+   * NOT produce a beep or visual bell.
+   * Also see |assert_fails()|, |assert_nobeep()| and
+   * |assert-return|.
+   */
+  assert_beeps: (cmd: any) => any;
+  /**
+   * When {expected} and {actual} are not equal an error message is
+   * added to |v:errors| and 1 is returned.  Otherwise zero is
+   * returned |assert-return|.
+   * There is no automatic conversion, the String "4" is different
+   * from the Number 4.  And the number 4 is different from the
+   * Float 4.0.  The value of 'ignorecase' is not used here, case
+   * always matters.
+   * When {msg} is omitted an error in the form "Expected
+   * {expected} but got {actual}" is produced.
+   * Example: >
+   * sert_equal('foo', 'bar')
+   *  Will result in a string to be added to |v:errors|:
+   * st.vim line 12: Expected 'foo' but got 'bar' ~
+   */
+  assert_equal: (expected: any, actual: any, msg?: any) => any;
+  /**
+   * When the files {fname-one} and {fname-two} do not contain
+   * exactly the same text an error message is added to |v:errors|.
+   * Also see |assert-return|.
+   * When {fname-one} or {fname-two} does not exist the error will
+   * mention that.
+   */
+  assert_equalfile: (fname_one: any, fname_two: any) => any;
+  /**
+   * When v:exception does not contain the string {error} an error
+   * message is added to |v:errors|.  Also see |assert-return|.
+   * This can be used to assert that a command throws an exception.
+   * Using the error number, followed by a colon, avoids problems
+   * with translations: >
+   *   try
+   *     commandthatfails
+   *     call assert_false(1, 'command should have failed')
+   *   catch
+   *     call assert_exception('E492:')
+   *   endtry
+   */
+  assert_exception: (error: any, msg?: any) => any;
+  /**
+   * Run {cmd} and add an error message to |v:errors| if it does
+   * NOT produce an error.  Also see |assert-return|.
+   * When {error} is given it must match in |v:errmsg|.
+   * Note that beeping is not considered an error, and some failing
+   * commands only beep.  Use |assert_beeps()| for those.
+   */
+  assert_fails: (cmd: any, error?: any, msg?: any) => any;
+  /**
+   * When {actual} is not false an error message is added to
+   * |v:errors|, like with |assert_equal()|.
+   * Also see |assert-return|.
+   * A value is false when it is zero. When {actual} is not a
+   * number the assert fails.
+   * When {msg} is omitted an error in the form
+   * "Expected False but got {actual}" is produced.
+   */
+  assert_false: (actual: any, msg?: any) => any;
+  /**
+   * This asserts number and |Float| values.  When {actual}  is lower
+   * than {lower} or higher than {upper} an error message is added
+   * to |v:errors|.  Also see |assert-return|.
+   * When {msg} is omitted an error in the form
+   * "Expected range {lower} - {upper}, but got {actual}" is
+   * produced.
+   */
+  assert_inrange: (lower: any, upper: any, actual: any, msg?: any) => any;
+  /**
+   * When {pattern} does not match {actual} an error message is
+   * added to |v:errors|.  Also see |assert-return|.
+   *
+   * {pattern} is used as with |=~|: The matching is always done
+   * like 'magic' was set and 'cpoptions' is empty, no matter what
+   * the actual value of 'magic' or 'cpoptions' is.
+   *
+   * {actual} is used as a string, automatic conversion applies.
+   * Use "^" and "$" to match with the start and end of the text.
+   * Use both to match the whole text.
+   *
+   * When {msg} is omitted an error in the form
+   * "Pattern {pattern} does not match {actual}" is produced.
+   * Example: >
+   * sert_match('^f.*o$', 'foobar')
+   *  Will result in a string to be added to |v:errors|:
+   * st.vim line 12: Pattern '^f.*o$' does not match 'foobar' ~
+   */
+  assert_match: (pattern: any, actual: any, msg?: any) => any;
+  /**
+   * Run {cmd} and add an error message to |v:errors| if it
+   * produces a beep or visual bell.
+   * Also see |assert_beeps()|.
+   */
+  assert_nobeep: (cmd: any) => any;
+  /**
+   * The opposite of `assert_equal()`: add an error message to
+   * |v:errors| when {expected} and {actual} are equal.
+   * Also see |assert-return|.
+   */
+  assert_notequal: (expected: any, actual: any, msg?: any) => any;
+  /**
+   * The opposite of `assert_match()`: add an error message to
+   * |v:errors| when {pattern} matches {actual}.
+   * Also see |assert-return|.
+   */
+  assert_notmatch: (pattern: any, actual: any, msg?: any) => any;
+  /**
+   * Report a test failure directly, using {msg}.
+   * Always returns one.
+   */
+  assert_report: (msg: any) => any;
+  /**
+   * When {actual} is not true an error message is added to
+   * |v:errors|, like with |assert_equal()|.
+   * Also see |assert-return|.
+   * A value is |TRUE| when it is a non-zero number or |v:true|.
+   * When {actual} is not a number or |v:true| the assert fails.
+   * When {msg} is omitted an error in the form "Expected True but
+   * got {actual}" is produced.
+   *
+   *
+   * :tw=78:ts=8:noet:ft=help:norl:
+   */
+  assert_true: (actual: any, msg?: any) => any;
+  /**
+   * Like garbagecollect(), but executed right away.  This must
+   * only be called directly to avoid any structure to exist
+   * internally, and |v:testing| must have been set before calling
+   * any function.
+   */
+  test_garbagecollect_now: () => any;
+  /**
+   * sign_define({list})
+   *     Define a new sign named {name} or modify the attributes of an
+   *     existing sign.  This is similar to the |:sign-define| command.
+   *
+   *     Prefix {name} with a unique text to avoid name collisions.
+   *     There is no {group} like with placing signs.
+   *
+   *     The {name} can be a String or a Number.  The optional {dict}
+   *     argument specifies the sign attributes.  The following values
+   *     are supported:
+   *        icon    full path to the bitmap file for the sign.
+   *        linehl  highlight group used for the whole line the
+   *         sign is placed in.
+   *        text    text that is displayed when there is no icon
+   *         or the GUI is not being used.
+   *        texthl  highlight group used for the text item
+   *        numhl  highlight group used for 'number' column at the
+   *         associated line. Overrides |hl-LineNr|,
+   *         |hl-CursorLineNr|.
+   *
+   *     If the sign named {name} already exists, then the attributes
+   *     of the sign are updated.
+   *
+   *     The one argument {list} can be used to define a list of signs.
+   *     Each list item is a dictionary with the above items in {dict}
+   *     and a "name" item for the sign name.
+   *
+   *     Returns 0 on success and -1 on failure.  When the one argument
+   *     {list} is used, then returns a List of values one for each
+   *     defined sign.
+   *
+   *     Examples: >
+   *       call sign_define("mySign", {
+   *         \ "text" : "=>",
+   *         \ "texthl" : "Error",
+   *         \ "linehl" : "Search"})
+   *       call sign_define([
+   *         \ {'name' : 'sign1',
+   *         \  'text' : '=>'},
+   *         \ {'name' : 'sign2',
+   *         \  'text' : '!!'}
+   *         \ ])
+   * <
+   */
+  sign_define: (name: any, dict?: any) => any;
+  /**
+   * Get a list of defined signs and their attributes.
+   * This is similar to the |:sign-list| command.
+   *
+   * If the {name} is not supplied, then a list of all the defined
+   * signs is returned. Otherwise the attribute of the specified
+   * sign is returned.
+   *
+   * Each list item in the returned value is a dictionary with the
+   * following entries:
+   *    icon    full path to the bitmap file of the sign
+   *    linehl  highlight group used for the whole line the
+   *     sign is placed in.
+   *    name    name of the sign
+   *    text    text that is displayed when there is no icon
+   *     or the GUI is not being used.
+   *    texthl  highlight group used for the text item
+   *    numhl  highlight group used for 'number' column at the
+   *     associated line. Overrides |hl-LineNr|,
+   *     |hl-CursorLineNr|.
+   *
+   * Returns an empty List if there are no signs and when {name} is
+   * not found.
+   *
+   * Examples: >
+   *   " Get a list of all the defined signs
+   *   echo sign_getdefined()
+   *
+   *   " Get the attribute of the sign named mySign
+   *   echo sign_getdefined("mySign")
+   *
+   */
+  sign_getdefined: (name?: any) => any;
+  /**
+   * Return a list of signs placed in a buffer or all the buffers.
+   * This is similar to the |:sign-place-list| command.
+   *
+   * If the optional buffer name {expr} is specified, then only the
+   * list of signs placed in that buffer is returned.  For the use
+   * of {expr}, see |bufname()|. The optional {dict} can contain
+   * the following entries:
+   *    group  select only signs in this group
+   *    id    select sign with this identifier
+   *    lnum    select signs placed in this line. For the use
+   *     of {lnum}, see |line()|.
+   * If {group} is '*', then signs in all the groups including the
+   * global group are returned. If {group} is not supplied or is an
+   * empty string, then only signs in the global group are
+   * returned.  If no arguments are supplied, then signs in the
+   * global group placed in all the buffers are returned.
+   * See |sign-group|.
+   *
+   * Each list item in the returned value is a dictionary with the
+   * following entries:
+   *   bufnr  number of the buffer with the sign
+   *   signs  list of signs placed in {bufnr}. Each list
+   *     item is a dictionary with the below listed
+   *     entries
+   *
+   * The dictionary for each sign contains the following entries:
+   *   group   sign group. Set to '' for the global group.
+   *   id   identifier of the sign
+   *   lnum   line number where the sign is placed
+   *   name   name of the defined sign
+   *   priority sign priority
+   *
+   * The returned signs in a buffer are ordered by their line
+   * number and priority.
+   *
+   * Returns an empty list on failure or if there are no placed
+   * signs.
+   *
+   * Examples: >
+   *   " Get a List of signs placed in eval.c in the
+   *   " global group
+   *   echo sign_getplaced("eval.c")
+   *
+   *   " Get a List of signs in group 'g1' placed in eval.c
+   *   echo sign_getplaced("eval.c", {'group' : 'g1'})
+   *
+   *   " Get a List of signs placed at line 10 in eval.c
+   *   echo sign_getplaced("eval.c", {'lnum' : 10})
+   *
+   *   " Get sign with identifier 10 placed in a.py
+   *   echo sign_getplaced("a.py", {'id' : 10})
+   *
+   *   " Get sign with id 20 in group 'g1' placed in a.py
+   *   echo sign_getplaced("a.py", {'group' : 'g1',
+   *           \  'id' : 20})
+   *
+   *   " Get a List of all the placed signs
+   *   echo sign_getplaced()
+   *
+   */
+  sign_getplaced: (expr?: any, dict?: any) => any;
+  /**
+   * Open the buffer {expr} or jump to the window that contains
+   * {expr} and position the cursor at sign {id} in group {group}.
+   * This is similar to the |:sign-jump| command.
+   *
+   * For the use of {expr}, see |bufname()|.
+   *
+   * Returns the line number of the sign. Returns -1 if the
+   * arguments are invalid.
+   *
+   * Example: >
+   *   " Jump to sign 10 in the current buffer
+   *   call sign_jump(10, '', '')
+   *
+   */
+  sign_jump: (id: any, group: any, expr: any) => any;
+  /**
+   * Place the sign defined as {name} at line {lnum} in file or
+   * buffer {expr} and assign {id} and {group} to sign.  This is
+   * similar to the |:sign-place| command.
+   *
+   * If the sign identifier {id} is zero, then a new identifier is
+   * allocated.  Otherwise the specified number is used. {group} is
+   * the sign group name. To use the global sign group, use an
+   * empty string.  {group} functions as a namespace for {id}, thus
+   * two groups can use the same IDs. Refer to |sign-identifier|
+   * and |sign-group| for more information.
+   *
+   * {name} refers to a defined sign.
+   * {expr} refers to a buffer name or number. For the accepted
+   * values, see |bufname()|.
+   *
+   * The optional {dict} argument supports the following entries:
+   *   lnum    line number in the file or buffer
+   *       {expr} where the sign is to be placed.
+   *       For the accepted values, see |line()|.
+   *   priority  priority of the sign. See
+   *       |sign-priority| for more information.
+   *
+   * If the optional {dict} is not specified, then it modifies the
+   * placed sign {id} in group {group} to use the defined sign
+   * {name}.
+   *
+   * Returns the sign identifier on success and -1 on failure.
+   *
+   * Examples: >
+   *   " Place a sign named sign1 with id 5 at line 20 in
+   *   " buffer json.c
+   *   call sign_place(5, '', 'sign1', 'json.c',
+   *           \ {'lnum' : 20})
+   *
+   *   " Updates sign 5 in buffer json.c to use sign2
+   *   call sign_place(5, '', 'sign2', 'json.c')
+   *
+   *   " Place a sign named sign3 at line 30 in
+   *   " buffer json.c with a new identifier
+   *   let id = sign_place(0, '', 'sign3', 'json.c',
+   *           \ {'lnum' : 30})
+   *
+   *   " Place a sign named sign4 with id 10 in group 'g3'
+   *   " at line 40 in buffer json.c with priority 90
+   *   call sign_place(10, 'g3', 'sign4', 'json.c',
+   *       \ {'lnum' : 40, 'priority' : 90})
+   *
+   */
+  sign_place: (id: any, group: any, name: any, expr: any, dict?: any) => any;
+  /**
+   * Place one or more signs.  This is similar to the
+   * |sign_place()| function.  The {list} argument specifies the
+   * List of signs to place. Each list item is a dict with the
+   * following sign attributes:
+   *     buffer  buffer name or number. For the accepted
+   *     values, see |bufname()|.
+   *     group  sign group. {group} functions as a namespace
+   *     for {id}, thus two groups can use the same
+   *     IDs. If not specified or set to an empty
+   *     string, then the global group is used.   See
+   *     |sign-group| for more information.
+   *     id    sign identifier. If not specified or zero,
+   *     then a new unique identifier is allocated.
+   *     Otherwise the specified number is used. See
+   *     |sign-identifier| for more information.
+   *     lnum  line number in the buffer {expr} where the
+   *     sign is to be placed. For the accepted values,
+   *     see |line()|.
+   *     name  name of the sign to place. See |sign_define()|
+   *         for more information.
+   *     priority  priority of the sign. When multiple signs are
+   *     placed on a line, the sign with the highest
+   *     priority is used. If not specified, the
+   *     default value of 10 is used. See
+   *     |sign-priority| for more information.
+   *
+   * If {id} refers to an existing sign, then the existing sign is
+   * modified to use the specified {name} and/or {priority}.
+   *
+   * Returns a List of sign identifiers. If failed to place a
+   * sign, the corresponding list item is set to -1.
+   *
+   * Examples: >
+   *   " Place sign s1 with id 5 at line 20 and id 10 at line
+   *   " 30 in buffer a.c
+   *   let [n1, n2] = sign_placelist([
+   *     \ {'id' : 5,
+   *     \  'name' : 's1',
+   *     \  'buffer' : 'a.c',
+   *     \  'lnum' : 20},
+   *     \ {'id' : 10,
+   *     \  'name' : 's1',
+   *     \  'buffer' : 'a.c',
+   *     \  'lnum' : 30}
+   *     \ ])
+   *
+   *   " Place sign s1 in buffer a.c at line 40 and 50
+   *   " with auto-generated identifiers
+   *   let [n1, n2] = sign_placelist([
+   *     \ {'name' : 's1',
+   *     \  'buffer' : 'a.c',
+   *     \  'lnum' : 40},
+   *     \ {'name' : 's1',
+   *     \  'buffer' : 'a.c',
+   *     \  'lnum' : 50}
+   *     \ ])
+   *
+   */
+  sign_placelist: (list: any) => any;
+  /**
+   * sign_undefine({list})
+   *     Deletes a previously defined sign {name}. This is similar to
+   *     the |:sign-undefine| command. If {name} is not supplied, then
+   *     deletes all the defined signs.
+   *
+   *     The one argument {list} can be used to undefine a list of
+   *     signs. Each list item is the name of a sign.
+   *
+   *     Returns 0 on success and -1 on failure.  For the one argument
+   *     {list} call, returns a list of values one for each undefined
+   *     sign.
+   *
+   *     Examples: >
+   *       " Delete a sign named mySign
+   *       call sign_undefine("mySign")
+   *
+   *       " Delete signs 'sign1' and 'sign2'
+   *       call sign_undefine(["sign1", "sign2"])
+   *
+   *       " Delete all the signs
+   *       call sign_undefine()
+   * <
+   */
+  sign_undefine: (name?: any) => any;
+  /**
+   * Remove a previously placed sign in one or more buffers.  This
+   * is similar to the |:sign-unplace| command.
+   *
+   * {group} is the sign group name. To use the global sign group,
+   * use an empty string.  If {group} is set to '*', then all the
+   * groups including the global group are used.
+   * The signs in {group} are selected based on the entries in
+   * {dict}.  The following optional entries in {dict} are
+   * supported:
+   *   buffer  buffer name or number. See |bufname()|.
+   *   id  sign identifier
+   * If {dict} is not supplied, then all the signs in {group} are
+   * removed.
+   *
+   * Returns 0 on success and -1 on failure.
+   *
+   * Examples: >
+   *   " Remove sign 10 from buffer a.vim
+   *   call sign_unplace('', {'buffer' : "a.vim", 'id' : 10})
+   *
+   *   " Remove sign 20 in group 'g1' from buffer 3
+   *   call sign_unplace('g1', {'buffer' : 3, 'id' : 20})
+   *
+   *   " Remove all the signs in group 'g2' from buffer 10
+   *   call sign_unplace('g2', {'buffer' : 10})
+   *
+   *   " Remove sign 30 in group 'g3' from all the buffers
+   *   call sign_unplace('g3', {'id' : 30})
+   *
+   *   " Remove all the signs placed in buffer 5
+   *   call sign_unplace('*', {'buffer' : 5})
+   *
+   *   " Remove the signs in group 'g4' from all the buffers
+   *   call sign_unplace('g4')
+   *
+   *   " Remove sign 40 from all the buffers
+   *   call sign_unplace('*', {'id' : 40})
+   *
+   *   " Remove all the placed signs from all the buffers
+   *   call sign_unplace('*')
+   *
+   */
+  sign_unplace: (group: any, dict?: any) => any;
+  /**
+   * Remove previously placed signs from one or more buffers.  This
+   * is similar to the |sign_unplace()| function.
+   *
+   * The {list} argument specifies the List of signs to remove.
+   * Each list item is a dict with the following sign attributes:
+   *     buffer  buffer name or number. For the accepted
+   *     values, see |bufname()|. If not specified,
+   *     then the specified sign is removed from all
+   *     the buffers.
+   *     group  sign group name. If not specified or set to an
+   *     empty string, then the global sign group is
+   *     used. If set to '*', then all the groups
+   *     including the global group are used.
+   *     id    sign identifier. If not specified, then all
+   *     the signs in the specified group are removed.
+   *
+   * Returns a List where an entry is set to 0 if the corresponding
+   * sign was successfully removed or -1 on failure.
+   *
+   * Example: >
+   *   " Remove sign with id 10 from buffer a.vim and sign
+   *   " with id 20 from buffer b.vim
+   *   call sign_unplacelist([
+   *     \ {'id' : 10, 'buffer' : "a.vim"},
+   *     \ {'id' : 20, 'buffer' : 'b.vim'},
+   *     \ ])
+   *
+   *
+   * :tw=78:ts=8:noet:ft=help:norl:
+   */
+  sign_unplacelist: (list: any) => any;
 }

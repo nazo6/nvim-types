@@ -1,0 +1,182 @@
+{
+ "leftTitle": "Lua module: vim.lsp.buf",
+ "rightTitle": "lsp-buf",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "add_workspace_folder",
+   "description": "                Add the folder at path to the workspace folders. If {path} is\n                not provided, the user will be prompted for a path using\n                |input()|.",
+   "argsStr": "{workspace_folder}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "clear_references",
+   "description": "                Removes document highlights from current buffer.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "code_action",
+   "description": "                Selects a code action from the input list that is available at\n                the current cursor position.\n\n                Parameters: ~\n                    {context}  (table, optional) Valid `CodeActionContext`\n                               object\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_codeAction",
+   "argsStr": "{context}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "completion",
+   "description": "                Retrieves the completion items at the current cursor position.\n                Can only be called in Insert mode.\n\n                Parameters: ~\n                    {context}  (context support not yet implemented)\n                               Additional information about the context in\n                               which a completion was triggered (how it was\n                               triggered, and by which trigger character, if\n                               applicable)\n\n                See also: ~\n                    |vim.lsp.protocol.constants.CompletionTriggerKind|",
+   "argsStr": "{context}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "declaration",
+   "description": "                Jumps to the declaration of the symbol under the cursor.\n                Note:\n                    Many servers do not implement this method. Generally, see\n                    |vim.lsp.buf.definition()| instead.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "definition",
+   "description": "                Jumps to the definition of the symbol under the cursor.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "document_highlight",
+   "description": "                Send request to the server to resolve document highlights for\n                the current text document position. This request can be\n                triggered by a key mapping or by events such as `CursorHold` ,\n                eg:\n>\n    vim.api.nvim_command [[autocmd CursorHold  <buffer> lua vim.lsp.buf.document_highlight()]]\n    vim.api.nvim_command [[autocmd CursorHoldI <buffer> lua vim.lsp.buf.document_highlight()]]\n    vim.api.nvim_command [[autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()]]\n<\n\n                Note: Usage of |vim.lsp.buf.document_highlight()| requires the\n                following highlight groups to be defined or you won't be able\n                to see the actual highlights. |LspReferenceText|\n                |LspReferenceRead| |LspReferenceWrite|",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "document_symbol",
+   "description": "                Lists all symbols in the current buffer in the quickfix\n                window.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "execute_command",
+   "description": "                Executes an LSP server command.\n\n                Parameters: ~\n                    {command}  A valid `ExecuteCommandParams` object\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand",
+   "argsStr": "{command}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "formatting",
+   "description": "                Formats the current buffer.\n\n                Parameters: ~\n                    {options}  (optional, table) Can be used to specify\n                               FormattingOptions. Some unspecified options\n                               will be automatically derived from the current\n                               Neovim options.\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specification#textDocument_formatting",
+   "argsStr": "{options}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "formatting_sync",
+   "description": "                Performs |vim.lsp.buf.formatting()| synchronously.\n\n                Useful for running on save, to make sure buffer is formatted\n                prior to being saved. {timeout_ms} is passed on to\n                |vim.lsp.buf_request_sync()|. Example:\n>\n\n    vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]\n<\n\n                Parameters: ~\n                    {options}     Table with valid `FormattingOptions` entries\n                    {timeout_ms}  (number) Request timeout",
+   "argsStr": "{options}, {timeout_ms}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "hover",
+   "description": "                Displays hover information about the symbol under the cursor\n                in a floating window. Calling the function twice will jump\n                into the floating window.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "implementation",
+   "description": "                Lists all the implementations for the symbol under the cursor\n                in the quickfix window.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "incoming_calls",
+   "description": "                Lists all the call sites of the symbol under the cursor in the\n                |quickfix| window. If the symbol can resolve to multiple\n                items, the user can pick one in the |inputlist|.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "list_workspace_folders",
+   "description": "                List workspace folders.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "outgoing_calls",
+   "description": "                Lists all the items that are called by the symbol under the\n                cursor in the |quickfix| window. If the symbol can resolve to\n                multiple items, the user can pick one in the |inputlist|.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "range_code_action",
+   "description": "                Performs |vim.lsp.buf.code_action()| for a given range.\n\n                Parameters: ~\n                    {context}    (table, optional) Valid `CodeActionContext`\n                                 object\n                    {start_pos}  ({number, number}, optional) mark-indexed\n                                 position. Defaults to the start of the last\n                                 visual selection.\n                    {end_pos}    ({number, number}, optional) mark-indexed\n                                 position. Defaults to the end of the last\n                                 visual selection.",
+   "argsStr": "{context}, {start_pos}, {end_pos}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "range_formatting",
+   "description": "                Formats a given range.\n\n                Parameters: ~\n                    {options}    Table with valid `FormattingOptions` entries.\n                    {start_pos}  ({number, number}, optional) mark-indexed\n                                 position. Defaults to the start of the last\n                                 visual selection.\n                    {end_pos}    ({number, number}, optional) mark-indexed\n                                 position. Defaults to the end of the last\n                                 visual selection.",
+   "argsStr": "{options}, {start_pos}, {end_pos}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "references",
+   "description": "                Lists all the references to the symbol under the cursor in the\n                quickfix window.\n\n                Parameters: ~\n                    {context}  (table) Context for the request\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_references",
+   "argsStr": "{context}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "remove_workspace_folder",
+   "description": "                Remove the folder at path from the workspace folders. If\n                {path} is not provided, the user will be prompted for a path\n                using |input()|.",
+   "argsStr": "{workspace_folder}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "rename",
+   "description": "                Renames all references to the symbol under the cursor.\n\n                Parameters: ~\n                    {new_name}  (string) If not provided, the user will be\n                                prompted for a new name using |input()|.",
+   "argsStr": "{new_name}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "server_ready",
+   "description": "                Checks whether the language servers attached to the current\n                buffer are ready.\n\n                Return: ~\n                    `true` if server responds.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "signature_help",
+   "description": "                Displays signature information about the symbol under the\n                cursor in a floating window.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "type_definition",
+   "description": "                Jumps to the definition of the type of the symbol under the\n                cursor.",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "workspace_symbol",
+   "description": "                Lists all symbols in the current workspace in the quickfix\n                window.\n\n                The list is filtered against {query}; if the argument is\n                omitted from the call, the user is prompted to enter a string\n                on the command line. An empty string means no filtering is\n                done.\n\n                Parameters: ~\n                    {query}  (string, optional)",
+   "argsStr": "{query}",
+   "returnType": "any"
+  }
+ ]
+}
