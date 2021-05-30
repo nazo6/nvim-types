@@ -9,7 +9,8 @@
     "**/*.d.ts"
   ],
   "scripts": {
-    "build": "ts-node generator/main.ts"
+    "build": "ts-node generator/main.ts",
+    "update": "./update.sh"
   },
   "devDependencies": {
     "@types/node": "^14.14.36",
