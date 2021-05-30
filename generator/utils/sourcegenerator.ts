@@ -24,6 +24,12 @@ export const createInterface = (name: string, content: string) => {
     ${content}
   }\n\n`;
 };
+export const createInterfaceChild = (name: string, content: string) => {
+  return `/** @noSelf **/
+  ${name}: {
+    ${content}
+  }\n\n`;
+};
 export const createInterfaceVariable = (name: string, type: string) => {
   return `${name}: ${type},` + "\n";
 };

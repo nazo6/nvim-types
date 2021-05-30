@@ -6,6 +6,7 @@ import { exec as exec_cb } from "child_process";
 import { dirname } from "../value";
 import { apiTxtProcess } from "./processor/api.txt";
 import { evalTxtProcess } from "./processor/eval.txt";
+import { lspTxtProcess } from "./processor/lsp.txt";
 const exec = util.promisify(exec_cb);
 
 const generateJson = async (fileName: string, validSections: string[]) => {
@@ -73,6 +74,7 @@ const processes = async () => {
   await luaTxtProcess();
   await apiTxtProcess();
   await evalTxtProcess();
+  await lspTxtProcess();
 };
 
 const formatFiles = async () => {
