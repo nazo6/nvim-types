@@ -19,7 +19,7 @@ npm install -D nvim-types
 ```json
 {
   "compilerOptions": {
-    "types": ["nvim-types/0.5.0-nightly"]
+    "types": ["nvim-types/0.6.0-nightly"]
   }
 }
 ```

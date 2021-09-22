@@ -13,7 +13,7 @@
   {
    "type": "func",
    "name": "apply_text_edits",
-   "description": "                Applies a list of text edits to a buffer.\n\n                Parameters: ~\n                    {text_edits}  (table) list of `TextEdit` objects\n                    {buf_nr}      (number) Buffer id",
+   "description": "                Applies a list of text edits to a buffer.\n\n                Parameters: ~\n                    {text_edits}  (table) list of `TextEdit` objects\n                    {buf_nr}      (number) Buffer id\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textEdit",
    "argsStr": "{text_edits}, {bufnr}",
    "returnType": "any"
   },
@@ -34,15 +34,22 @@
   {
    "type": "func",
    "name": "buf_highlight_references",
-   "description": "                Shows a list of document highlights for a certain buffer.\n\n                Parameters: ~\n                    {bufnr}       buffer id\n                    {references}  List of `DocumentHighlight` objects to\n                                  highlight",
+   "description": "                Shows a list of document highlights for a certain buffer.\n\n                Parameters: ~\n                    {bufnr}       buffer id\n                    {references}  List of `DocumentHighlight` objects to\n                                  highlight\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-3-17/#documentHighlight",
    "argsStr": "{bufnr}, {references}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "buf_lines",
+   "description": "                TODO: Documentation",
+   "argsStr": "{bufnr}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "character_offset",
    "description": "                Returns the UTF-32 and UTF-16 offsets for a position in a\n                certain buffer.\n\n                Parameters: ~\n                    {buf}  buffer id (0 for current)\n                    {row}  0-indexed line\n                    {col}  0-indexed byte offset in line\n\n                Return: ~\n                    (number, number) UTF-32 and UTF-16 index of the character\n                    in line {row} column {col} in buffer {buf}",
-   "argsStr": "{buf}, {row}, {col}",
+   "argsStr": "{bufnr}, {row}, {col}",
    "returnType": "any"
   },
   {
@@ -69,8 +76,8 @@
   {
    "type": "func",
    "name": "convert_signature_help_to_markdown_lines",
-   "description": "                Converts `textDocument/SignatureHelp` response to markdown\n                lines.\n\n                Parameters: ~\n                    {signature_help}  Response of `textDocument/SignatureHelp`\n\n                Return: ~\n                    list of lines of converted markdown.\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_signatureHelp",
-   "argsStr": "{signature_help}",
+   "description": "                Converts `textDocument/SignatureHelp` response to markdown\n                lines.\n\n                Parameters: ~\n                    {signature_help}  Response of `textDocument/SignatureHelp`\n                    {ft}              optional filetype that will be use as\n                                      the `lang` for the label markdown code\n                                      block\n                    {triggers}        optional list of trigger characters from\n                                      the lsp server. used to better determine\n                                      parameter offsets\n\n                Return: ~\n                    list of lines of converted markdown.\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_signatureHelp",
+   "argsStr": "{signature_help}, {ft}, {triggers}",
    "returnType": "any"
   },
   {
@@ -96,30 +103,23 @@
   },
   {
    "type": "func",
-   "name": "fancy_floating_markdown",
-   "description": "                Converts markdown into syntax highlighted regions by stripping\n                the code blocks and converting them into highlighted code.\n                This will by default insert a blank line separator after those\n                code block regions to improve readability. The result is shown\n                in a floating preview.\n\n                Parameters: ~\n                    {contents}  table of lines to show in window\n                    {opts}      dictionary with optional fields\n                                • height of floating window\n                                • width of floating window\n                                • wrap_at character to wrap at for computing\n                                  height\n                                • max_width maximal width of floating window\n                                • max_height maximal height of floating window\n                                • pad_left number of columns to pad contents\n                                  at left\n                                • pad_right number of columns to pad contents\n                                  at right\n                                • pad_top number of lines to pad contents at\n                                  top\n                                • pad_bottom number of lines to pad contents\n                                  at bottom\n                                • separator insert separator after code block\n\n                Return: ~\n                    width,height size of float",
-   "argsStr": "{contents}, {opts}",
-   "returnType": "any"
-  },
-  {
-   "type": "func",
-   "name": "focusable_float",
-   "description": "                Parameters: ~\n                    {unique_name}  (string) Window variable\n                    {fn}           (function) should return create a new\n                                   window and return a tuple of\n                                   ({focusable_buffer_id}, {window_id}). if\n                                   {focusable_buffer_id} is a valid buffer id,\n                                   the newly created window will be the new\n                                   focus associated with the current buffer\n                                   via the tag `unique_name` .\n\n                Return: ~\n                    (pbufnr, pwinnr) if `fn()` has created a new window; nil\n                    otherwise",
-   "argsStr": "{unique_name}, {fn}",
-   "returnType": "any"
-  },
-  {
-   "type": "func",
-   "name": "focusable_preview",
-   "description": "                Focuses/unfocuses the floating preview window associated with\n                the current buffer via the window variable `unique_name` . If\n                no such preview window exists, makes a new one.\n\n                Parameters: ~\n                    {unique_name}  (string) Window variable\n                    {fn}           (function) The return values of this\n                                   function will be passed directly to\n                                   |vim.lsp.util.open_floating_preview()|, in\n                                   the case that a new floating window should\n                                   be created",
-   "argsStr": "{unique_name}, {fn}",
-   "returnType": "any"
-  },
-  {
-   "type": "func",
    "name": "get_effective_tabstop",
    "description": "                Returns visual width of tabstop.\n\n                Parameters: ~\n                    {bufnr}  (optional, number): Buffer handle, defaults to\n                             current\n\n                Return: ~\n                    (number) tabstop visual width\n\n                See also: ~\n                    |softtabstop|",
    "argsStr": "{bufnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_line",
+   "description": "                Gets the zero-indexed line from the given uri.\n\n                Parameters: ~\n                    {uri}  string uri of the resource to get the line from\n                    {row}  number zero-indexed line number\n\n                Return: ~\n                    string the line at row in filename",
+   "argsStr": "{uri}, {row}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_lines",
+   "description": "                Gets the zero-indexed lines from the given uri.\n\n                Parameters: ~\n                    {uri}   string uri of the resource to get the lines from\n                    {rows}  number[] zero-indexed line numbers\n\n                Return: ~\n                    table<number string> a table mapping rows to lines",
+   "argsStr": "{uri}, {rows}",
    "returnType": "any"
   },
   {
@@ -139,7 +139,7 @@
   {
    "type": "func",
    "name": "locations_to_items",
-   "description": "                Returns the items with the byte position calculated correctly\n                and in sorted order, for display in quickfix and location\n                lists.\n\n                Parameters: ~\n                    {locations}  (table) list of `Location` s or\n                                 `LocationLink` s\n\n                Return: ~\n                    (table) list of items",
+   "description": "                Returns the items with the byte position calculated correctly\n                and in sorted order, for display in quickfix and location\n                lists.\n\n                The result can be passed to the {list} argument of\n                |setqflist()| or |setloclist()|.\n\n                Parameters: ~\n                    {locations}  (table) list of `Location` s or\n                                 `LocationLink` s\n\n                Return: ~\n                    (table) list of items",
    "argsStr": "{locations}",
    "returnType": "any"
   },
@@ -160,7 +160,7 @@
   {
    "type": "func",
    "name": "make_formatting_params",
-   "description": "                Creates a `FormattingOptions` object for the current buffer\n                and cursor position.\n\n                Parameters: ~\n                    {options}  Table with valid `FormattingOptions` entries\n\n                Return: ~\n                    `FormattingOptions object\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_formatting",
+   "description": "                Creates a `DocumentFormattingParams` object for the current\n                buffer and cursor position.\n\n                Parameters: ~\n                    {options}  Table with valid `FormattingOptions` entries\n\n                Return: ~\n                    `DocumentFormattingParams` object\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_formatting",
    "argsStr": "{options}",
    "returnType": "any"
   },
@@ -202,7 +202,7 @@
   {
    "type": "func",
    "name": "open_floating_preview",
-   "description": "                Shows contents in a floating window.\n\n                Parameters: ~\n                    {contents}  table of lines to show in window\n                    {syntax}    string of syntax to set for opened buffer\n                    {opts}      dictionary with optional fields\n\n                Return: ~\n                    bufnr,winnr buffer and window number of the newly created\n                    floating preview window",
+   "description": "                Shows contents in a floating window.\n\n                Parameters: ~\n                    {contents}  table of lines to show in window\n                    {syntax}    string of syntax to set for opened buffer\n                    {opts}      dictionary with optional fields\n                                • height of floating window\n                                • width of floating window\n                                • wrap boolean enable wrapping of long lines\n                                  (defaults to true)\n                                • wrap_at character to wrap at for computing\n                                  height when wrap is enabled\n                                • max_width maximal width of floating window\n                                • max_height maximal height of floating window\n                                • pad_left number of columns to pad contents\n                                  at left\n                                • pad_right number of columns to pad contents\n                                  at right\n                                • pad_top number of lines to pad contents at\n                                  top\n                                • pad_bottom number of lines to pad contents\n                                  at bottom\n                                • focus_id if a popup with this id is opened,\n                                  then focus it\n                                • close_events list of events that closes the\n                                  floating window\n                                • focusable (boolean, default true): Make\n                                  float focusable\n\n                Return: ~\n                    bufnr,winnr buffer and window number of the newly created\n                    floating preview window",
    "argsStr": "{contents}, {syntax}, {opts}",
    "returnType": "any"
   },
@@ -217,13 +217,13 @@
    "type": "func",
    "name": "preview_location",
    "description": "                Previews a location in a floating window\n\n                behavior depends on type of location:\n                • for Location, range is shown (e.g., function definition)\n                • for LocationLink, targetRange is shown (e.g., body of\n                  function definition)\n\n                Parameters: ~\n                    {location}  a single `Location` or `LocationLink`\n\n                Return: ~\n                    (bufnr,winnr) buffer and window number of floating window\n                    or nil",
-   "argsStr": "{location}",
+   "argsStr": "{location}, {opts}",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "rename",
-   "description": "                Parameters: ~\n                    {opts}  (table)",
+   "description": "                Rename old_fname to new_fname\n\n                Parameters: ~\n                    {opts}  (table)",
    "argsStr": "{old_fname}, {new_fname}, {opts}",
    "returnType": "any"
   },
@@ -236,16 +236,9 @@
   },
   {
    "type": "func",
-   "name": "set_loclist",
-   "description": "                Fills current window's location list with given list of items.\n                Can be obtained with e.g. |vim.lsp.util.locations_to_items()|.\n\n                Parameters: ~\n                    {items}  (table) list of items",
-   "argsStr": "{items}",
-   "returnType": "any"
-  },
-  {
-   "type": "func",
-   "name": "set_qflist",
-   "description": "                Fills quickfix list with given list of items. Can be obtained\n                with e.g. |vim.lsp.util.locations_to_items()|.\n\n                Parameters: ~\n                    {items}  (table) list of items",
-   "argsStr": "{items}",
+   "name": "stylize_markdown",
+   "description": "                Converts markdown into syntax highlighted regions by stripping\n                the code blocks and converting them into highlighted code.\n                This will by default insert a blank line separator after those\n                code block regions to improve readability.\n\n                This method configures the given buffer and returns the lines\n                to set.\n\n                If you want to open a popup with fancy markdown, use\n                `open_floating_preview` instead\n\n                Parameters: ~\n                    {contents}  table of lines to show in window\n                    {opts}      dictionary with optional fields\n                                • height of floating window\n                                • width of floating window\n                                • wrap_at character to wrap at for computing\n                                  height\n                                • max_width maximal width of floating window\n                                • max_height maximal height of floating window\n                                • pad_left number of columns to pad contents\n                                  at left\n                                • pad_right number of columns to pad contents\n                                  at right\n                                • pad_top number of lines to pad contents at\n                                  top\n                                • pad_bottom number of lines to pad contents\n                                  at bottom\n                                • separator insert separator after code block\n\n                Return: ~\n                    width,height size of float",
+   "argsStr": "{bufnr}, {contents}, {opts}",
    "returnType": "any"
   },
   {

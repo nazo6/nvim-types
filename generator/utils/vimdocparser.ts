@@ -1,8 +1,9 @@
-import { default as trimNl } from "trim-newlines";
+import trimNewlines from "trim-newlines";
 import { SectionDataType } from "../types";
 
 export const vimdocParser = (text: string) => {
-  const sectionSplitMatcher = /^(========================================================.*===)|(----------------------------------------.*---)$/;
+  const sectionSplitMatcher =
+    /^(========================================================.*===)|(----------------------------------------.*---)$/;
   let sectionStrings: string[][] = [];
   let currentSectionStrings: string[] = [];
   text.split(/\r\n|\n/).forEach((value) => {
@@ -94,7 +95,7 @@ export const vimdocParser = (text: string) => {
           propDescription += lines[crrLine] + "\n";
           crrLine++;
         }
-        propDescription = trimNl(propDescription);
+        propDescription = trimNewlines(propDescription);
         if (propType === "func") {
           const functionMatcher = /(?<funcName>.+?)\((?<arguments>.*?)\)/;
           const functionMatch = functionMatcher.exec(leftTitle);

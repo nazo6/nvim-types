@@ -5,6 +5,13 @@
  "data": [
   {
    "type": "func",
+   "name": "nvim_win_call",
+   "description": "                Calls a function with window as temporary current window.\n\n                Parameters: ~\n                    {window}  Window handle, or 0 for current window\n                    {fun}     Function to call inside the window (currently\n                              lua callable only)\n\n                Return: ~\n                    Return value of function. NB: will deepcopy lua values\n                    currently, use upvalues to send lua references in and out.\n\n                See also: ~\n                    |win_execute()|\n                    |nvim_buf_call()|",
+   "argsStr": "{window}, {fun}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
    "name": "nvim_win_close",
    "description": "                Closes the window (like |:close| with a |window-ID|).\n\n                Attributes: ~\n                    not allowed when |textlock| is active\n\n                Parameters: ~\n                    {window}  Window handle, or 0 for current window\n                    {force}   Behave like `:close!` The last window of a\n                              buffer with unwritten changes can be closed. The\n                              buffer will become hidden, even if 'hidden' is\n                              not set.",
    "argsStr": "{window}, {force}",

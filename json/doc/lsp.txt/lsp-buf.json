@@ -75,8 +75,15 @@
   },
   {
    "type": "func",
+   "name": "formatting_seq_sync",
+   "description": "                Formats the current buffer by sequentially requesting\n                formatting from attached clients.\n\n                Useful when multiple clients with formatting capability are\n                attached.\n\n                Since it's synchronous, can be used for running on save, to\n                make sure buffer is formatted prior to being saved.\n                {timeout_ms} is passed on to the |vim.lsp.client| `request_sync` method. Example: >\n\n                 vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]]\n<\n\n                Parameters: ~\n                    {options}     (optional, table) `FormattingOptions`\n                                  entries\n                    {timeout_ms}  (optional, number) Request timeout\n                    {order}       (optional, table) List of client names.\n                                  Formatting is requested from clients in the\n                                  following order: first all clients that are\n                                  not in the `order` list, then the remaining\n                                  clients in the order as they occur in the\n                                  `order` list.",
+   "argsStr": "{options}, {timeout_ms}, {order}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
    "name": "formatting_sync",
-   "description": "                Performs |vim.lsp.buf.formatting()| synchronously.\n\n                Useful for running on save, to make sure buffer is formatted\n                prior to being saved. {timeout_ms} is passed on to\n                |vim.lsp.buf_request_sync()|. Example:\n>\n\n    vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]\n<\n\n                Parameters: ~\n                    {options}     Table with valid `FormattingOptions` entries\n                    {timeout_ms}  (number) Request timeout",
+   "description": "                Performs |vim.lsp.buf.formatting()| synchronously.\n\n                Useful for running on save, to make sure buffer is formatted\n                prior to being saved. {timeout_ms} is passed on to\n                |vim.lsp.buf_request_sync()|. Example:\n>\n\n    vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_sync()]]\n<\n\n                Parameters: ~\n                    {options}     Table with valid `FormattingOptions` entries\n                    {timeout_ms}  (number) Request timeout\n\n                See also: ~\n                    |vim.lsp.buf.formatting_seq_sync|",
    "argsStr": "{options}, {timeout_ms}",
    "returnType": "any"
   },

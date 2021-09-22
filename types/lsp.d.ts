@@ -83,14 +83,14 @@ interface lsp {
    * Calls |vim.lsp.buf_request_all()| but blocks Nvim while
    * awaiting the result. Parameters are the same as
    * |vim.lsp.buf_request()| but the return result is different.
-   * Wait maximum of {timeout_ms} (default 100) ms.
+   * Wait maximum of {timeout_ms} (default 1000) ms.
    *
    * @param bufnr - (number) Buffer handle, or 0 for current.
    * @param method - (string) LSP method name
    * @param params - (optional, table) Parameters to send to the
    *   server
-   * @param timeout_ms - (optional, number, default=100) Maximum time
-   *   in milliseconds to wait for a result.
+   * @param timeout_ms - (optional, number, default=1000) Maximum
+   *   time in milliseconds to wait for a result.
    *
    * @returns  Map of client_id:request_result. On timeout, cancel or
    *  error, returns `(nil, err)` where `err` is a string
@@ -119,6 +119,14 @@ interface lsp {
    *     {status} is `true` , the function returns {request_id} as
    *     the second result. You can use this with
    *     `client.cancel_request(request_id)` to cancel the request.
+   *   • request_sync(method, params, timeout_ms, bufnr) Sends a
+   *     request to the server and synchronously waits for the
+   *     response. This is a wrapper around {client.request}
+   *     Returns: { err=err, result=result }, a dictionary, where
+   *     `err` and `result` come from the |lsp-handler|. On
+   *     timeout, cancel or error, returns `(nil, err)` where `err`
+   *     is a string describing the failure reason. If the request
+   *     was unsuccessful returns `nil` .
    *   • notify(method, params) Sends a notification to an LSP
    *     server. Returns: a boolean to indicate if the notification
    *     was successful. If it is false, then it will always be
@@ -198,16 +206,6 @@ interface lsp {
    */
   get_log_path: () => any;
   /**
-   * client_id → state
-   *
-   * state pending_change?: function that the timer starts to
-   * trigger didChange pending_changes: list of tables with the
-   * pending changesets; for incremental_sync only
-   * use_incremental_sync: bool buffers?: table (bufnr → lines);
-   * for incremental sync only timer?: uv_timer
-   */
-  init: (client?: any, bufnr?: any) => any;
-  /**
    * Implements 'omnifunc' compatible LSP completion.
    *
    * @param findstart - 0 or 1, decides behavior
@@ -265,109 +263,117 @@ interface lsp {
    * The following parameters describe fields in the {config}
    * table.
    *
-   * @param root_dir - (required, string) Directory where the
-   *   LSP server will base its rootUri on
+   * @param root_dir - (string) Directory where the LSP
+   *   server will base its rootUri on
    *   initialization.
-   * @param cmd - (required, string or list treated like
-   *   |jobstart()|) Base command that
+   * @param cmd - (required, string or list treated
+   *   like |jobstart()|) Base command that
    *   initiates the LSP client.
-   * @param cmd_cwd - (string, default=|getcwd()|) Directory
-   *   to launch the `cmd` process. Not
-   *   related to `root_dir` .
+   * @param cmd_cwd - (string, default=|getcwd()|)
+   *   Directory to launch the `cmd`
+   *   process. Not related to `root_dir` .
    * @param cmd_env - (table) Environment flags to pass to
    *   the LSP on spawn. Can be specified
-   *   using keys like a map or as a list with `k=v` pairs or both. Non-string values are
+   *   using keys like a map or as a list
+   *   with `k=v` pairs or both. Non-string values are
    *   coerced to string. Example: >
    *
    *  { "PRODUCTION=true"; "TEST=123"; PORT = 8080; HOST = "0.0.0.0"; }
    *
-   *     {capabilities}     Map overriding the default capabilities
-   *                        defined by
-   *                        |vim.lsp.protocol.make_client_capabilities()|,
-   *                        passed to the language server on
-   *                        initialization. Hint: use
-   *                        make_client_capabilities() and modify
-   *                        its result.
-   *                        • Note: To send an empty dictionary use
-   *                          `{[vim.type_idx]=vim.types.dictionary}`
-   *                          , else it will be encoded as an
-   *                          array.
-   *     {handlers}         Map of language server method names to
-   *                        |lsp-handler|
-   *     {settings}         Map with language server specific
-   *                        settings. These are returned to the
-   *                        language server if requested via
-   *                        `workspace/configuration` . Keys are
-   *                        case-sensitive.
-   *     {init_options}     Values to pass in the initialization
-   *                        request as `initializationOptions` .
-   *                        See `initialize` in the LSP spec.
-   *     {name}             (string, default=client-id) Name in log
-   *                        messages.
-   *     {get_language_id}  function(bufnr, filetype) -> language
-   *                        ID as string. Defaults to the filetype.
-   *     {offset_encoding}  (default="utf-16") One of "utf-8",
-   *                        "utf-16", or "utf-32" which is the
-   *                        encoding that the LSP server expects.
-   *                        Client does not verify this is correct.
-   *     {on_error}         Callback with parameters (code, ...),
-   *                        invoked when the client operation
-   *                        throws an error. `code` is a number
-   *                        describing the error. Other arguments
-   *                        may be passed depending on the error
-   *                        kind. See |vim.lsp.client_errors| for
-   *                        possible errors. Use
-   *                        `vim.lsp.client_errors[code]` to get
-   *                        human-friendly name.
-   *     {before_init}      Callback with parameters
-   *                        (initialize_params, config) invoked
-   *                        before the LSP "initialize" phase,
-   *                        where `params` contains the parameters
-   *                        being sent to the server and `config`
-   *                        is the config that was passed to
-   *                        |vim.lsp.start_client()|. You can use
-   *                        this to modify parameters before they
-   *                        are sent.
-   *     {on_init}          Callback (client, initialize_result)
-   *                        invoked after LSP "initialize", where
-   *                        `result` is a table of `capabilities`
-   *                        and anything else the server may send.
-   *                        For example, clangd sends
-   *                        `initialize_result.offsetEncoding` if
-   *                        `capabilities.offsetEncoding` was sent
-   *                        to it. You can only modify the
-   *                        `client.offset_encoding` here before
-   *                        any notifications are sent. Most
-   *                        language servers expect to be sent
-   *                        client specified settings after
-   *                        initialization. Neovim does not make
-   *                        this assumption. A
-   *                        `workspace/didChangeConfiguration`
-   *                        notification should be sent to the
-   *                        server during on_init.
-   *     {on_exit}          Callback (code, signal, client_id)
-   *                        invoked on client exit.
-   *                        • code: exit code of the process
-   *                        • signal: number describing the signal
-   *                          used to terminate (if any)
-   *                        • client_id: client handle
-   *     {on_attach}        Callback (client, bufnr) invoked when
-   *                        client attaches to a buffer.
-   *     {trace}            "off" | "messages" | "verbose" | nil
-   *                        passed directly to the language server
-   *                        in the initialize request.
-   *                        Invalid/empty values will default to
-   *                        "off"
-   *     {flags}            A table with flags for the client. The
-   *                        current (experimental) flags are:
-   *                        • allow_incremental_sync (bool, default
-   *                          true): Allow using incremental sync
-   *                          for buffer edits
-   *                        • debounce_text_changes (number,
-   *                          default nil): Debounce didChange
-   *                          notifications to the server by the
-   *                          given number in milliseconds. No
-   *                          debounce occurs if nil
+   *     {capabilities}       Map overriding the default
+   *                          capabilities defined by
+   *                          |vim.lsp.protocol.make_client_capabilities()|,
+   *                          passed to the language server on
+   *                          initialization. Hint: use
+   *                          make_client_capabilities() and modify
+   *                          its result.
+   *                          • Note: To send an empty dictionary
+   *                            use
+   *                            `{[vim.type_idx]=vim.types.dictionary}`
+   *                            , else it will be encoded as an
+   *                            array.
+   *     {handlers}           Map of language server method names
+   *                          to |lsp-handler|
+   *     {settings}           Map with language server specific
+   *                          settings. These are returned to the
+   *                          language server if requested via
+   *                          `workspace/configuration` . Keys are
+   *                          case-sensitive.
+   *     {init_options}       Values to pass in the initialization
+   *                          request as `initializationOptions` .
+   *                          See `initialize` in the LSP spec.
+   *     {name}               (string, default=client-id) Name in
+   *                          log messages.
+   *     {workspace_folders}  (table) List of workspace folders
+   *                          passed to the language server.
+   *                          Defaults to root_dir if not set. See
+   *                          `workspaceFolders` in the LSP spec
+   *     {get_language_id}    function(bufnr, filetype) -> language
+   *                          ID as string. Defaults to the
+   *                          filetype.
+   *     {offset_encoding}    (default="utf-16") One of "utf-8",
+   *                          "utf-16", or "utf-32" which is the
+   *                          encoding that the LSP server expects.
+   *                          Client does not verify this is
+   *                          correct.
+   *     {on_error}           Callback with parameters (code, ...),
+   *                          invoked when the client operation
+   *                          throws an error. `code` is a number
+   *                          describing the error. Other arguments
+   *                          may be passed depending on the error
+   *                          kind. See |vim.lsp.client_errors| for
+   *                          possible errors. Use
+   *                          `vim.lsp.client_errors[code]` to get
+   *                          human-friendly name.
+   *     {before_init}        Callback with parameters
+   *                          (initialize_params, config) invoked
+   *                          before the LSP "initialize" phase,
+   *                          where `params` contains the
+   *                          parameters being sent to the server
+   *                          and `config` is the config that was
+   *                          passed to |vim.lsp.start_client()|.
+   *                          You can use this to modify parameters
+   *                          before they are sent.
+   *     {on_init}            Callback (client, initialize_result)
+   *                          invoked after LSP "initialize", where
+   *                          `result` is a table of `capabilities`
+   *                          and anything else the server may
+   *                          send. For example, clangd sends
+   *                          `initialize_result.offsetEncoding` if
+   *                          `capabilities.offsetEncoding` was
+   *                          sent to it. You can only modify the
+   *                          `client.offset_encoding` here before
+   *                          any notifications are sent. Most
+   *                          language servers expect to be sent
+   *                          client specified settings after
+   *                          initialization. Neovim does not make
+   *                          this assumption. A
+   *                          `workspace/didChangeConfiguration`
+   *                          notification should be sent to the
+   *                          server during on_init.
+   *     {on_exit}            Callback (code, signal, client_id)
+   *                          invoked on client exit.
+   *                          • code: exit code of the process
+   *                          • signal: number describing the
+   *                            signal used to terminate (if any)
+   *                          • client_id: client handle
+   *     {on_attach}          Callback (client, bufnr) invoked when
+   *                          client attaches to a buffer.
+   *     {trace}              "off" | "messages" | "verbose" | nil
+   *                          passed directly to the language
+   *                          server in the initialize request.
+   *                          Invalid/empty values will default to
+   *                          "off"
+   *     {flags}              A table with flags for the client.
+   *                          The current (experimental) flags are:
+   *                          • allow_incremental_sync (bool,
+   *                            default true): Allow using
+   *                            incremental sync for buffer edits
+   *                          • debounce_text_changes (number,
+   *                            default nil): Debounce didChange
+   *                            notifications to the server by the
+   *                            given number in milliseconds. No
+   *                            debounce occurs if nil
    *
    * @returns  Client id. |vim.lsp.get_client_by_id()| Note: client may
    *  not be fully initialized. Use `on_init` to do any actions
@@ -493,6 +499,31 @@ interface lsp {
      */
     formatting: (options?: any) => any;
     /**
+     * Formats the current buffer by sequentially requesting
+     * formatting from attached clients.
+     *
+     * Useful when multiple clients with formatting capability are
+     * attached.
+     *
+     * Since it's synchronous, can be used for running on save, to
+     * make sure buffer is formatted prior to being saved.
+     * {timeout_ms} is passed on to the |vim.lsp.client| `request_sync` method. Example: >
+     *
+     *  vim.api.nvim_command[[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]]
+     *
+     *
+     * @param options - (optional, table) `FormattingOptions`
+     *   entries
+     * @param timeout_ms - (optional, number) Request timeout
+     * @param order - (optional, table) List of client names.
+     *   Formatting is requested from clients in the
+     *   following order: first all clients that are
+     *   not in the `order` list, then the remaining
+     *   clients in the order as they occur in the
+     *   `order` list.
+     */
+    formatting_seq_sync: (options?: any, timeout_ms?: any, order?: any) => any;
+    /**
      * Performs |vim.lsp.buf.formatting()| synchronously.
      *
      * Useful for running on save, to make sure buffer is formatted
@@ -505,6 +536,9 @@ interface lsp {
      *
      * @param options - Table with valid `FormattingOptions` entries
      * @param timeout_ms - (number) Request timeout
+     *
+     * See also: ~
+     *     |vim.lsp.buf.formatting_seq_sync|
      */
     formatting_sync: (options?: any, timeout_ms?: any) => any;
     /**
@@ -616,193 +650,18 @@ interface lsp {
   /** @noSelf **/
   diagnostic: {
     /**
-     * Clears the currently displayed diagnostics
+     * Get the diagnostic namespace associated with an LSP client
+     * |vim.diagnostic|.
      *
-     * @param bufnr - number The buffer number
-     * @param client_id - number the client id
-     * @param diagnostic_ns - number|nil Associated diagnostic
-     *   namespace
-     * @param sign_ns - number|nil Associated sign namespace
+     * @param client_id - number The id of the LSP client
      */
-    clear: (
-      bufnr?: any,
-      client_id?: any,
-      diagnostic_ns?: any,
-      sign_ns?: any
-    ) => any;
-    /**
-     * Return associated diagnostics for bufnr
-     *
-     * @param bufnr - number
-     * @param client_id - number|nil If nil, then return all of the
-     *   diagnostics. Else, return just the
-     *   diagnostics associated with the client_id.
-     */
-    get: (bufnr?: any, client_id?: any) => any;
-    /**
-     * Get all diagnostics for all clients
-     *
-     * @returns  {bufnr:Diagnostic[]}
-     */
-    get_all: () => any;
-    /**
-     * Get the counts for a particular severity
-     *
-     * Useful for showing diagnostic counts in statusline. eg:
-     *
-     *
-     * pStatus() abort
-     * '
-     * ('not vim.tbl_isempty(vim.lsp.buf_get_clients(0))')
-     * '%#MyStatuslineLSP#E:'
-     * '%#MyStatuslineLSPErrors#%{luaeval("vim.lsp.diagnostic.get_count(0, [[Error]])")}'
-     * '%#MyStatuslineLSP# W:'
-     * '%#MyStatuslineLSPWarnings#%{luaeval("vim.lsp.diagnostic.get_count(0, [[Warning]])")}'
-     *
-     * .='%#MyStatuslineLSPErrors#off'
-     *
-     *
-     *
-     * sline = '%#MyStatuslineLSP#LSP '.LspStatus()
-     *
-     *
-     * @param bufnr - number The buffer number
-     * @param severity - DiagnosticSeverity
-     * @param client_id - number the client id
-     */
-    get_count: (bufnr?: any, severity?: any, client_id?: any) => any;
-    /**
-     * Get the diagnostics by line
-     *
-     * @param bufnr - number The buffer number
-     * @param line_nr - number The line number
-     * @param opts - table|nil Configuration keys
-     *   • severity: (DiagnosticSeverity, default nil)
-     *   • Only return diagnostics with this
-     *   severity. Overrides severity_limit
-     *
-     *                  • severity_limit: (DiagnosticSeverity, default nil)
-     *                    • Limit severity of diagnostics found. E.g.
-     *                      "Warning" means { "Error", "Warning" }
-     *                      will be valid.
-     *     {client_id}  number the client id
-     *
-     * @returns  table Table with map of line number to list of
-     *  diagnostics.
-     */
-    get_line_diagnostics: (
-      bufnr?: any,
-      line_nr?: any,
-      opts?: any,
-      client_id?: any
-    ) => any;
-    /**
-     * Get the next diagnostic closest to the cursor_position
-     *
-     * @param opts - table See |vim.lsp.diagnostic.goto_next()|
-     *
-     * @returns  table Next diagnostic
-     */
-    get_next: (opts?: any) => any;
-    /**
-     * Return the pos, {row, col}, for the next diagnostic in the
-     * current buffer.
-     *
-     * @param opts - table See |vim.lsp.diagnostic.goto_next()|
-     *
-     * @returns  table Next diagnostic position
-     */
-    get_next_pos: (opts?: any) => any;
-    /**
-     * Get the previous diagnostic closest to the cursor_position
-     *
-     * @param opts - table See |vim.lsp.diagnostic.goto_next()|
-     *
-     * @returns  table Previous diagnostic
-     */
-    get_prev: (opts?: any) => any;
-    /**
-     * Return the pos, {row, col}, for the prev diagnostic in the
-     * current buffer.
-     *
-     * @param opts - table See |vim.lsp.diagnostic.goto_next()|
-     *
-     * @returns  table Previous diagnostic position
-     */
-    get_prev_pos: (opts?: any) => any;
-    /**
-     * Default function to get text chunks to display using `nvim_buf_set_virtual_text` .
-     *
-     * @param bufnr - number The buffer to display the virtual
-     *   text in
-     * @param line - number The line number to display the
-     *   virtual text on
-     * @param line_diags - Diagnostic [] The diagnostics associated with the line
-     * @param opts - table See {opts} from
-     *   |vim.lsp.diagnostic.set_virtual_text()|
-     *
-     * @returns  table chunks, as defined by |nvim_buf_set_virtual_text()|
-     */
-    get_virtual_text_chunks_for_line: (
-      bufnr?: any,
-      line?: any,
-      line_diags?: any,
-      opts?: any
-    ) => any;
-    /**
-     * Move to the next diagnostic
-     *
-     * @param opts - table|nil Configuration table. Keys:
-     * @param client_id - : (number)
-     *   • If nil, will consider all clients attached to
-     *   buffer.
-     *
-     *             • {cursor_position}: (Position, default current
-     *               position)
-     *               • See |nvim_win_get_cursor()|
-     *
-     *             • {wrap}: (boolean, default true)
-     *               • Whether to loop around file or not. Similar to
-     *                 'wrapscan'
-     *
-     *             • {severity}: (DiagnosticSeverity)
-     *               • Exclusive severity to consider. Overrides
-     *                 {severity_limit}
-     *
-     *             • {severity_limit}: (DiagnosticSeverity)
-     *               • Limit severity of diagnostics found. E.g.
-     *                 "Warning" means { "Error", "Warning" } will be
-     *                 valid.
-     *
-     *             • {enable_popup}: (boolean, default true)
-     *               • Call
-     *                 |vim.lsp.diagnostic.show_line_diagnostics()|
-     *                 on jump
-     *
-     *             • {popup_opts}: (table)
-     *               • Table to pass as {opts} parameter to
-     *                 |vim.lsp.diagnostic.show_line_diagnostics()|
-     *
-     *             • {win_id}: (number, default 0)
-     *               • Window ID
-     */
-    goto_next: (opts?: any) => any;
-    /**
-     * Move to the previous diagnostic
-     *
-     * @param opts - table See |vim.lsp.diagnostic.goto_next()|
-     */
-    goto_prev: (opts?: any) => any;
+    get_namespace: (client_id?: any) => any;
     /**
      * |lsp-handler| for the method "textDocument/publishDiagnostics"
      *
-     * Note:
-     *     Each of the configuration options accepts:
-     *     • `false` : Disable this feature
-     *     • `true` : Enable this feature, use default settings.
-     *     • `table` : Enable this feature, use overrides.
-     *     • `function`: Function with signature (bufnr, client_id) that
-     *       returns any of the above.>
+     * See |vim.diagnostic.config()| for configuration options.
+     * Handler-specific configuration can be set using
+     * |vim.lsp.with()|: >
      *
      *  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
      *    vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -823,222 +682,40 @@ interface lsp {
      *  )
      *
      *
-     * @param config - table Configuration table.
-     *   • underline: (default=true)
-     *   • Apply underlines to diagnostics.
-     *   • See |vim.lsp.diagnostic.set_underline()|
-     *
-     *               • virtual_text: (default=true)
-     *                 • Apply virtual text to line endings.
-     *                 • See |vim.lsp.diagnostic.set_virtual_text()|
-     *
-     *               • signs: (default=true)
-     *                 • Apply signs for diagnostics.
-     *                 • See |vim.lsp.diagnostic.set_signs()|
-     *
-     *               • update_in_insert: (default=false)
-     *                 • Update diagnostics in InsertMode or wait
-     *                   until InsertLeave
-     *
-     *               • severity_sort: (default=false)
-     *                 • Sort diagnostics (and thus signs and virtual
-     *                   text)
+     * @param config - table Configuration table (see
+     *   |vim.diagnostic.config()|).
      */
     on_publish_diagnostics: (
-      arg__1?: any,
-      arg__2?: any,
-      params?: any,
-      client_id?: any,
-      arg__3?: any,
+      arg__?: any,
+      result?: any,
+      ctx?: any,
       config?: any
-    ) => any;
-    /**
-     * Clear diagnotics and diagnostic cache
-     *
-     * Handles saving diagnostics from multiple clients in the same
-     * buffer.
-     *
-     * @param client_id - number
-     * @param buffer_client_map - table map of buffers to active
-     *   clients
-     */
-    reset: (client_id?: any, buffer_client_map?: any) => any;
-    /**
-     * Save diagnostics to the current buffer.
-     *
-     * Handles saving diagnostics from multiple clients in the same
-     * buffer.
-     *
-     * @param diagnostics - Diagnostic []
-     * @param bufnr - number
-     * @param client_id - number
-     */
-    save: (diagnostics?: any, bufnr?: any, client_id?: any) => any;
-    /**
-     * Sets the location list
-     *
-     * @param opts - table|nil Configuration table. Keys:
-     * @param open_loclist - : (boolean, default true)
-     *   • Open loclist after set
-     *
-     *             • {client_id}: (number)
-     *               • If nil, will consider all clients attached to
-     *                 buffer.
-     *
-     *             • {severity}: (DiagnosticSeverity)
-     *               • Exclusive severity to consider. Overrides
-     *                 {severity_limit}
-     *
-     *             • {severity_limit}: (DiagnosticSeverity)
-     *               • Limit severity of diagnostics found. E.g.
-     *                 "Warning" means { "Error", "Warning" } will be
-     *                 valid.
-     */
-    set_loclist: (opts?: any) => any;
-    /**
-     * Set signs for given diagnostics
-     *
-     * Sign characters can be customized with the following commands:
-     *
-     *
-     * LspDiagnosticsSignError text=E texthl=LspDiagnosticsSignError linehl= numhl=
-     * LspDiagnosticsSignWarning text=W texthl=LspDiagnosticsSignWarning linehl= numhl=
-     * LspDiagnosticsSignInformation text=I texthl=LspDiagnosticsSignInformation linehl= numhl=
-     * LspDiagnosticsSignHint text=H texthl=LspDiagnosticsSignHint linehl= numhl=
-     *
-     *
-     * @param diagnostics - Diagnostic []
-     * @param bufnr - number The buffer number
-     * @param client_id - number the client id
-     * @param sign_ns - number|nil
-     * @param opts - table Configuration for signs. Keys:
-     *   • priority: Set the priority of the signs.
-     *   • severity_limit (DiagnosticSeverity):
-     *   • Limit severity of diagnostics found.
-     *   E.g. "Warning" means { "Error",
-     *   "Warning" } will be valid.
-     */
-    set_signs: (
-      diagnostics?: any,
-      bufnr?: any,
-      client_id?: any,
-      sign_ns?: any,
-      opts?: any
-    ) => any;
-    /**
-     * Set underline for given diagnostics
-     *
-     * Underline highlights can be customized by changing the
-     * following |:highlight| groups.
-     *
-     *
-     * csUnderlineError
-     * csUnderlineWarning
-     * csUnderlineInformation
-     * csUnderlineHint
-     *
-     *
-     * @param diagnostics - Diagnostic []
-     * @param bufnr - number: The buffer number
-     * @param client_id - number: The client id
-     * @param diagnostic_ns - number|nil: The namespace
-     * @param opts - table: Configuration table:
-     *   • severity_limit (DiagnosticSeverity):
-     *   • Limit severity of diagnostics found.
-     *   E.g. "Warning" means { "Error",
-     *   "Warning" } will be valid.
-     */
-    set_underline: (
-      diagnostics?: any,
-      bufnr?: any,
-      client_id?: any,
-      diagnostic_ns?: any,
-      opts?: any
-    ) => any;
-    /**
-     * Set virtual text given diagnostics
-     *
-     * Virtual text highlights can be customized by changing the
-     * following |:highlight| groups.
-     *
-     *
-     * csVirtualTextError
-     * csVirtualTextWarning
-     * csVirtualTextInformation
-     * csVirtualTextHint
-     *
-     *
-     * @param diagnostics - Diagnostic []
-     * @param bufnr - number
-     * @param client_id - number
-     * @param diagnostic_ns - number
-     * @param opts - table Options on how to display virtual
-     *   text. Keys:
-     *   • prefix (string): Prefix to display
-     *   before virtual text on line
-     *   • spacing (number): Number of spaces to
-     *   insert before virtual text
-     *   • severity_limit (DiagnosticSeverity):
-     *   • Limit severity of diagnostics found.
-     *   E.g. "Warning" means { "Error",
-     *   "Warning" } will be valid.
-     */
-    set_virtual_text: (
-      diagnostics?: any,
-      bufnr?: any,
-      client_id?: any,
-      diagnostic_ns?: any,
-      opts?: any
-    ) => any;
-    /**
-     * Open a floating window with the diagnostics from {line_nr}
-     *
-     * The floating window can be customized with the following
-     * highlight groups: >
-     *
-     *  LspDiagnosticsFloatingError
-     *  LspDiagnosticsFloatingWarning
-     *  LspDiagnosticsFloatingInformation
-     *  LspDiagnosticsFloatingHint
-     *
-     *
-     * @param opts - table Configuration table
-     *   • show_header (boolean, default true): Show
-     *   "Diagnostics:" header.
-     * @param bufnr - number The buffer number
-     * @param line_nr - number The line number
-     * @param client_id - number|nil the client id
-     *
-     * @returns  table {popup_bufnr, win_id}
-     */
-    show_line_diagnostics: (
-      opts?: any,
-      bufnr?: any,
-      line_nr?: any,
-      client_id?: any
     ) => any;
   };
 
   /** @noSelf **/
   handlers: {
     /**
-     * See also: ~
-     *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#workspace_executeCommand
-     */
-    progress_handler: (
-      arg__1?: any,
-      arg__2?: any,
-      params?: any,
-      client_id?: any
-    ) => any;
-    /**
+     * |lsp-handler| for the method "textDocument/hover" >
+     *
+     *  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+     *    vim.lsp.handlers.hover, {
+     *      -- Use a sharp border with `FloatBorder` highlights
+     *      border = "single"
+     *    }
+     *  )
+     *
+     *
      * @param config - table Configuration table.
      *   • border: (default=nil)
      *   • Add borders to the floating window
      *   • See |vim.api.nvim_open_win()|
-     *
-     * See also: ~
-     *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_declaration@seehttps://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_definition@seehttps://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_typeDefinition@seehttps://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_implementation|lsp-handler| for the method "textDocument/signatureHelp">
+     */
+    hover: (arg__?: any, result?: any, ctx?: any, config?: any) => any;
+    /**
+     * |lsp-handler| for the method "textDocument/signatureHelp". The
+     * active parameter is highlighted with
+     * |hl-LspSignatureActiveParameter|. >
      *
      *  vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
      *    vim.lsp.handlers.signature_help, {
@@ -1047,15 +724,13 @@ interface lsp {
      *    }
      *  )
      *
+     *
+     * @param config - table Configuration table.
+     *   • border: (default=nil)
+     *   • Add borders to the floating window
+     *   • See |vim.api.nvim_open_win()|
      */
-    signature_help: (
-      arg__1?: any,
-      method?: any,
-      result?: any,
-      arg__2?: any,
-      bufnr?: any,
-      config?: any
-    ) => any;
+    signature_help: (arg__?: any, result?: any, ctx?: any, config?: any) => any;
   };
 
   /** @noSelf **/
@@ -1208,6 +883,9 @@ interface lsp {
      *
      * @param text_edits - (table) list of `TextEdit` objects
      * @param buf_nr - (number) Buffer id
+     *
+     * See also: ~
+     *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textEdit
      */
     apply_text_edits: (text_edits?: any, bufnr?: any) => any;
     /**
@@ -1228,8 +906,15 @@ interface lsp {
      * @param bufnr - buffer id
      * @param references - List of `DocumentHighlight` objects to
      *   highlight
+     *
+     * See also: ~
+     *     https://microsoft.github.io/language-server-protocol/specifications/specification-3-17/#documentHighlight
      */
     buf_highlight_references: (bufnr?: any, references?: any) => any;
+    /**
+     * TODO: Documentation
+     */
+    buf_lines: (bufnr?: any) => any;
     /**
      * Returns the UTF-32 and UTF-16 offsets for a position in a
      * certain buffer.
@@ -1241,7 +926,7 @@ interface lsp {
      * @returns  (number, number) UTF-32 and UTF-16 index of the character
      *  in line {row} column {col} in buffer {buf}
      */
-    character_offset: (buf?: any, row?: any, col?: any) => any;
+    character_offset: (bufnr?: any, row?: any, col?: any) => any;
     /**
      * Creates autocommands to close a preview window when events
      * happen.
@@ -1295,13 +980,23 @@ interface lsp {
      * lines.
      *
      * @param signature_help - Response of `textDocument/SignatureHelp`
+     * @param ft - optional filetype that will be use as
+     *   the `lang` for the label markdown code
+     *   block
+     * @param triggers - optional list of trigger characters from
+     *   the lsp server. used to better determine
+     *   parameter offsets
      *
      * @returns  list of lines of converted markdown.
      *
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_signatureHelp
      */
-    convert_signature_help_to_markdown_lines: (signature_help?: any) => any;
+    convert_signature_help_to_markdown_lines: (
+      signature_help?: any,
+      ft?: any,
+      triggers?: any
+    ) => any;
     /**
      * TODO: Documentation
      */
@@ -1323,61 +1018,6 @@ interface lsp {
      */
     extract_completion_items: (result?: any) => any;
     /**
-     * Converts markdown into syntax highlighted regions by stripping
-     * the code blocks and converting them into highlighted code.
-     * This will by default insert a blank line separator after those
-     * code block regions to improve readability. The result is shown
-     * in a floating preview.
-     *
-     * @param contents - table of lines to show in window
-     * @param opts - dictionary with optional fields
-     *   • height of floating window
-     *   • width of floating window
-     *   • wrap_at character to wrap at for computing
-     *   height
-     *   • max_width maximal width of floating window
-     *   • max_height maximal height of floating window
-     *   • pad_left number of columns to pad contents
-     *   at left
-     *   • pad_right number of columns to pad contents
-     *   at right
-     *   • pad_top number of lines to pad contents at
-     *   top
-     *   • pad_bottom number of lines to pad contents
-     *   at bottom
-     *   • separator insert separator after code block
-     *
-     * @returns  width,height size of float
-     */
-    fancy_floating_markdown: (contents?: any, opts?: any) => any;
-    /**
-     * @param unique_name - (string) Window variable
-     * @param fn - (function) should return create a new
-     *   window and return a tuple of
-     * @param focusable_buffer_id - , {window_id}). if
-     * @param focusable_buffer_id - is a valid buffer id,
-     *   the newly created window will be the new
-     *   focus associated with the current buffer
-     *   via the tag `unique_name` .
-     *
-     * @returns  (pbufnr, pwinnr) if `fn()` has created a new window; nil
-     *  otherwise
-     */
-    focusable_float: (unique_name?: any, fn?: any) => any;
-    /**
-     * Focuses/unfocuses the floating preview window associated with
-     * the current buffer via the window variable `unique_name` . If
-     * no such preview window exists, makes a new one.
-     *
-     * @param unique_name - (string) Window variable
-     * @param fn - (function) The return values of this
-     *   function will be passed directly to
-     *   |vim.lsp.util.open_floating_preview()|, in
-     *   the case that a new floating window should
-     *   be created
-     */
-    focusable_preview: (unique_name?: any, fn?: any) => any;
-    /**
      * Returns visual width of tabstop.
      *
      * @param bufnr - (optional, number): Buffer handle, defaults to
@@ -1389,6 +1029,24 @@ interface lsp {
      *     |softtabstop|
      */
     get_effective_tabstop: (bufnr?: any) => any;
+    /**
+     * Gets the zero-indexed line from the given uri.
+     *
+     * @param uri - string uri of the resource to get the line from
+     * @param row - number zero-indexed line number
+     *
+     * @returns  string the line at row in filename
+     */
+    get_line: (uri?: any, row?: any) => any;
+    /**
+     * Gets the zero-indexed lines from the given uri.
+     *
+     * @param uri - string uri of the resource to get the lines from
+     * @param rows - number[] zero-indexed line numbers
+     *
+     * @returns  table<number string> a table mapping rows to lines
+     */
+    get_lines: (uri?: any, rows?: any) => any;
     /**
      * TODO: Documentation
      */
@@ -1405,6 +1063,9 @@ interface lsp {
      * Returns the items with the byte position calculated correctly
      * and in sorted order, for display in quickfix and location
      * lists.
+     *
+     * The result can be passed to the {list} argument of
+     * |setqflist()| or |setloclist()|.
      *
      * @param locations - (table) list of `Location` s or
      *   `LocationLink` s
@@ -1436,12 +1097,12 @@ interface lsp {
      */
     make_floating_popup_options: (width?: any, height?: any, opts?: any) => any;
     /**
-     * Creates a `FormattingOptions` object for the current buffer
-     * and cursor position.
+     * Creates a `DocumentFormattingParams` object for the current
+     * buffer and cursor position.
      *
      * @param options - Table with valid `FormattingOptions` entries
      *
-     * @returns  `FormattingOptions object
+     * @returns  `DocumentFormattingParams` object
      *
      * See also: ~
      *     https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_formatting
@@ -1506,6 +1167,28 @@ interface lsp {
      * @param contents - table of lines to show in window
      * @param syntax - string of syntax to set for opened buffer
      * @param opts - dictionary with optional fields
+     *   • height of floating window
+     *   • width of floating window
+     *   • wrap boolean enable wrapping of long lines
+     *   (defaults to true)
+     *   • wrap_at character to wrap at for computing
+     *   height when wrap is enabled
+     *   • max_width maximal width of floating window
+     *   • max_height maximal height of floating window
+     *   • pad_left number of columns to pad contents
+     *   at left
+     *   • pad_right number of columns to pad contents
+     *   at right
+     *   • pad_top number of lines to pad contents at
+     *   top
+     *   • pad_bottom number of lines to pad contents
+     *   at bottom
+     *   • focus_id if a popup with this id is opened,
+     *   then focus it
+     *   • close_events list of events that closes the
+     *   floating window
+     *   • focusable (boolean, default true): Make
+     *   float focusable
      *
      * @returns  bufnr,winnr buffer and window number of the newly created
      *  floating preview window
@@ -1532,8 +1215,10 @@ interface lsp {
      * @returns  (bufnr,winnr) buffer and window number of floating window
      *  or nil
      */
-    preview_location: (location?: any) => any;
+    preview_location: (location?: any, opts?: any) => any;
     /**
+     * Rename old_fname to new_fname
+     *
      * @param opts - (table)
      */
     rename: (old_fname?: any, new_fname?: any, opts?: any) => any;
@@ -1553,19 +1238,38 @@ interface lsp {
      */
     set_lines: (lines?: any, A?: any, B?: any, new_lines?: any) => any;
     /**
-     * Fills current window's location list with given list of items.
-     * Can be obtained with e.g. |vim.lsp.util.locations_to_items()|.
+     * Converts markdown into syntax highlighted regions by stripping
+     * the code blocks and converting them into highlighted code.
+     * This will by default insert a blank line separator after those
+     * code block regions to improve readability.
      *
-     * @param items - (table) list of items
-     */
-    set_loclist: (items?: any) => any;
-    /**
-     * Fills quickfix list with given list of items. Can be obtained
-     * with e.g. |vim.lsp.util.locations_to_items()|.
+     * This method configures the given buffer and returns the lines
+     * to set.
      *
-     * @param items - (table) list of items
+     * If you want to open a popup with fancy markdown, use
+     * `open_floating_preview` instead
+     *
+     * @param contents - table of lines to show in window
+     * @param opts - dictionary with optional fields
+     *   • height of floating window
+     *   • width of floating window
+     *   • wrap_at character to wrap at for computing
+     *   height
+     *   • max_width maximal width of floating window
+     *   • max_height maximal height of floating window
+     *   • pad_left number of columns to pad contents
+     *   at left
+     *   • pad_right number of columns to pad contents
+     *   at right
+     *   • pad_top number of lines to pad contents at
+     *   top
+     *   • pad_bottom number of lines to pad contents
+     *   at bottom
+     *   • separator insert separator after code block
+     *
+     * @returns  width,height size of float
      */
-    set_qflist: (items?: any) => any;
+    stylize_markdown: (bufnr?: any, contents?: any, opts?: any) => any;
     /**
      * Converts symbols to quickfix list items.
      *

@@ -5,6 +5,20 @@
  "data": [
   {
    "type": "func",
+   "name": "defer_fn",
+   "description": "                Defers calling `fn` until `timeout` ms passes.\n\n                Use to do a one-shot timer that calls `fn` Note: The {fn} is |schedule_wrap|ped automatically, so API\n                functions are safe to call.\n\n                Parameters: ~\n                    {fn}       Callback to call once `timeout` expires\n                    {timeout}  Number of milliseconds to wait before calling\n                               `fn`\n\n                Return: ~\n                    timer luv timer object",
+   "argsStr": "{fn}, {timeout}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "insert_keys",
+   "description": "                TODO: Documentation",
+   "argsStr": "{obj}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
    "name": "inspect",
    "description": "                Return a human-readable representation of the given object.\n\n                See also: ~\n                    https://github.com/kikito/inspect.lua\n                    https://github.com/mpeterv/vinspect",
    "argsStr": "{object}, {options}",
@@ -12,9 +26,16 @@
   },
   {
    "type": "func",
-   "name": "make_meta_accessor",
+   "name": "make_dict_accessor",
    "description": "                TODO: Documentation",
-   "argsStr": "{get}, {set}, {del}",
+   "argsStr": "{scope}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "notify",
+   "description": "                Notification provider\n\n                Without a runtime, writes to :Messages\n\n                Parameters: ~\n                    {msg}        Content of the notification to show to the\n                                 user\n                    {log_level}  Optional log level\n                    {opts}       Dictionary with optional options (timeout,\n                                 etc)\n\n                See also: ~\n                    :help nvim_notify",
+   "argsStr": "{msg}, {log_level}, {_opts}",
    "returnType": "any"
   },
   {
@@ -22,6 +43,13 @@
    "name": "paste",
    "description": "                Paste handler, invoked by |nvim_paste()| when a conforming UI\n                (such as the |TUI|) pastes text into the editor.\n\n                Example: To remove ANSI color codes when pasting: >\n\n                 vim.paste = (function(overridden)\n                   return function(lines, phase)\n                     for i,line in ipairs(lines) do\n                       -- Scrub ANSI color codes from paste input.\n                       lines[i] = line:gsub('\\27%[[0-9;mK]+', '')\n                     end\n                     overridden(lines, phase)\n                   end\n                 end)(vim.paste)\n<\n\n                Parameters: ~\n                    {lines}  |readfile()|-style list of lines to paste.\n                             |channel-lines|\n                    {phase}  -1: \"non-streaming\" paste: the call contains all\n                             lines. If paste is \"streamed\", `phase` indicates the stream state:\n                             • 1: starts the paste (exactly once)\n                             • 2: continues the paste (zero or more times)\n                             • 3: ends the paste (exactly once)\n\n                Return: ~\n                    false if client should cancel the paste.\n\n                See also: ~\n                    |paste|",
    "argsStr": "{lines}, {phase}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "region",
+   "description": "                Get a table of lines with start, end columns for a region\n                marked by two points\n\n                Parameters: ~\n                    {bufnr}      number of buffer\n                    {pos1}       (line, column) tuple marking beginning of\n                                 region\n                    {pos2}       (line, column) tuple marking end of region\n                    {regtype}    type of selection (:help setreg)\n                    {inclusive}  boolean indicating whether the selection is\n                                 end-inclusive\n\n                Return: ~\n                    region lua table of the form {linenr = {startcol,endcol}}",
+   "argsStr": "{bufnr}, {pos1}, {pos2}, {regtype}, {inclusive}",
    "returnType": "any"
   },
   {
@@ -34,7 +62,7 @@
   {
    "type": "func",
    "name": "deep_equal",
-   "description": "                TODO: Documentation",
+   "description": "                Deep compare values for equality\n\n                Tables are compared recursively unless they both provide the `eq` methamethod.\n                All other types are compared using the equality `==` operator.\n\n                Parameters: ~\n                    {a}  first value\n                    {b}  second value\n\n                Return: ~\n                    `true` if values are equals, else `false` .",
    "argsStr": "{a}, {b}",
    "returnType": "any"
   },

@@ -13,7 +13,7 @@
   {
    "type": "func",
    "name": "vim.version",
-   "description": "        Returns the version of the current neovim build.",
+   "description": "        Gets the version of the current Nvim build.",
    "argsStr": "",
    "returnType": "any"
   },
@@ -27,41 +27,27 @@
   {
    "type": "value",
    "name": "vim.NIL",
-   "description": "\tSpecial value used to represent NIL in msgpack-rpc and |v:null| in\n\tvimL interaction, and similar cases. Lua `nil` cannot be used as\n\tpart of a lua table representing a Dictionary or Array, as it\n\tis equivalent to a missing value: `{\"foo\", nil}` is the same as \n\t`{\"foo\"}`",
+   "description": "        Special value representing NIL in |RPC| and |v:null| in Vimscript\n        conversion, and similar cases. Lua `nil` cannot be used as part of\n        a Lua table representing a Dictionary or Array, because it is\n        treated as missing: `{\"foo\", nil}` is the same as `{\"foo\"}`.",
    "valuetype": "any"
   },
   {
    "type": "func",
    "name": "vim.empty_dict",
-   "description": "\tCreates a special table which will be converted to an empty\n\tdictionary when converting lua values to vimL or API types. The\n\ttable is empty, and this property is marked using a metatable. An\n\tempty table `{}` without this metatable will default to convert to\n\tan array/list.\n\n\tNote: if numeric keys are added to the table, the metatable will be\n\tignored and the dict converted to a list/array anyway.",
+   "description": "        Creates a special empty table (marked with a metatable), which Nvim\n        converts to an empty dictionary when translating Lua values to\n        Vimscript or API types. Nvim by default converts an empty table `{}`\n        without this metatable to an list/array.\n\n        Note: if numeric keys are present in the table, Nvim ignores the\n        metatable marker and converts the dict to a list/array anyway.",
    "argsStr": "",
    "returnType": "any"
   },
   {
    "type": "func",
-   "name": "vim.region",
-   "description": "        Converts a selection specified by the buffer ({bufnr}), starting\n        position ({pos1}, a zero-indexed pair `{line1,column1}`), ending\n        position ({pos2}, same format as {pos1}), the type of the register\n        for the selection ({type}, see |regtype|), and a boolean indicating\n        whether the selection is inclusive or not, into a zero-indexed table \n        of linewise selections of the form `{linenr = {startcol, endcol}}` .",
-   "argsStr": "{bufnr}, {pos1}, {pos2}, {type}, {inclusive}",
-   "returnType": "any"
-  },
-  {
-   "type": "func",
-   "name": "vim.register_keystroke_callback",
-   "description": "        Register a lua {fn} with an {ns_id} to be run after every keystroke.\n\n        Parameters: ~\n            {fn}: (function): Function to call on keystroke.\n                    It should take one argument, which is a string.\n                    The string will contain the literal keys typed.\n                    See |i_CTRL-V|\n\n                    If {fn} is `nil`, it removes the callback for the\n                    associated {ns_id}.\n\n            {ns_id}: (number)  Namespace ID. If not passed or 0, will generate\n                     and return a new namespace ID from |nvim_create_namespace()|\n\n        Return: ~\n            (number) Namespace ID associated with {fn}\n\n        NOTE: {fn} will be automatically removed if an error occurs while\n        calling. This is to prevent the annoying situation of every keystroke\n        erroring while trying to remove a broken callback.\n\n        NOTE: {fn} will receive the keystrokes after mappings have been\n        evaluated\n\n        NOTE: {fn} will *NOT* be cleared from |nvim_buf_clear_namespace()|",
-   "argsStr": "{fn}, {ns_id}",
-   "returnType": "any"
-  },
-  {
-   "type": "func",
    "name": "vim.rpcnotify",
-   "description": "\tSends {event} to {channel} via |RPC| and returns immediately.\n\tIf {channel} is 0, the event is broadcast to all channels.\n\n\tThis function also works in a fast callback |lua-loop-callbacks|.",
+   "description": "        Sends {event} to {channel} via |RPC| and returns immediately. If\n        {channel} is 0, the event is broadcast to all channels.\n\n        This function also works in a fast callback |lua-loop-callbacks|.",
    "argsStr": "{channel}, {method}[, {args}...]",
    "returnType": "any"
   },
   {
    "type": "func",
    "name": "vim.rpcrequest",
-   "description": "\tSends a request to {channel} to invoke {method} via\n\t|RPC| and blocks until a response is received.\n\n\tNote: NIL values as part of the return value is represented as\n\t|vim.NIL| special value",
+   "description": "        Sends a request to {channel} to invoke {method} via |RPC| and blocks\n        until a response is received.\n\n        Note: NIL values as part of the return value is represented as\n        |vim.NIL| special value",
    "argsStr": "{channel}, {method}[, {args}...]",
    "returnType": "any"
   },
@@ -110,19 +96,19 @@
   {
    "type": "value",
    "name": "vim.type_idx",
-   "description": "\tType index for use in |lua-special-tbl|.  Specifying one of the \n\tvalues from |vim.types| allows typing the empty table (it is \n\tunclear whether empty Lua table represents empty list or empty array) \n\tand forcing integral numbers to be |Float|.  See |lua-special-tbl| for \n\tmore details.",
+   "description": "        Type index for use in |lua-special-tbl|.  Specifying one of the values\n        from |vim.types| allows typing the empty table (it is unclear whether\n        empty Lua table represents empty list or empty array) and forcing\n        integral numbers to be |Float|.  See |lua-special-tbl| for more\n        details.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.val_idx",
-   "description": "\tValue index for tables representing |Float|s.  A table representing \n\tfloating-point value 1.0 looks like this: >\n            {\n              [vim.type_idx] = vim.types.float,\n              [vim.val_idx] = 1.0,\n            }\n<\tSee also |vim.type_idx| and |lua-special-tbl|.",
+   "description": "        Value index for tables representing |Float|s.  A table representing\n        floating-point value 1.0 looks like this: >\n            {\n              [vim.type_idx] = vim.types.float,\n              [vim.val_idx] = 1.0,\n            }\n<       See also |vim.type_idx| and |lua-special-tbl|.",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "vim.types",
-   "description": "\tTable with possible values for |vim.type_idx|.  Contains two sets \n\tof key-value pairs: first maps possible values for |vim.type_idx| \n\tto human-readable strings, second maps human-readable type names to \n\tvalues for |vim.type_idx|.  Currently contains pairs for `float`, \n\t`array` and `dictionary` types.\n\n\tNote: one must expect that values corresponding to `vim.types.float`, \n\t`vim.types.array` and `vim.types.dictionary` fall under only two \n\tfollowing assumptions:\n\t1. Value may serve both as a key and as a value in a table.  Given the \n\t   properties of Lua tables this basically means “value is not `nil`”.\n\t2. For each value in `vim.types` table `vim.types[vim.types[value]]` \n\t   is the same as `value`.\n\tNo other restrictions are put on types, and it is not guaranteed that \n\tvalues corresponding to `vim.types.float`, `vim.types.array` and \n\t`vim.types.dictionary` will not change or that `vim.types` table will \n\tonly contain values for these three types.",
+   "description": "        Table with possible values for |vim.type_idx|.  Contains two sets of\n        key-value pairs: first maps possible values for |vim.type_idx| to\n        human-readable strings, second maps human-readable type names to\n        values for |vim.type_idx|.  Currently contains pairs for `float`,\n        `array` and `dictionary` types.\n\n        Note: one must expect that values corresponding to `vim.types.float`,\n        `vim.types.array` and `vim.types.dictionary` fall under only two\n        following assumptions:\n        1. Value may serve both as a key and as a value in a table.  Given the\n           properties of Lua tables this basically means “value is not `nil`”.\n        2. For each value in `vim.types` table `vim.types[vim.types[value]]`\n           is the same as `value`.\n        No other restrictions are put on types, and it is not guaranteed that\n        values corresponding to `vim.types.float`, `vim.types.array` and\n        `vim.types.dictionary` will not change or that `vim.types` table will\n        only contain values for these three types.",
    "valuetype": "any"
   }
  ]

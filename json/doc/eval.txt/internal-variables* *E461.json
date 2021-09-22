@@ -198,7 +198,7 @@
   {
    "type": "value",
    "name": "v:event* *event-variable",
-   "description": "Dictionary of event data for the current |autocommand|.  Valid\n\t\tonly during the event lifetime; storing or passing v:event is\n\t\tinvalid!  Copy it instead: >\n\t\t\tau TextYankPost * let g:foo = deepcopy(v:event)\n<\t\tKeys vary by event; see the documentation for the specific\n\t\tevent, e.g. |DirChanged| or |TextYankPost|.\n\t\t\tKEY\t\tDESCRIPTION ~\n\t\t\tabort\t\tWhether the event triggered during\n\t\t\t\t\tan aborting condition (e.g. |c_Esc| or\n\t\t\t\t\t|c_CTRL-C| for |CmdlineLeave|).\n\t\t\tchan\t\t|channel-id| or 0 for \"internal\".\n\t\t\tcmdlevel\tLevel of cmdline.\n\t\t\tcmdtype\t\tType of cmdline, |cmdline-char|.\n\t\t\tcwd\t\tCurrent working directory.\n\t\t\tinclusive\tMotion is |inclusive|, else exclusive.\n\t\t\tscope\t\tEvent-specific scope name.\n\t\t\toperator\tCurrent |operator|.  Also set for Ex\n\t\t\t\t\tcommands (unlike |v:operator|). For\n\t\t\t\t\texample if |TextYankPost| is triggered\n\t\t\t\t\tby the |:yank| Ex command then\n\t\t\t\t\t`v:event.operator` is \"y\".\n\t\t\tregcontents\tText stored in the register as a\n\t\t\t\t\t|readfile()|-style list of lines.\n\t\t\tregname\t\tRequested register (e.g \"x\" for \"xyy)\n\t\t\t\t\tor the empty string for an unnamed\n\t\t\t\t\toperation.\n\t\t\tregtype\t\tType of register as returned by\n\t\t\t\t\t|getregtype()|.\n\t\t\tvisual\t\tSelection is visual (as opposed to,\n\t\t\t\t\te.g., via motion).\n\t\t\tcompleted_item    Current selected complete item on\n\t\t\t\t\t|CompleteChanged|, Is `{}` when no complete\n\t\t\t\t\titem selected.\n\t\t\theight \t\tHeight of popup menu on |CompleteChanged|\n\t\t\twidth   \twidth of popup menu on |CompleteChanged|\n\t\t\trow  \t \tRow count of popup menu on |CompleteChanged|,\n\t\t\t\t\trelative to screen.\n\t\t\tcol  \t \tCol count of popup menu on |CompleteChanged|,\n\t\t\t\t\trelative to screen.\n\t\t\tsize \t\tTotal number of completion items on\n\t\t\t\t\t|CompleteChanged|.\n\t\t\tscrollbar \tIs |v:true| if popup menu have scrollbar, or\n\t\t\t\t\t|v:false| if not.\n\t\t\tchanged_window \tIs |v:true| if the the event fired\n\t\t\t\t\twhile changing window (or tab) on |DirChanged|.",
+   "description": "Dictionary of event data for the current |autocommand|.  Valid\n\t\tonly during the event lifetime; storing or passing v:event is\n\t\tinvalid!  Copy it instead: >\n\t\t\tau TextYankPost * let g:foo = deepcopy(v:event)\n<\t\tKeys vary by event; see the documentation for the specific\n\t\tevent, e.g. |DirChanged| or |TextYankPost|.\n\t\t\tKEY\t\tDESCRIPTION ~\n\t\t\tabort\t\tWhether the event triggered during\n\t\t\t\t\tan aborting condition (e.g. |c_Esc| or\n\t\t\t\t\t|c_CTRL-C| for |CmdlineLeave|).\n\t\t\tchan\t\t|channel-id| or 0 for \"internal\".\n\t\t\tcmdlevel\tLevel of cmdline.\n\t\t\tcmdtype\t\tType of cmdline, |cmdline-char|.\n\t\t\tcwd\t\tCurrent working directory.\n\t\t\tinclusive\tMotion is |inclusive|, else exclusive.\n\t\t\tscope\t\tEvent-specific scope name.\n\t\t\toperator\tCurrent |operator|.  Also set for Ex\n\t\t\t\t\tcommands (unlike |v:operator|). For\n\t\t\t\t\texample if |TextYankPost| is triggered\n\t\t\t\t\tby the |:yank| Ex command then\n\t\t\t\t\t`v:event.operator` is \"y\".\n\t\t\tregcontents\tText stored in the register as a\n\t\t\t\t\t|readfile()|-style list of lines.\n\t\t\tregname\t\tRequested register (e.g \"x\" for \"xyy)\n\t\t\t\t\tor the empty string for an unnamed\n\t\t\t\t\toperation.\n\t\t\tregtype\t\tType of register as returned by\n\t\t\t\t\t|getregtype()|.\n\t\t\tvisual\t\tSelection is visual (as opposed to,\n\t\t\t\t\te.g., via motion).\n\t\t\tcompleted_item    Current selected complete item on\n\t\t\t\t\t|CompleteChanged|, Is `{}` when no complete\n\t\t\t\t\titem selected.\n\t\t\theight \t\tHeight of popup menu on |CompleteChanged|\n\t\t\twidth   \twidth of popup menu on |CompleteChanged|\n\t\t\trow  \t \tRow count of popup menu on |CompleteChanged|,\n\t\t\t\t\trelative to screen.\n\t\t\tcol  \t \tCol count of popup menu on |CompleteChanged|,\n\t\t\t\t\trelative to screen.\n\t\t\tsize \t\tTotal number of completion items on\n\t\t\t\t\t|CompleteChanged|.\n\t\t\tscrollbar \tIs |v:true| if popup menu have scrollbar, or\n\t\t\t\t\t|v:false| if not.\n\t\t\tchanged_window \tIs |v:true| if the the event fired\n\t\t\t\t\twhile changing window (or tab) on |DirChanged|.\n\t\t\tstatus\t\tJob status or exit code, -1 means \"unknown\". |TermClose|",
    "valuetype": "any"
   },
   {
@@ -228,7 +228,7 @@
   {
    "type": "value",
    "name": "v:fname* *fname-variable",
-   "description": "The file name set by 'includeexpr'.  Empty otherwise.",
+   "description": "When evaluating 'includeexpr': the file name that was\n\t\tdetected.  Empty otherwise.",
    "valuetype": "any"
   },
   {
@@ -366,7 +366,7 @@
   {
    "type": "value",
    "name": "v:numbermin* *numbermin-variable",
-   "description": "Minimum value of a number (negative)",
+   "description": "Minimum value of a number (negative).",
    "valuetype": "any"
   },
   {
@@ -492,43 +492,49 @@
   {
    "type": "value",
    "name": "v:t_TYPE* *v:t_bool* *t_bool-variable",
-   "description": "Value of Boolean type.  Read-only.  See: |type()|",
+   "description": "Value of |Boolean| type.  Read-only.  See: |type()|",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:t_dict* *t_dict-variable",
-   "description": "Value of Dictionary type.  Read-only.  See: |type()|",
+   "description": "Value of |Dictionary| type.  Read-only.  See: |type()|",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:t_float* *t_float-variable",
-   "description": "Value of Float type.  Read-only.  See: |type()|",
+   "description": "Value of |Float| type.  Read-only.  See: |type()|",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:t_func* *t_func-variable",
-   "description": "Value of Funcref type.  Read-only.  See: |type()|",
+   "description": "Value of |Funcref| type.  Read-only.  See: |type()|",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:t_list* *t_list-variable",
-   "description": "Value of List type.  Read-only.  See: |type()|",
+   "description": "Value of |List| type.  Read-only.  See: |type()|",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:t_number* *t_number-variable",
-   "description": "Value of Number type.  Read-only.  See: |type()|",
+   "description": "Value of |Number| type.  Read-only.  See: |type()|",
    "valuetype": "any"
   },
   {
    "type": "value",
    "name": "v:t_string* *t_string-variable",
-   "description": "Value of String type.  Read-only.  See: |type()|",
+   "description": "Value of |String| type.  Read-only.  See: |type()|",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "v:t_blob* *t_blob-variable",
+   "description": "Value of |Blob| type.  Read-only.  See: |type()|",
    "valuetype": "any"
   },
   {

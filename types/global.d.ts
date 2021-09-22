@@ -1,6 +1,23 @@
 /** @noSelf **/
 declare namespace vim {
   /**
+   * Defers calling `fn` until `timeout` ms passes.
+   *
+   * Use to do a one-shot timer that calls `fn` Note: The {fn} is |schedule_wrap|ped automatically, so API
+   * functions are safe to call.
+   *
+   * @param fn - Callback to call once `timeout` expires
+   * @param timeout - Number of milliseconds to wait before calling
+   *   `fn`
+   *
+   * @returns  timer luv timer object
+   */
+  function defer_fn(fn?: any, timeout?: any): any;
+  /**
+   * TODO: Documentation
+   */
+  function insert_keys(obj?: any): any;
+  /**
    * Return a human-readable representation of the given object.
    *
    * See also: ~
@@ -11,7 +28,22 @@ declare namespace vim {
   /**
    * TODO: Documentation
    */
-  function make_meta_accessor(get?: any, set?: any, del?: any): any;
+  function make_dict_accessor(scope?: any): any;
+  /**
+   * Notification provider
+   *
+   * Without a runtime, writes to :Messages
+   *
+   * @param msg - Content of the notification to show to the
+   *   user
+   * @param log_level - Optional log level
+   * @param opts - Dictionary with optional options (timeout,
+   *   etc)
+   *
+   * See also: ~
+   *     :help nvim_notify
+   */
+  function notify(msg?: any, log_level?: any, arg__opts?: any): any;
   /**
    * Paste handler, invoked by |nvim_paste()| when a conforming UI
    * (such as the |TUI|) pastes text into the editor.
@@ -44,6 +76,27 @@ declare namespace vim {
    */
   function paste(lines?: any, phase?: any): any;
   /**
+   * Get a table of lines with start, end columns for a region
+   * marked by two points
+   *
+   * @param bufnr - number of buffer
+   * @param pos1 - (line, column) tuple marking beginning of
+   *   region
+   * @param pos2 - (line, column) tuple marking end of region
+   * @param regtype - type of selection (:help setreg)
+   * @param inclusive - boolean indicating whether the selection is
+   *   end-inclusive
+   *
+   * @returns  region lua table of the form {linenr = {startcol,endcol}}
+   */
+  function region(
+    bufnr?: any,
+    pos1?: any,
+    pos2?: any,
+    regtype?: any,
+    inclusive?: any
+  ): any;
+  /**
    * Defers callback `cb` until the Nvim API is safe to call.
    *
    * See also: ~
@@ -53,7 +106,15 @@ declare namespace vim {
    */
   function schedule_wrap(cb?: any): any;
   /**
-   * TODO: Documentation
+   * Deep compare values for equality
+   *
+   * Tables are compared recursively unless they both provide the `eq` methamethod.
+   * All other types are compared using the equality `==` operator.
+   *
+   * @param a - first value
+   * @param b - second value
+   *
+   * @returns  `true` if values are equals, else `false` .
    */
   function deep_equal(a?: any, b?: any): any;
   /**
@@ -511,7 +572,7 @@ declare namespace vim {
    */
   function uri_to_fname(uri?: any): any;
   /**
-   * Returns the version of the current neovim build.
+   * Gets the version of the current Nvim build.
    */
   function version(): any;
   /**
@@ -523,75 +584,32 @@ declare namespace vim {
    */
   function in_fast_event(): any;
   /**
-   * Special value used to represent NIL in msgpack-rpc and |v:null| in
-   * vimL interaction, and similar cases. Lua `nil` cannot be used as
-   * part of a lua table representing a Dictionary or Array, as it
-   * is equivalent to a missing value: `{"foo", nil}` is the same as
-   * `{"foo"}`
+   * Special value representing NIL in |RPC| and |v:null| in Vimscript
+   * conversion, and similar cases. Lua `nil` cannot be used as part of
+   * a Lua table representing a Dictionary or Array, because it is
+   * treated as missing: `{"foo", nil}` is the same as `{"foo"}`.
    */
   let NIL: any;
   /**
-   * Creates a special table which will be converted to an empty
-   * dictionary when converting lua values to vimL or API types. The
-   * table is empty, and this property is marked using a metatable. An
-   * empty table `{}` without this metatable will default to convert to
-   * an array/list.
+   * Creates a special empty table (marked with a metatable), which Nvim
+   * converts to an empty dictionary when translating Lua values to
+   * Vimscript or API types. Nvim by default converts an empty table `{}`
+   * without this metatable to an list/array.
    *
-   * Note: if numeric keys are added to the table, the metatable will be
-   * ignored and the dict converted to a list/array anyway.
+   * Note: if numeric keys are present in the table, Nvim ignores the
+   * metatable marker and converts the dict to a list/array anyway.
    */
   function empty_dict(): any;
   /**
-   * Converts a selection specified by the buffer ({bufnr}), starting
-   * position ({pos1}, a zero-indexed pair `{line1,column1}`), ending
-   * position ({pos2}, same format as {pos1}), the type of the register
-   * for the selection ({type}, see |regtype|), and a boolean indicating
-   * whether the selection is inclusive or not, into a zero-indexed table
-   * of linewise selections of the form `{linenr = {startcol, endcol}}` .
-   */
-  function region(
-    bufnr?: any,
-    pos1?: any,
-    pos2?: any,
-    type?: any,
-    inclusive?: any
-  ): any;
-  /**
-   * Register a lua {fn} with an {ns_id} to be run after every keystroke.
-   *
-   * @param fn - : (function): Function to call on keystroke.
-   *   It should take one argument, which is a string.
-   *   The string will contain the literal keys typed.
-   *   See |i_CTRL-V|
-   *
-   *             If {fn} is `nil`, it removes the callback for the
-   *             associated {ns_id}.
-   *
-   *     {ns_id}: (number)  Namespace ID. If not passed or 0, will generate
-   *              and return a new namespace ID from |nvim_create_namespace()|
-   *
-   * @returns  (number) Namespace ID associated with {fn}
-   *
-   * NOTE: {fn} will be automatically removed if an error occurs while
-   * calling. This is to prevent the annoying situation of every keystroke
-   * erroring while trying to remove a broken callback.
-   *
-   * NOTE: {fn} will receive the keystrokes after mappings have been
-   * evaluated
-   *
-   * NOTE: {fn} will *NOT* be cleared from |nvim_buf_clear_namespace()|
-   */
-  function register_keystroke_callback(fn?: any, ns_id?: any): any;
-  /**
-   * Sends {event} to {channel} via |RPC| and returns immediately.
-   * If {channel} is 0, the event is broadcast to all channels.
+   * Sends {event} to {channel} via |RPC| and returns immediately. If
+   * {channel} is 0, the event is broadcast to all channels.
    *
    * This function also works in a fast callback |lua-loop-callbacks|.
    */
   function rpcnotify(channel?: any, method?: any, ...arguments: any[]): any;
   /**
-   * Sends a request to {channel} to invoke {method} via
-   * |RPC| and blocks until a response is received.
+   * Sends a request to {channel} to invoke {method} via |RPC| and blocks
+   * until a response is received.
    *
    * Note: NIL values as part of the return value is represented as
    * |vim.NIL| special value
@@ -700,27 +718,27 @@ declare namespace vim {
     fast_only?: any
   ): any;
   /**
-   * Type index for use in |lua-special-tbl|.  Specifying one of the
-   * values from |vim.types| allows typing the empty table (it is
-   * unclear whether empty Lua table represents empty list or empty array)
-   * and forcing integral numbers to be |Float|.  See |lua-special-tbl| for
-   * more details.
+   * Type index for use in |lua-special-tbl|.  Specifying one of the values
+   * from |vim.types| allows typing the empty table (it is unclear whether
+   * empty Lua table represents empty list or empty array) and forcing
+   * integral numbers to be |Float|.  See |lua-special-tbl| for more
+   * details.
    */
   let type_idx: any;
   /**
    * Value index for tables representing |Float|s.  A table representing
    * floating-point value 1.0 looks like this: >
-   *           {
-   *             [vim.type_idx] = vim.types.float,
-   *             [vim.val_idx] = 1.0,
-   *           }
-   *  See also |vim.type_idx| and |lua-special-tbl|.
+   *     {
+   *       [vim.type_idx] = vim.types.float,
+   *       [vim.val_idx] = 1.0,
+   *     }
+   * See also |vim.type_idx| and |lua-special-tbl|.
    */
   let val_idx: any;
   /**
-   * Table with possible values for |vim.type_idx|.  Contains two sets
-   * of key-value pairs: first maps possible values for |vim.type_idx|
-   * to human-readable strings, second maps human-readable type names to
+   * Table with possible values for |vim.type_idx|.  Contains two sets of
+   * key-value pairs: first maps possible values for |vim.type_idx| to
+   * human-readable strings, second maps human-readable type names to
    * values for |vim.type_idx|.  Currently contains pairs for `float`,
    * `array` and `dictionary` types.
    *

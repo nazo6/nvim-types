@@ -181,8 +181,7 @@ interface api {
    * Creates a new namespace, or gets an existing one.
    *
    * Namespaces are used for buffer highlights and virtual text,
-   * see |nvim_buf_add_highlight()| and
-   * |nvim_buf_set_virtual_text()|.
+   * see |nvim_buf_add_highlight()| and |nvim_buf_set_extmark()|.
    *
    * Namespaces can be named or anonymous. If `name` matches an
    * existing namespace, the associated id is returned. If `name`
@@ -298,10 +297,9 @@ interface api {
    *
    * On execution error: does not fail, but updates v:errmsg.
    *
-   * If you need to input sequences like <C-o> use
-   * |nvim_replace_termcodes| to replace the termcodes and then
-   * pass the resulting string to nvim_feedkeys. You'll also want
-   * to enable escape_csi.
+   * To input sequences like <C-o> use |nvim_replace_termcodes()|
+   * (typically with escape_csi=true) to replace the keycodes. Then
+   * pass the result to nvim_feedkeys().
    *
    * Example: >
    *     :let key = nvim_replace_termcodes("<C-o>", v:true, v:false, v:true)
@@ -505,7 +503,7 @@ interface api {
    * Resulting dictionary has keys:
    * • name: Name of the option (like 'filetype')
    * • shortname: Shortened name of the option (like 'ft')
-   * • type: type of option ("string", "integer" or "boolean")
+   * • type: type of option ("string", "number" or "boolean")
    * • default: The default value for the option
    * • was_set: Whether the option was set.
    * • last_set_sid: Last set script id (if any)
@@ -610,7 +608,7 @@ interface api {
    *     intermediate mouse positions will be ignored. It should be
    *     used to implement real-time mouse input in a GUI. The
    *     deprecated pseudokey form ("<LeftMouse><col,row>") of
-   *     |nvim_input()| has the same limitiation.
+   *     |nvim_input()| has the same limitation.
    *
    * Attributes: ~
    *     {fast}
@@ -696,7 +694,7 @@ interface api {
    * Notify the user with a message
    *
    * Relays the call to vim.notify . By default forwards your
-   * message in the echo area but can be overriden to trigger
+   * message in the echo area but can be overridden to trigger
    * desktop notifications.
    *
    * @param msg - Message to display to the user
@@ -710,7 +708,7 @@ interface api {
    * By default (and currently the only option) the terminal will
    * not be connected to an external process. Instead, input send
    * on the channel will be echoed directly by the terminal. This
-   * is useful to disply ANSI terminal sequences returned as part
+   * is useful to display ANSI terminal sequences returned as part
    * of a rpc message, or similar.
    *
    * Note: to directly initiate the terminal using the right size,
@@ -810,6 +808,17 @@ interface api {
    *                 an external top-level window. Currently
    *                 accepts no other positioning configuration
    *                 together with this.
+   *               • `zindex`: Stacking order. floats with higher`zindex`go on top on floats with lower indices. Must
+   *                 be larger than zero. The following screen
+   *                 elements have hard-coded z-indices:
+   *                 • 100: insert completion popupmenu
+   *                 • 200: message scrollback
+   *                 • 250: cmdline completion popupmenu (when
+   *                   wildoptions+=pum) The default value for
+   *                   floats are 50. In general, values below 100
+   *                   are recommended, unless there is a good
+   *                   reason to overshadow builtin elements.
+   *
    *               • `style`: Configure the appearance of the window.
    *                 Currently only takes one non-empty value:
    *                 • "minimal" Nvim will display the window with
@@ -825,33 +834,42 @@ interface api {
    *                   and clearing the |EndOfBuffer| region in
    *                   'winhighlight'.
    *
-   *               • `border`: style of (optional) window border. This can
-   *                 either be a string or an array. the string
-   *                 values are:
-   *                 • "none" No border. This is the default
-   *                 • "single" a single line box
-   *                 • "double" a double line box
-   *                 • "shadow" a drop shadow effect by blending
-   *                   with the background. If it is an array it
-   *                   should be an array of eight items or any
-   *                   divisor of eight. The array will specifify
-   *                   the eight chars building up the border in a
-   *                   clockwise fashion starting with the top-left
-   *                   corner. As, an example, the double box style
-   *                   could be specified as: [ "╔", "═" ,"╗", "║",
-   *                   "╝", "═", "╚", "║" ] if the number of chars
-   *                   are less than eight, they will be repeated.
-   *                   Thus an ASCII border could be specified as:
-   *                   [ "/", "-", "\\", "|" ] or all chars the
-   *                   same as: [ "x" ] An empty string can be used
-   *                   to turn off a specific border, for instance:
-   *                   [ "", "", "", ">", "", "", "", "<" ] will
-   *                   only make vertical borders but not
-   *                   horizontal ones. By default `FloatBorder`
-   *                   highlight is used which links to `VertSplit`
-   *                   when not defined. It could also be specified
-   *                   by character: [ {"+", "MyCorner"}, {"x",
-   *                   "MyBorder"} ]
+   *               • `border`: Style of (optional) window border. This can
+   *                 either be a string or an array. The string
+   *                 values are
+   *                 • "none": No border (default).
+   *                 • "single": A single line box.
+   *                 • "double": A double line box.
+   *                 • "rounded": Like "single", but with rounded
+   *                   corners ("╭" etc.).
+   *                 • "solid": Adds padding by a single whitespace
+   *                   cell.
+   *                 • "shadow": A drop shadow effect by blending
+   *                   with the background.
+   *                 • If it is an array, it should have a length
+   *                   of eight or any divisor of eight. The array
+   *                   will specifify the eight chars building up
+   *                   the border in a clockwise fashion starting
+   *                   with the top-left corner. As an example, the
+   *                   double box style could be specified as [
+   *                   "╔", "═" ,"╗", "║", "╝", "═", "╚", "║" ]. If
+   *                   the number of chars are less than eight,
+   *                   they will be repeated. Thus an ASCII border
+   *                   could be specified as [ "/", "-", "\\", "|"
+   *                   ], or all chars the same as [ "x" ]. An
+   *                   empty string can be used to turn off a
+   *                   specific border, for instance, [ "", "", "",
+   *                   ">", "", "", "", "<" ] will only make
+   *                   vertical borders but not horizontal ones. By
+   *                   default, `FloatBorder` highlight is used,
+   *                   which links to `VertSplit` when not defined.
+   *                   It could also be specified by character: [
+   *                   {"+", "MyCorner"}, {"x", "MyBorder"} ].
+   *
+   *               • `noautocmd` : If true then no buffer-related
+   *                 autocommand events such as |BufEnter|,
+   *                 |BufLeave| or |BufWinEnter| may fire from
+   *                 calling this function.
    *
    * @returns  Window handle, or 0 on error
    */
@@ -907,8 +925,9 @@ interface api {
    *
    *       • "len": Amount of bytes successfully parsed. With flags
    *         equal to "" that should be equal to the length of expr
-   *         string. (“Sucessfully parsed” here means “participated
-   *         in AST creation”, not “till the first error”.)
+   *         string. (“Successfully parsed” here means
+   *         “participated in AST creation”, not “till the first
+   *         error”.)
    *       • "ast": AST, either nil or a dictionary with these
    *         keys:
    *         • "type": node type, one of the value names from
@@ -1181,7 +1200,7 @@ interface api {
    * Note: this function should not be called often. Rather, the
    * callbacks themselves can be used to throttle unneeded
    * callbacks. the `on_start` callback can return `false` to
-   * disable the provider until the next redraw. Similarily, return
+   * disable the provider until the next redraw. Similarly, return
    * `false` in `on_win` will skip the `on_lines` calls for that
    * window (but any extmarks set in `on_win` will still be used).
    * A plugin managing multiple sources of decoration should
@@ -1220,10 +1239,16 @@ interface api {
    *
    * @param ns_id - number of namespace for this highlight
    * @param name - highlight group name, like ErrorMsg
-   * @param val - highlight definiton map, like
+   * @param val - highlight definition map, like
    *   |nvim_get_hl_by_name|. in addition the following
    *   keys are also recognized: `default` : don't
    *   override existing definition, like `hi default`
+   *   `ctermfg` : sets foreground of cterm color
+   *   `ctermbg` : sets background of cterm color
+   *   `cterm` : cterm attribute map. sets attributed
+   *   for cterm colors. similer to `hi cterm` Note: by
+   *   default cterm attributes are same as attributes
+   *   of gui color
    */
   nvim_set_hl: (ns_id?: any, name?: any, val?: any) => any;
   /**
@@ -1543,7 +1568,7 @@ interface api {
    */
   nvim_buf_get_commands: (buffer?: any, opts?: any) => any;
   /**
-   * Returns position for a given extmark id
+   * Gets the position (0-indexed) of an extmark {id}.
    *
    * @param buffer - Buffer handle, or 0 for current buffer
    * @param ns_id - Namespace id from |nvim_create_namespace()|
@@ -1551,7 +1576,8 @@ interface api {
    * @param opts - Optional parameters. Keys:
    *   • details: Whether to include the details dict
    *
-   * @returns  (row, col) tuple or empty list () if extmark id was absent
+   * @returns  0-indexed (row, col) tuple or empty list () if extmark id
+   *  was absent
    */
   nvim_buf_get_extmark_by_id: (
     buffer?: any,
@@ -1595,10 +1621,12 @@ interface api {
    *
    * @param buffer - Buffer handle, or 0 for current buffer
    * @param ns_id - Namespace id from |nvim_create_namespace()|
-   * @param start - Start of range, given as (row, col) or valid
-   *   extmark id (whose position defines the bound)
-   * @param end - End of range, given as (row, col) or valid
-   *   extmark id (whose position defines the bound)
+   * @param start - Start of range, given as 0-indexed (row, col) or
+   *   valid extmark id (whose position defines the
+   *   bound)
+   * @param end - End of range (inclusive), given as 0-indexed
+   *   (row, col) or valid extmark id (whose position
+   *   defines the bound)
    * @param opts - Optional parameters. Keys:
    *   • limit: Maximum number of marks to return
    *   • details Whether to include the details dict
@@ -1749,24 +1777,38 @@ interface api {
    *
    * @param buffer - Buffer handle, or 0 for current buffer
    * @param ns_id - Namespace id from |nvim_create_namespace()|
-   * @param line - Line number where to place the mark
-   * @param col - Column where to place the mark
+   * @param line - Line where to place the mark, 0-based
+   * @param col - Column where to place the mark, 0-based
    * @param opts - Optional parameters.
    *   • id : id of the extmark to edit.
    *   • end_line : ending line of the mark, 0-based
    *   inclusive.
    *   • end_col : ending col of the mark, 0-based
-   *   inclusive.
+   *   exclusive.
    *   • hl_group : name of the highlight group used to
    *   highlight this mark.
    *   • virt_text : virtual text to link to this mark.
-   *   • virt_text_pos : positioning of virtual text.
+   *   A list of [text, highlight] tuples, each
+   *   representing a text chunk with specified
+   *   highlight. `highlight` element can either be a
+   *   a single highlight group, or an array of
+   *   multiple highlight groups that will be stacked
+   *   (highest priority last). A highlight group can
+   *   be supplied either as a string or as an
+   *   integer, the latter which can be obtained
+   *   using |nvim_get_hl_id_by_name|.
+   *   • virt_text_pos : position of virtual text.
    *   Possible values:
    *   • "eol": right after eol character (default)
    *   • "overlay": display over the specified
    *   column, without shifting the underlying
    *   text.
+   *   • "right_align": display right aligned in the
+   *   window.
    *
+   *               • virt_text_win_col : position the virtual text
+   *                 at a fixed window column (starting from the
+   *                 first text column)
    *               • virt_text_hide : hide the virtual text when
    *                 the background text is selected or hidden due
    *                 to horizontal scroll 'nowrap'
@@ -1909,48 +1951,6 @@ interface api {
    */
   nvim_buf_set_var: (buffer?: any, name?: any, value?: any) => any;
   /**
-   * Set the virtual text (annotation) for a buffer line.
-   *
-   * By default (and currently the only option) the text will be
-   * placed after the buffer text. Virtual text will never cause
-   * reflow, rather virtual text will be truncated at the end of
-   * the screen line. The virtual text will begin one cell
-   * (|lcs-eol| or space) after the ordinary text.
-   *
-   * Namespaces are used to support batch deletion/updating of
-   * virtual text. To create a namespace, use
-   * |nvim_create_namespace()|. Virtual text is cleared using
-   * |nvim_buf_clear_namespace()|. The same `ns_id` can be used for
-   * both virtual text and highlights added by
-   * |nvim_buf_add_highlight()|, both can then be cleared with a
-   * single call to |nvim_buf_clear_namespace()|. If the virtual
-   * text never will be cleared by an API call, pass `ns_id = -1` .
-   *
-   * As a shorthand, `ns_id = 0` can be used to create a new
-   * namespace for the virtual text, the allocated id is then
-   * returned.
-   *
-   * @param buffer - Buffer handle, or 0 for current buffer
-   * @param ns_id - Namespace to use or 0 to create a namespace, or
-   *   -1 for a ungrouped annotation
-   * @param line - Line to annotate with virtual text
-   *   (zero-indexed)
-   * @param chunks - A list of [text, hl_group] arrays, each
-   *   representing a text chunk with specified
-   *   highlight. `hl_group` element can be omitted for
-   *   no highlight.
-   * @param opts - Optional parameters. Currently not used.
-   *
-   * @returns  The ns_id that was used
-   */
-  nvim_buf_set_virtual_text: (
-    buffer?: any,
-    src_id?: any,
-    line?: any,
-    chunks?: any,
-    opts?: any
-  ) => any;
-  /**
    * Removes a tab-scoped (t:) variable
    *
    * @param tabpage - Tabpage handle, or 0 for current tabpage
@@ -2082,6 +2082,21 @@ interface api {
    * ft=help:norl:
    */
   nvim_ui_try_resize_grid: (grid?: any, width?: any, height?: any) => any;
+  /**
+   * Calls a function with window as temporary current window.
+   *
+   * @param window - Window handle, or 0 for current window
+   * @param fun - Function to call inside the window (currently
+   *   lua callable only)
+   *
+   * @returns  Return value of function. NB: will deepcopy lua values
+   *  currently, use upvalues to send lua references in and out.
+   *
+   * See also: ~
+   *     |win_execute()|
+   *     |nvim_buf_call()|
+   */
+  nvim_win_call: (window?: any, fun?: any) => any;
   /**
    * Closes the window (like |:close| with a |window-ID|).
    *
