@@ -1,0 +1,35 @@
+{
+ "leftTitle": "Lua module: uri",
+ "rightTitle": "lua-uri",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "uri_from_bufnr",
+   "description": "                Get a URI from a bufnr\n\n                Parameters: ~\n                    {bufnr}  (number): Buffer number\n\n                Return: ~\n                    URI",
+   "argsStr": "{bufnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "uri_from_fname",
+   "description": "                Get a URI from a file path.\n\n                Parameters: ~\n                    {path}  (string): Path to file\n\n                Return: ~\n                    URI",
+   "argsStr": "{path}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "uri_to_bufnr",
+   "description": "                Return or create a buffer for a uri.\n\n                Parameters: ~\n                    {uri}  (string): The URI\n\n                Return: ~\n                    bufnr.\n\n                Note:\n                    Creates buffer but does not load it",
+   "argsStr": "{uri}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "uri_to_fname",
+   "description": "                Get a filename from a URI\n\n                Parameters: ~\n                    {uri}  (string): The URI\n\n                Return: ~\n                    Filename\n\n vim:tw=78:ts=8:ft=help:norl:",
+   "argsStr": "{uri}",
+   "returnType": "any"
+  }
+ ]
+}

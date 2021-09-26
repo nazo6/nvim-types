@@ -1,0 +1,28 @@
+{
+ "leftTitle": "Lua module: vim.lsp.log",
+ "rightTitle": "lsp-log",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "get_filename",
+   "description": "                Returns the log filename.\n\n                Return: ~\n                    (string) log filename",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "set_level",
+   "description": "                Sets the current log level.\n\n                Parameters: ~\n                    {level}  (string or number) One of `vim.lsp.log.levels`",
+   "argsStr": "{level}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "should_log",
+   "description": "                Checks whether the level is sufficient for logging.\n\n                Parameters: ~\n                    {level}  number log level\n\n                Return: ~\n                    (bool) true if would log, false if not",
+   "argsStr": "{level}",
+   "returnType": "any"
+  }
+ ]
+}

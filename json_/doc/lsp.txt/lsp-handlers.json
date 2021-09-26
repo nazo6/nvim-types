@@ -1,0 +1,21 @@
+{
+ "leftTitle": "Lua module: vim.lsp.handlers",
+ "rightTitle": "lsp-handlers",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "hover",
+   "description": "                |lsp-handler| for the method \"textDocument/hover\" >\n\n                 vim.lsp.handlers[\"textDocument/hover\"] = vim.lsp.with(\n                   vim.lsp.handlers.hover, {\n                     -- Use a sharp border with `FloatBorder` highlights\n                     border = \"single\"\n                   }\n                 )\n<\n\n                Parameters: ~\n                    {config}  table Configuration table.\n                              • border: (default=nil)\n                                • Add borders to the floating window\n                                • See |vim.api.nvim_open_win()|",
+   "argsStr": "{_}, {result}, {ctx}, {config}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "signature_help",
+   "description": "                |lsp-handler| for the method \"textDocument/signatureHelp\". The\n                active parameter is highlighted with\n                |hl-LspSignatureActiveParameter|. >\n\n                 vim.lsp.handlers[\"textDocument/signatureHelp\"] = vim.lsp.with(\n                   vim.lsp.handlers.signature_help, {\n                     -- Use a sharp border with `FloatBorder` highlights\n                     border = \"single\"\n                   }\n                 )\n<\n\n                Parameters: ~\n                    {config}  table Configuration table.\n                              • border: (default=nil)\n                                • Add borders to the floating window\n                                • See |vim.api.nvim_open_win()|",
+   "argsStr": "{_}, {result}, {ctx}, {config}",
+   "returnType": "any"
+  }
+ ]
+}

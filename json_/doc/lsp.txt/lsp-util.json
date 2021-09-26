@@ -1,0 +1,273 @@
+{
+ "leftTitle": "Lua module: vim.lsp.util",
+ "rightTitle": "lsp-util",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "apply_text_document_edit",
+   "description": "                Applies a `TextDocumentEdit` , which is a list of changes to a\n                single document.\n\n                Parameters: ~\n                    {text_document_edit}  table: a `TextDocumentEdit` object\n                    {index}               number: Optional index of the edit,\n                                          if from a list of edits (or nil, if\n                                          not from a list)\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocumentEdit",
+   "argsStr": "{text_document_edit}, {index}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "apply_text_edits",
+   "description": "                Applies a list of text edits to a buffer.\n\n                Parameters: ~\n                    {text_edits}  (table) list of `TextEdit` objects\n                    {buf_nr}      (number) Buffer id\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textEdit",
+   "argsStr": "{text_edits}, {bufnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "apply_workspace_edit",
+   "description": "                Applies a `WorkspaceEdit` .\n\n                Parameters: ~\n                    {workspace_edit}  (table) `WorkspaceEdit`",
+   "argsStr": "{workspace_edit}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "buf_clear_references",
+   "description": "                Removes document highlights from a buffer.\n\n                Parameters: ~\n                    {bufnr}  buffer id",
+   "argsStr": "{bufnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "buf_highlight_references",
+   "description": "                Shows a list of document highlights for a certain buffer.\n\n                Parameters: ~\n                    {bufnr}       buffer id\n                    {references}  List of `DocumentHighlight` objects to\n                                  highlight\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-3-17/#documentHighlight",
+   "argsStr": "{bufnr}, {references}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "buf_lines",
+   "description": "                TODO: Documentation",
+   "argsStr": "{bufnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "character_offset",
+   "description": "                Returns the UTF-32 and UTF-16 offsets for a position in a\n                certain buffer.\n\n                Parameters: ~\n                    {buf}  buffer id (0 for current)\n                    {row}  0-indexed line\n                    {col}  0-indexed byte offset in line\n\n                Return: ~\n                    (number, number) UTF-32 and UTF-16 index of the character\n                    in line {row} column {col} in buffer {buf}",
+   "argsStr": "{bufnr}, {row}, {col}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "close_preview_autocmd",
+   "description": "                Creates autocommands to close a preview window when events\n                happen.\n\n                Parameters: ~\n                    {events}  (table) list of events\n                    {winnr}   (number) window id of preview window\n\n                See also: ~\n                    |autocmd-events|",
+   "argsStr": "{events}, {winnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "vim.lsp.util.compute_diff",
+   "description": "             {offset_encoding})\n                Returns the range table for the difference between old and new\n                lines\n\n                Parameters: ~\n                    {old_lines}        table list of lines\n                    {new_lines}        table list of lines\n                    {start_line_idx}   int line to begin search for first\n                                       difference\n                    {end_line_idx}     int line to begin search for last\n                                       difference\n                    {offset_encoding}  string encoding requested by language\n                                       server\n\n                Return: ~\n                    table start_line_idx and start_col_idx of range",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "convert_input_to_markdown_lines",
+   "description": "                Converts any of `MarkedString` | `MarkedString[]` |\n                `MarkupContent` into a list of lines containing valid\n                markdown. Useful to populate the hover window for\n                `textDocument/hover` , for parsing the result of\n                `textDocument/signatureHelp` , and potentially others.\n\n                Parameters: ~\n                    {input}     ( `MarkedString` | `MarkedString[]` |\n                                `MarkupContent` )\n                    {contents}  (table, optional, default `{}` ) List of\n                                strings to extend with converted lines\n\n                Return: ~\n                    {contents}, extended with lines of converted markdown.\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_hover",
+   "argsStr": "{input}, {contents}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "convert_signature_help_to_markdown_lines",
+   "description": "                Converts `textDocument/SignatureHelp` response to markdown\n                lines.\n\n                Parameters: ~\n                    {signature_help}  Response of `textDocument/SignatureHelp`\n                    {ft}              optional filetype that will be use as\n                                      the `lang` for the label markdown code\n                                      block\n                    {triggers}        optional list of trigger characters from\n                                      the lsp server. used to better determine\n                                      parameter offsets\n\n                Return: ~\n                    list of lines of converted markdown.\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_signatureHelp",
+   "argsStr": "{signature_help}, {ft}, {triggers}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "create_file",
+   "description": "                TODO: Documentation",
+   "argsStr": "{change}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "delete_file",
+   "description": "                TODO: Documentation",
+   "argsStr": "{change}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "extract_completion_items",
+   "description": "                Can be used to extract the completion items from a `textDocument/completion` request, which may return one of `CompletionItem[]` , `CompletionList` or null.\n\n                Parameters: ~\n                    {result}  (table) The result of a\n                              `textDocument/completion` request\n\n                Return: ~\n                    (table) List of completion items\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specification#textDocument_completion",
+   "argsStr": "{result}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_effective_tabstop",
+   "description": "                Returns visual width of tabstop.\n\n                Parameters: ~\n                    {bufnr}  (optional, number): Buffer handle, defaults to\n                             current\n\n                Return: ~\n                    (number) tabstop visual width\n\n                See also: ~\n                    |softtabstop|",
+   "argsStr": "{bufnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_line",
+   "description": "                Gets the zero-indexed line from the given uri.\n\n                Parameters: ~\n                    {uri}  string uri of the resource to get the line from\n                    {row}  number zero-indexed line number\n\n                Return: ~\n                    string the line at row in filename",
+   "argsStr": "{uri}, {row}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_lines",
+   "description": "                Gets the zero-indexed lines from the given uri.\n\n                Parameters: ~\n                    {uri}   string uri of the resource to get the lines from\n                    {rows}  number[] zero-indexed line numbers\n\n                Return: ~\n                    table<number string> a table mapping rows to lines",
+   "argsStr": "{uri}, {rows}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "get_progress_messages",
+   "description": "                TODO: Documentation",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "jump_to_location",
+   "description": "                Jumps to a location.\n\n                Parameters: ~\n                    {location}  ( `Location` | `LocationLink` )\n\n                Return: ~\n                    `true` if the jump succeeded",
+   "argsStr": "{location}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "locations_to_items",
+   "description": "                Returns the items with the byte position calculated correctly\n                and in sorted order, for display in quickfix and location\n                lists.\n\n                The result can be passed to the {list} argument of\n                |setqflist()| or |setloclist()|.\n\n                Parameters: ~\n                    {locations}  (table) list of `Location` s or\n                                 `LocationLink` s\n\n                Return: ~\n                    (table) list of items",
+   "argsStr": "{locations}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "lookup_section",
+   "description": "                Helper function to return nested values in language server\n                settings\n\n                Parameters: ~\n                    {settings}  a table of language server settings\n                    {section}   a string indicating the field of the settings\n                                table\n\n                Return: ~\n                    (table or string) The value of settings accessed via\n                    section",
+   "argsStr": "{settings}, {section}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "make_floating_popup_options",
+   "description": "                Creates a table with sensible default options for a floating\n                window. The table can be passed to |nvim_open_win()|.\n\n                Parameters: ~\n                    {width}   (number) window width (in character cells)\n                    {height}  (number) window height (in character cells)\n                    {opts}    (table, optional)\n\n                Return: ~\n                    (table) Options",
+   "argsStr": "{width}, {height}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "make_formatting_params",
+   "description": "                Creates a `DocumentFormattingParams` object for the current\n                buffer and cursor position.\n\n                Parameters: ~\n                    {options}  Table with valid `FormattingOptions` entries\n\n                Return: ~\n                    `DocumentFormattingParams` object\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocument_formatting",
+   "argsStr": "{options}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "make_given_range_params",
+   "description": "                Using the given range in the current buffer, creates an object\n                that is similar to |vim.lsp.util.make_range_params()|.\n\n                Parameters: ~\n                    {start_pos}  ({number, number}, optional) mark-indexed\n                                 position. Defaults to the start of the last\n                                 visual selection.\n                    {end_pos}    ({number, number}, optional) mark-indexed\n                                 position. Defaults to the end of the last\n                                 visual selection.\n\n                Return: ~\n                    { textDocument = { uri = `current_file_uri` }, range = {\n                    start = `start_position` , end = `end_position` } }",
+   "argsStr": "{start_pos}, {end_pos}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "make_position_params",
+   "description": "                Creates a `TextDocumentPositionParams` object for the current\n                buffer and cursor position.\n\n                Return: ~\n                    `TextDocumentPositionParams` object\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocumentPositionParams",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "make_range_params",
+   "description": "                Using the current position in the current buffer, creates an\n                object that can be used as a building block for several LSP\n                requests, such as `textDocument/codeAction` ,\n                `textDocument/colorPresentation` ,\n                `textDocument/rangeFormatting` .\n\n                Return: ~\n                    { textDocument = { uri = `current_file_uri` }, range = {\n                    start = `current_position` , end = `current_position` } }",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "make_text_document_params",
+   "description": "                Creates a `TextDocumentIdentifier` object for the current\n                buffer.\n\n                Return: ~\n                    `TextDocumentIdentifier`\n\n                See also: ~\n                    https://microsoft.github.io/language-server-protocol/specifications/specification-current/#textDocumentIdentifier",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "make_workspace_params",
+   "description": "                Create the workspace params\n\n                Parameters: ~\n                    {added}    \n                    {removed}",
+   "argsStr": "{added}, {removed}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "open_floating_preview",
+   "description": "                Shows contents in a floating window.\n\n                Parameters: ~\n                    {contents}  table of lines to show in window\n                    {syntax}    string of syntax to set for opened buffer\n                    {opts}      dictionary with optional fields\n                                • height of floating window\n                                • width of floating window\n                                • wrap boolean enable wrapping of long lines\n                                  (defaults to true)\n                                • wrap_at character to wrap at for computing\n                                  height when wrap is enabled\n                                • max_width maximal width of floating window\n                                • max_height maximal height of floating window\n                                • pad_left number of columns to pad contents\n                                  at left\n                                • pad_right number of columns to pad contents\n                                  at right\n                                • pad_top number of lines to pad contents at\n                                  top\n                                • pad_bottom number of lines to pad contents\n                                  at bottom\n                                • focus_id if a popup with this id is opened,\n                                  then focus it\n                                • close_events list of events that closes the\n                                  floating window\n                                • focusable (boolean, default true): Make\n                                  float focusable\n\n                Return: ~\n                    bufnr,winnr buffer and window number of the newly created\n                    floating preview window",
+   "argsStr": "{contents}, {syntax}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "parse_snippet",
+   "description": "                Parses snippets in a completion entry.\n\n                Parameters: ~\n                    {input}  (string) unparsed snippet\n\n                Return: ~\n                    (string) parsed snippet",
+   "argsStr": "{input}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "preview_location",
+   "description": "                Previews a location in a floating window\n\n                behavior depends on type of location:\n                • for Location, range is shown (e.g., function definition)\n                • for LocationLink, targetRange is shown (e.g., body of\n                  function definition)\n\n                Parameters: ~\n                    {location}  a single `Location` or `LocationLink`\n\n                Return: ~\n                    (bufnr,winnr) buffer and window number of floating window\n                    or nil",
+   "argsStr": "{location}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "rename",
+   "description": "                Rename old_fname to new_fname\n\n                Parameters: ~\n                    {opts}  (table)",
+   "argsStr": "{old_fname}, {new_fname}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "set_lines",
+   "description": "                Replaces text in a range with new text.\n\n                CAUTION: Changes in-place!\n\n                Parameters: ~\n                    {lines}      (table) Original list of strings\n                    {A}          (table) Start position; a 2-tuple of {line,\n                                 col} numbers\n                    {B}          (table) End position; a 2-tuple of {line,\n                                 col} numbers\n                    {new_lines}  A list of strings to replace the original\n\n                Return: ~\n                    (table) The modified {lines} object",
+   "argsStr": "{lines}, {A}, {B}, {new_lines}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "stylize_markdown",
+   "description": "                Converts markdown into syntax highlighted regions by stripping\n                the code blocks and converting them into highlighted code.\n                This will by default insert a blank line separator after those\n                code block regions to improve readability.\n\n                This method configures the given buffer and returns the lines\n                to set.\n\n                If you want to open a popup with fancy markdown, use\n                `open_floating_preview` instead\n\n                Parameters: ~\n                    {contents}  table of lines to show in window\n                    {opts}      dictionary with optional fields\n                                • height of floating window\n                                • width of floating window\n                                • wrap_at character to wrap at for computing\n                                  height\n                                • max_width maximal width of floating window\n                                • max_height maximal height of floating window\n                                • pad_left number of columns to pad contents\n                                  at left\n                                • pad_right number of columns to pad contents\n                                  at right\n                                • pad_top number of lines to pad contents at\n                                  top\n                                • pad_bottom number of lines to pad contents\n                                  at bottom\n                                • separator insert separator after code block\n\n                Return: ~\n                    width,height size of float",
+   "argsStr": "{bufnr}, {contents}, {opts}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "symbols_to_items",
+   "description": "                Converts symbols to quickfix list items.\n\n                Parameters: ~\n                    {symbols}  DocumentSymbol[] or SymbolInformation[]",
+   "argsStr": "{symbols}, {bufnr}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "text_document_completion_list_to_complete_items",
+   "description": "                Turns the result of a `textDocument/completion` request into\n                vim-compatible |complete-items|.\n\n                Parameters: ~\n                    {result}  The result of a `textDocument/completion` call,\n                              e.g. from |vim.lsp.buf.completion()|, which may\n                              be one of `CompletionItem[]` , `CompletionList`\n                              or `null`\n                    {prefix}  (string) the prefix to filter the completion\n                              items\n\n                Return: ~\n                    { matches = complete-items table, incomplete = bool }\n\n                See also: ~\n                    |complete-items|",
+   "argsStr": "{result}, {prefix}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "trim_empty_lines",
+   "description": "                Removes empty lines from the beginning and end.\n\n                Parameters: ~\n                    {lines}  (table) list of lines to trim\n\n                Return: ~\n                    (table) trimmed list of lines",
+   "argsStr": "{lines}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "try_trim_markdown_code_blocks",
+   "description": "                Accepts markdown lines and tries to reduce them to a filetype\n                if they comprise just a single code block.\n\n                CAUTION: Modifies the input in-place!\n\n                Parameters: ~\n                    {lines}  (table) list of lines\n\n                Return: ~\n                    (string) filetype or 'markdown' if it was unchanged.",
+   "argsStr": "{lines}",
+   "returnType": "any"
+  }
+ ]
+}

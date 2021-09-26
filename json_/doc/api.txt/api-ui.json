@@ -1,0 +1,56 @@
+{
+ "leftTitle": "UI Functions",
+ "rightTitle": "api-ui",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "nvim_ui_attach",
+   "description": "                Activates UI events on the channel.\n\n                Entry point of all UI clients. Allows |--embed| to continue\n                startup. Implies that the client is ready to show the UI. Adds\n                the client to the list of UIs. |nvim_list_uis()|\n\n                Note:\n                    If multiple UI clients are attached, the global screen\n                    dimensions degrade to the smallest client. E.g. if client\n                    A requests 80x40 but client B requests 200x100, the global\n                    screen has size 80x40.\n\n                Parameters: ~\n                    {width}    Requested screen columns\n                    {height}   Requested screen rows\n                    {options}  |ui-option| map",
+   "argsStr": "{width}, {height}, {options}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "nvim_ui_detach",
+   "description": "                Deactivates UI events on the channel.\n\n                Removes the client from the list of UIs. |nvim_list_uis()|",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "nvim_ui_pum_set_bounds",
+   "description": "                Tells Nvim the geometry of the popumenu, to align floating\n                windows with an external popup menu.\n\n                Note that this method is not to be confused with\n                |nvim_ui_pum_set_height()|, which sets the number of visible\n                items in the popup menu, while this function sets the bounding\n                box of the popup menu, including visual elements such as\n                borders and sliders. Floats need not use the same font size,\n                nor be anchored to exact grid corners, so one can set\n                floating-point numbers to the popup menu geometry.\n\n                Parameters: ~\n                    {width}   Popupmenu width.\n                    {height}  Popupmenu height.\n                    {row}     Popupmenu row.\n                    {col}     Popupmenu height.",
+   "argsStr": "{width}, {height}, {row}, {col}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "nvim_ui_pum_set_height",
+   "description": "                Tells Nvim the number of elements displaying in the popumenu,\n                to decide <PageUp> and <PageDown> movement.\n\n                Parameters: ~\n                    {height}  Popupmenu height, must be greater than zero.",
+   "argsStr": "{height}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "nvim_ui_set_option",
+   "description": "                TODO: Documentation",
+   "argsStr": "{name}, {value}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "nvim_ui_try_resize",
+   "description": "                TODO: Documentation",
+   "argsStr": "{width}, {height}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "nvim_ui_try_resize_grid",
+   "description": "                Tell Nvim to resize a grid. Triggers a grid_resize event with\n                the requested grid size or the maximum size if it exceeds size\n                limits.\n\n                On invalid grid handle, fails with error.\n\n                Parameters: ~\n                    {grid}    The handle of the grid to be changed.\n                    {width}   The new requested width.\n                    {height}  The new requested height.\n\n vim:tw=78:ts=8:ft=help:norl:",
+   "argsStr": "{grid}, {width}, {height}",
+   "returnType": "any"
+  }
+ ]
+}

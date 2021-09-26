@@ -1,0 +1,21 @@
+{
+ "leftTitle": "Lua module: vim.lsp.diagnostic",
+ "rightTitle": "lsp-diagnostic",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "get_namespace",
+   "description": "                Get the diagnostic namespace associated with an LSP client\n                |vim.diagnostic|.\n\n                Parameters: ~\n                    {client_id}  number The id of the LSP client",
+   "argsStr": "{client_id}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "on_publish_diagnostics",
+   "description": "                |lsp-handler| for the method \"textDocument/publishDiagnostics\"\n\n                See |vim.diagnostic.config()| for configuration options.\n                Handler-specific configuration can be set using\n                |vim.lsp.with()|: >\n\n                 vim.lsp.handlers[\"textDocument/publishDiagnostics\"] = vim.lsp.with(\n                   vim.lsp.diagnostic.on_publish_diagnostics, {\n                     -- Enable underline, use default values\n                     underline = true,\n                     -- Enable virtual text, override spacing to 4\n                     virtual_text = {\n                       spacing = 4,\n                     },\n                     -- Use a function to dynamically turn signs off\n                     -- and on, using buffer local variables\n                     signs = function(bufnr, client_id)\n                       return vim.bo[bufnr].show_signs == false\n                     end,\n                     -- Disable a feature\n                     update_in_insert = false,\n                   }\n                 )\n<\n\n                Parameters: ~\n                    {config}  table Configuration table (see\n                              |vim.diagnostic.config()|).",
+   "argsStr": "{_}, {result}, {ctx}, {config}",
+   "returnType": "any"
+  }
+ ]
+}

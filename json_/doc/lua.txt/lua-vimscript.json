@@ -1,0 +1,146 @@
+{
+ "leftTitle": "LUA-VIMSCRIPT BRIDGE",
+ "rightTitle": "lua-vimscript",
+ "description": "",
+ "data": [
+  {
+   "type": "func",
+   "name": "vim.call",
+   "description": "        Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        See also |vim.fn|.\n        Equivalent to: >\n            vim.fn[func]({...})",
+   "argsStr": "{func}, {...}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "vim.cmd",
+   "description": "        Executes multiple lines of Vimscript at once. It is an alias to\n        |nvim_exec()|, where `output` is set to false. Thus it works identical\n        to |:source|.\n        See also |ex-cmd-index|.\n        Example: >\n            vim.cmd('echo 42')\n            vim.cmd([[\n              augroup My_group\n                autocmd!\n                autocmd FileType c setlocal cindent\n              augroup END\n            ]])",
+   "argsStr": "{cmd}",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "vim.fn.{func}",
+   "description": "        Invokes |vim-function| or |user-function| {func} with arguments {...}.\n        To call autoload functions, use the syntax: >\n            vim.fn['some#function']({...})\n<\n        Unlike vim.api.|nvim_call_function()| this converts directly between Vim\n        objects and Lua objects. If the Vim function returns a float, it will\n        be represented directly as a Lua number. Empty lists and dictionaries\n        both are represented by an empty table.\n\n        Note: |v:null| values as part of the return value is represented as\n        |vim.NIL| special value\n\n        Note: vim.fn keys are generated lazily, thus `pairs(vim.fn)` only\n        enumerates functions that were called at least once.",
+   "argsStr": "{...}",
+   "returnType": "any"
+  },
+  {
+   "type": "value",
+   "name": "lua-vim-variables",
+   "description": "from Lua conveniently and idiomatically by referencing the `vim.*` Lua tables\ndescribed below. In this way you can easily read and modify global Vimscript\nvariables from Lua.\n\nExample: >\n\n    vim.g.foo = 5     -- Set the g:foo Vimscript variable.\n    print(vim.g.foo)  -- Get and print the g:foo Vimscript variable.\n    vim.g.foo = nil   -- Delete (:unlet) the Vimscript variable.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.g",
+   "description": "        Global (|g:|) editor variables.\n        Key with no value returns `nil`.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.b",
+   "description": "        Buffer-scoped (|b:|) variables for the current buffer.\n        Invalid or unset key returns `nil`.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.w",
+   "description": "        Window-scoped (|w:|) variables for the current window.\n        Invalid or unset key returns `nil`.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.t",
+   "description": "        Tabpage-scoped (|t:|) variables for the current tabpage.\n        Invalid or unset key returns `nil`.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.v",
+   "description": "        |v:| variables.\n        Invalid or unset key returns `nil`.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.env",
+   "description": "        Environment variables defined in the editor session.\n        See |expand-env| and |:let-environment| for the Vimscript behavior.\n        Invalid or unset key returns `nil`.\n        Example: >\n            vim.env.FOO = 'bar'\n            print(vim.env.TERM)\n<",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "lua-vim-options",
+   "description": "",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "lua-vim-set",
+   "description": "",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "lua-vim-setlocal",
+   "description": "In Vimscript, there is an way to set options |set-option|. In Lua, the\ncorresponding method is `vim.opt`.\n\n`vim.opt` provides several conveniences for setting and controlling options\nfrom within Lua.\n\n    Examples: ~\n\n    To set a boolean toggle:\n        In Vimscript:\n            `set number`\n\n        In Lua:\n            `vim.opt.number = true`\n\n    To set an array of values:\n        In Vimscript:\n            `set wildignore=*.o,*.a,__pycache__`\n\n        In Lua, there are two ways you can do this now. One is very similar to\n        the Vimscript form:\n            `vim.opt.wildignore = '*.o,*.a,__pycache__'`\n\n        However, vim.opt also supports a more elegent way of setting\n        list-style options, but using lua tables:\n            `vim.opt.wildignore = { '*.o', '*.a', '__pycache__' }`\n\n    To replicate the behavior of |:set+=|, use: >\n\n        -- vim.opt supports appending options via the \"+\" operator\n        vim.opt.wildignore = vim.opt.wildignore + { \"*.pyc\", \"node_modules\" }\n\n        -- or using the `:append(...)` method\n        vim.opt.wildignore:append { \"*.pyc\", \"node_modules\" }\n<\n\n    To replicate the behavior of |:set^=|, use: >\n\n        -- vim.opt supports prepending options via the \"^\" operator\n        vim.opt.wildignore = vim.opt.wildignore ^ { \"new_first_value\" }\n\n        -- or using the `:prepend(...)` method\n        vim.opt.wildignore:prepend { \"new_first_value\" }\n<\n    To replicate the behavior of |:set-=|, use: >\n\n        -- vim.opt supports removing options via the \"-\" operator\n        vim.opt.wildignore = vim.opt.wildignore - { \"node_modules\" }\n\n        -- or using the `:remove(...)` method\n        vim.opt.wildignore:remove { \"node_modules\" }\n<\n    To set a map of values:\n        In Vimscript:\n            `set listchars=space:_,tab:>~`\n\n        In Lua:\n            `vim.opt.listchars = { space = '_', tab = '>~' }`\n\n\nIn any of the above examples, to replicate the behavior |setlocal|, use\n`vim.opt_local`. Additionally, to replicate the behavior of |setglobal|, use\n`vim.opt_global`.",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.opt",
+   "description": "|vim.opt| returns an Option object.\n\nFor example: `local listchar_object = vim.opt.listchar`\n\nAn `Option` has the following methods:",
+   "valuetype": "any"
+  },
+  {
+   "type": "func",
+   "name": "Option:get",
+   "description": "    Returns a lua-representation of the option. Boolean, number and string\n    values will be returned in exactly the same fashion.\n\n    For values that are comma-separated lists, an array will be returned with\n    the values as entries in the array: >\n        vim.cmd [[set wildignore=*.pyc,*.o]]\n\n        print(vim.inspect(vim.opt.wildignore:get()))\n        -- { \"*.pyc\", \"*.o\", }\n\n        for _, ignore_pattern in ipairs(vim.opt.wildignore:get()) do\n            print(\"Will ignore:\", ignore_pattern)\n        end\n        -- Will ignore: *.pyc\n        -- Will ignore: *.o\n<\n    For values that are comma-separated maps, a table will be returned with\n    the names as keys and the values as entries: >\n        vim.cmd [[set listchars=space:_,tab:>~]]\n\n        print(vim.inspect(vim.opt.listchars:get()))\n        --  { space = \"_\", tab = \">~\", }\n\n        for char, representation in pairs(vim.opt.listchars:get()) do\n            print(char, \"->\", representation)\n        end\n<\n    For values that are lists of flags, a set will be returned with the flags\n    as keys and `true` as entries. >\n        vim.cmd [[set formatoptions=njtcroql]]\n\n        print(vim.inspect(vim.opt.formatoptions:get()))\n        -- { n = true, j = true, c = true, ... }\n\n        local format_opts = vim.opt.formatoptions:get()\n        if format_opts.j then\n            print(\"J is enabled!\")\n        end\n<",
+   "argsStr": "",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "Option:append",
+   "description": "    Append a value to string-style options. See |:set+=|\n\n    These are equivalent:\n        `vim.opt.formatoptions:append('j')`\n        `vim.opt.formatoptions = vim.opt.formatoptions + 'j'`",
+   "argsStr": "value",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "Option:prepend",
+   "description": "    Prepend a value to string-style options. See |:set^=|\n\n    These are equivalent:\n        `vim.opt.wildignore:prepend('*.o')`\n        `vim.opt.wildignore = vim.opt.wildignore ^ '*.o'`",
+   "argsStr": "value",
+   "returnType": "any"
+  },
+  {
+   "type": "func",
+   "name": "Option:remove",
+   "description": "    Remove a value from string-style options. See |:set-=|\n\n    These are equivalent:\n        `vim.opt.wildignore:remove('*.pyc')`\n        `vim.opt.wildignore = vim.opt.wildignore - '*.pyc'`\n\n\nIn general, using `vim.opt` will provide the expected result when the user is\nused to interacting with editor |options| via `set`. There are still times\nwhere the user may want to set particular options via a shorthand in Lua,\nwhich is where |vim.o|, |vim.bo|, |vim.wo|, and |vim.go| come into play.\n\nThe behavior of |vim.o|, |vim.bo|, |vim.wo|, and |vim.go| is designed to\nfollow that of |:set|, |:setlocal|, and |:setglobal| which can be seen in the\ntable below:\n\n    lua            command      global_value       local_value ~\nvim.o           :set                set                set\nvim.bo/vim.wo   :setlocal            -                 set\nvim.go          :setglobal          set                 -",
+   "argsStr": "value",
+   "returnType": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.o",
+   "description": "        Get or set editor options, like |:set|. Invalid key is an error.\n        Example: >\n            vim.o.cmdheight = 4\n            print(vim.o.columns)",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.go",
+   "description": "        Get or set an |option|. Invalid key is an error.\n\n        This is a wrapper around |nvim_set_option()| and |nvim_get_option()|.\n\n        NOTE: This is different than |vim.o| because this ONLY sets the global\n        option, which generally produces confusing behavior for options with\n        |global-local| values.\n\n        Example: >\n            vim.go.cmdheight = 4\n<",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.bo",
+   "description": "        Get or set buffer-scoped |local-options|. Invalid key is an error.\n\n        This is a wrapper around |nvim_buf_set_option()| and\n        |nvim_buf_get_option()|.\n\n        Example: >\n            vim.bo.buflisted = true\n            print(vim.bo.comments)",
+   "valuetype": "any"
+  },
+  {
+   "type": "value",
+   "name": "vim.wo",
+   "description": "        Get or set window-scoped |local-options|. Invalid key is an error.\n\n        This is a wrapper around |nvim_win_set_option()| and\n        |nvim_win_get_option()|.\n\n        Example: >\n            vim.wo.cursorcolumn = true\n            print(vim.wo.foldmarker)",
+   "valuetype": "any"
+  }
+ ]
+}
