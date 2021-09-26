@@ -43,7 +43,9 @@ declare namespace vim {
    *  Reference: https://github.com/luvit/luv/blob/master/docs.md
    *  Examples:  https://github.com/luvit/luv/tree/master/examples
    */
-  const loop: any;
+  const loop: {
+    [key: string]: (args?: any, ...args: any[]) => any;
+  };
   /** Nvim supports the Language Server Protocol (LSP), which means it acts as
    *  a client to LSP servers and includes a Lua framework `vim.lsp` for building
    *  enhanced LSP tools.
